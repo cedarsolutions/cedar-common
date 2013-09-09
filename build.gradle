@@ -61,8 +61,9 @@ allprojects {
 
 // Common setup for subprojects
 subprojects {
-   group = "cedar-common"
+   group = "com.googlecode.cedar-common"
    version = config_mavenPublishVersion
+   archivesBaseName = "cedar-common"
 
    sourceCompatibility = JavaVersion.VERSION_1_6
    targetCompatibility = JavaVersion.VERSION_1_6
@@ -80,6 +81,10 @@ subprojects {
       from sourceSets.main.allSource
    }
 
+   javadoc {
+      source = []   // just upload empty jars for now, can't find a way to make Javadoc work
+   }
+
    publishing {
       publications {
          repositories {
@@ -87,6 +92,17 @@ subprojects {
          }
       }
    }
+
+   task sourceJar(type: Jar, dependsOn: classes) {
+      classifier = 'sources'
+      from sourceSets.main.allSource
+   }
+
+   task javadocJar(type: Jar, dependsOn: javadoc) {
+      classifier = 'javadoc'
+      from javadoc.destinationDir
+   }
+
 }
 
 // Subproject for cedar-common-util
@@ -96,7 +112,6 @@ project(":util") {
    def description = "Library of common utility code."
 
    buildDir = "../build/util"
-   archivesBaseName = group
 
    sourceSets {
       main {
@@ -123,8 +138,10 @@ project(":util") {
    publishing {
       publications {
          maven(MavenPublication) {
-            artifactId group + "-util"
+            artifactId "cedar-common-util"
             from components.java
+            artifact sourceJar
+            artifact javadocJar
             pom.withXml {
                addPomFields(asNode(), name, description)
             }
@@ -141,7 +158,6 @@ project(":gwt") {
    def description = "Library of utility code for use with GWT and Mvp4g."
 
    buildDir = "../build/gwt"
-   archivesBaseName = group
 
    sourceSets {
       main {
@@ -162,8 +178,10 @@ project(":gwt") {
    publishing {
       publications {
          maven(MavenPublication) {
-            artifactId group + "-gwt"
+            artifactId "cedar-common-gwt"
             from components.java
+            artifact sourceJar
+            artifact javadocJar
             pom.withXml {
                addPomFields(asNode(), name, description)
             }
@@ -179,7 +197,6 @@ project(":gae") {
    def description = "Library of utility code for use with GWT on Google App Engine."
 
    buildDir = "../build/gae"
-   archivesBaseName = group
 
    sourceSets {
       main {
@@ -208,8 +225,10 @@ project(":gae") {
    publishing {
       publications {
          maven(MavenPublication) {
-            artifactId group + "-gae"
+            artifactId "cedar-common-gae"
             from components.java
+            artifact sourceJar
+            artifact javadocJar
             pom.withXml {
                addPomFields(asNode(), name, description)
             }
@@ -225,7 +244,6 @@ project(":testutil") {
    def description = "Library of utility code for use with junit, such as assertions and test setup mechanisms."
 
    buildDir = "../build/testutil"
-   archivesBaseName = group
 
    sourceSets {
       main {
@@ -245,8 +263,10 @@ project(":testutil") {
    publishing {
       publications {
          maven(MavenPublication) {
-            artifactId group + "-testutil"
+            artifactId "cedar-common-testutil"
             from components.java
+            artifact sourceJar
+            artifact javadocJar
             pom.withXml {
                addPomFields(asNode(), name, description)
             }
@@ -262,7 +282,6 @@ project(":gwttestutil") {
    def description = "Library of utility code for use in testing GWT, including a stubbed test runner using Mockito."
 
    buildDir = "../build/gwttestutil"
-   archivesBaseName = group
 
    sourceSets {
       main {
@@ -283,8 +302,10 @@ project(":gwttestutil") {
    publishing {
       publications {
          maven(MavenPublication) {
-            artifactId group + "-gwttestutil"
+            artifactId "cedar-common-gwttestutil"
             from components.java
+            artifact sourceJar
+            artifact javadocJar
             pom.withXml {
                addPomFields(asNode(), name, description)
             }
@@ -300,7 +321,6 @@ project(":gaetestutil") {
    def description = "Library of utility code for use in testing GWT applications on Google App Engine."
 
    buildDir = "../build/gaetestutil"
-   archivesBaseName = group
 
    sourceSets {
       main {
@@ -326,8 +346,10 @@ project(":gaetestutil") {
    publishing {
       publications {
          maven(MavenPublication) {
-            artifactId group + "-gaetestutil"
+            artifactId "cedar-common-gaetestutil"
             from components.java
+            artifact sourceJar
+            artifact javadocJar
             pom.withXml {
                addPomFields(asNode(), name, description)
             }
@@ -343,7 +365,6 @@ project(":tools") {
    def description = "Command line tools, mostly tied to internal development processes using Mercurial."
 
    buildDir = "../build/tools"
-   archivesBaseName = group
 
    sourceSets {
       main {
@@ -360,8 +381,10 @@ project(":tools") {
    publishing {
       publications {
          maven(MavenPublication) {
-            artifactId group + "-tools"
+            artifactId "cedar-common-tools"
             from components.java
+            artifact sourceJar
+            artifact javadocJar
             pom.withXml {
                addPomFields(asNode(), name, description)
             }
@@ -375,7 +398,6 @@ project(":tools") {
 project(":test") {
 
    buildDir = "../build/test"
-   archivesBaseName = group
 
    sourceSets {
       test {
@@ -491,7 +513,7 @@ task labelCurrentRelease(dependsOn: project(":tools").jar) << {
 }
 
 // Make the publish task also label the current release
-tasks.publish.dependsOn(labelCurrentRelease)
+//tasks.publish.dependsOn(labelCurrentRelease)
 
 // Update all copyright statements based on Mercurial repository
 task updateCopyrightStatements(dependsOn: project(":tools").jar) << {
