@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+    <!-- Appenders -->
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} [%-5p] --> [%c] %m%n" />
+        </layout>
+    </appender>
+
+    <!-- Velocity logging -->
+
+    <logger name="com.cedarsolutions.gae.util.GaeVelocityUtils">
+        <level value="INFO" />
+    </logger>
+
+    <!-- HTMLUnit logging (for GWT unit tests) -->
+
+    <logger name="com.gargoylesoftware.htmlunit">
+        <level value="INFO" />
+    </logger>
+
+    <!-- Apache HTTP logging (for GWT unit tests) -->
+
+    <logger name="org.apache.http">
+        <level value="INFO" />
+    </logger>
+
+    <!-- Root logger -->
+
+    <root>
+        <priority value="DEBUG" />
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+</log4j:configuration>

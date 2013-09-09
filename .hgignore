@@ -1,0 +1,15 @@
+syntax: glob
+*.swp
+.gradle/*
+*-bin/*
+.settings/org.eclipse.jdt.ui.prefs
+.settings/org.eclipse.jdt.core.prefs
+.settings/de.loskutov.anyedit.AnyEditTools.prefs
+.project
+.classpath
+.checkstyle
+local.properties
+build/*
+gwt-unitCache/*
+war/*
+www-test/*

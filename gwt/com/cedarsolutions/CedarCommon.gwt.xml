@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to="cedarcommon">
+
+    <!-- Core GWT functionality. -->
+    <inherits name="com.google.gwt.user.User" />
+    <inherits name="com.gwtplatform.idhandler.IdHandler"/>
+    <inherits name="com.flipthebird.GwtHashCodeEquals"/>
+
+    <!-- Code for automatically generating proxies over RPC calls. -->
+    <generate-with class="com.cedarsolutions.wiring.gwt.rpc.XsrfRpcProxyGenerator">
+        <when-type-assignable class="com.google.gwt.user.client.rpc.RemoteService" />
+    </generate-with>
+
+    <!-- Specify the paths for translatable code. -->
+    <source path="client/gwt" />
+    <source path="util/gwt" />
+    <source path="web/metadata" />
+    <source path="shared/domain" />
+    <source path="dao/domain" />
+    <source path="exception" />
+
+</module>

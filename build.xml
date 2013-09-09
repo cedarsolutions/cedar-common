@@ -1,0 +1,77 @@
+<!--
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*
+*              C E D A R
+*          S O L U T I O N S       "Software done right."
+*           S O F T W A R E
+*
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*
+* Copyright (c) 2011-2013 Kenneth J. Pronovici.
+* All rights reserved.
+*
+* This program is free software; you can redistribute it and/or
+* modify it under the terms of the Apache License, Version 2.0.
+* See LICENSE for more information about the licensing terms.
+ *
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*
+* Author   : Kenneth J. Pronovici <pronovic@ieee.org>
+* Language : Apache Ant (>= 1.8.3)
+* Project  : Common Java Functionality
+*
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+-->
+<project name="CedarCommon2" basedir="." default="help">
+
+    <!-- The goal of this build script is to make common Gradle tasks accessible from Eclipse. -->
+
+    <property environment="env" />
+    <property file="local.properties" />  <!-- use this to override config for your local environment -->
+    <property file="app.properties" />
+
+    <!-- This assumes Gradle is properly set up on your system path. -->
+    <condition property="gradle" value="gradle.bat"><os family="windows" /></condition>
+    <property name="gradle" value="gradle" />
+
+    <macrodef name="gradle">
+        <attribute name="target"/>
+        <sequential>
+            <exec executable="${gradle}" dir="${basedir}">
+                <arg line="@{target}" />
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <target name="help">
+        <echo message="This project is managed with Gradle." />
+        <echo message="To generate Eclipse project files, execute 'gradle eclipse' or 'ant eclipse'." />
+        <echo message="Once the project has been bootstrapped, you can import it into Eclipse as usual." />
+    </target>
+
+    <target name="eclipse" description="Rebuild the Eclipse project files">
+        <gradle target="eclipse" />
+        <echo message="Remember to close and open your Eclipse project if you ran this from Eclipse." />
+    </target>
+
+    <target name="publish" description="Publish to the public maven repository, labeling the code first">
+        <gradle target="publish" />
+    </target>
+
+    <target name="publish.local" description="Publish a snapshot to the local Maven repository">
+        <gradle target="publishToMavenLocal" />
+    </target>
+
+    <target name="update.copyright.statements" description="Update copyright statements based on Mercurial" >
+        <gradle target="updateCopyrightStatements" />
+    </target>
+
+    <target name="generate.xml.bindings" description="Generate all of the XML bindings">
+        <gradle target="generateXmlBindings" />
+    </target>
+
+    <target name="run.all.tests" description="Run all tests for this project">
+        <gradle target="unittest clienttest" />
+    </target>
+
+</project>

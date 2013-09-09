@@ -1,0 +1,2 @@
+// vim: set ft=groovy:
+include "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", "tools", "test"

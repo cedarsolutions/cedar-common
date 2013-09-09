@@ -1,0 +1,732 @@
+// vim: set ft=groovy:
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// *
+// *              C E D A R
+// *          S O L U T I O N S       "Software done right."
+// *           S O F T W A R E
+// *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// *
+// * Copyright (c) 2011-2013 Kenneth J. Pronovici.
+// * All rights reserved.
+// *
+// * This program is free software; you can redistribute it and/or
+// * modify it under the terms of the Apache License, Version 2.0.
+// * See LICENSE for more information about the licensing terms.
+// *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+// *
+// * Author   : Kenneth J. Pronovici <pronovic@ieee.org>
+// * Language : Gradle (>= 1.7)
+// * Project  : Common Java Functionality
+// *
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+// See: http://stackoverflow.com/questions/1163173/why-use-gradle-instead-of-ant-or-maven
+
+// ***************
+// * Gradle setup
+// ***************
+
+// Sources for the build script itself
+buildscript {
+   repositories { 
+      mavenCentral() 
+   }
+
+   dependencies { 
+      classpath "com.admc:gradle-javaPropFile-plugin:0.6.0" 
+   }
+}
+
+// Plugins
+apply plugin: "base"
+apply plugin: "eclipse"
+apply plugin: "javaPropFile"
+
+// This loads configuration from app.properties and overrides with local.properties
+// See: https://github.com/unsaved/gradle-javaPropFile-plugin/tree/master/doc#void-propfileloadertraditionalpropertiesinit
+propFileLoader.traditionalPropertiesInit()
+
+
+// ************************
+// * Project configuration
+// ************************
+
+// Common setup for all projects
+allprojects {
+   apply plugin: "java"
+   apply plugin: "maven-publish"
+   compileJava.options.fork(memoryMaximumSize: config_javaCompilerMemory) 
+}
+
+// Common setup for subprojects
+subprojects {
+   group = "cedar-common"
+   version = config_mavenPublishVersion
+
+   sourceCompatibility = JavaVersion.VERSION_1_6
+   targetCompatibility = JavaVersion.VERSION_1_6
+
+   repositories {
+      mavenLocal()   // Local Maven repository
+      mavenCentral() // Maven Central repository
+      maven { url "http://maven.objectify-appengine.googlecode.com/git/" } // Objectify 3.x
+      maven { url "http://download.java.net/maven/2/" }                    // JavaMail and related code
+      maven { url "http://mvp4g.googlecode.com/svn/maven2/snapshots/" }    // Mvp4g snapshots
+   }
+
+   jar {
+      from sourceSets.main.output
+      from sourceSets.main.allSource
+   }
+
+   publishing {
+      publications {
+         repositories {
+            maven { url config_mavenPublishRepositoryUrl }
+         }
+      }
+   }
+}
+
+// Subproject for cedar-common-util
+project(":util") {
+
+   def name = "Utility Library"
+   def description = "Library of common utility code."
+
+   buildDir = "../build/util"
+   archivesBaseName = group
+
+   sourceSets {
+      main {
+         java { srcDirs = [ ".", "../externalutil", ] }
+         resources { srcDirs = [ ".", "../externalutil", ] }
+      }
+   }
+
+   dependencies {
+      compile "com.flipthebird.gwt-hashcode-equals:gwt-hashcode-equals:0.1.0"
+      compile "com.google.code.gson:gson:1.7.2"
+      compile "commons-beanutils:commons-beanutils:1.8.3"
+      compile "commons-lang:commons-lang:2.6"
+      compile "javax.servlet:servlet-api:2.5"
+      compile "joda-time:joda-time:2.3"
+      compile "log4j:log4j:1.2.17"
+      compile "org.springframework:spring-beans:3.2.4.RELEASE"
+      compile "org.springframework:spring-context:3.2.4.RELEASE"
+      compile "org.springframework:spring-core:3.2.4.RELEASE"
+      compile "org.springframework:spring-web:3.2.4.RELEASE"
+      compile "org.springframework:spring-webmvc:3.2.4.RELEASE"
+   }
+
+   publishing {
+      publications {
+         maven(MavenPublication) {
+            artifactId group + "-util"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
+         }
+      }
+   }
+
+}
+
+// Subproject for cedar-common-gwt
+project(":gwt") {
+
+   def name = "GWT Library"
+   def description = "Library of utility code for use with GWT and Mvp4g."
+
+   buildDir = "../build/gwt"
+   archivesBaseName = group
+
+   sourceSets {
+      main {
+         java { srcDirs = [ ".", "../externalgwt", ] }
+         resources { srcDirs = [ ".", "../externalgwt", ] }
+      }
+   }
+
+   dependencies {
+      compile "com.google.gwt:gwt-dev:${config_gwtVersion}"
+      compile "com.google.gwt:gwt-user:${config_gwtVersion}"
+      compile "com.googlecode.mvp4g:mvp4g:1.5.0-SNAPSHOT"
+      compile "cedar-common:gwt-sl:1.2"
+      compile project(":util")
+      runtime "com.google.gwt.inject:gin:1.5.0"
+   }
+
+   publishing {
+      publications {
+         maven(MavenPublication) {
+            artifactId group + "-gwt"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
+         }
+      }
+   }
+}
+
+// Subproject for cedar-common-gae
+project(":gae") {
+
+   def name = "GAE Library"
+   def description = "Library of utility code for use with GWT on Google App Engine."
+
+   buildDir = "../build/gae"
+   archivesBaseName = group
+
+   sourceSets {
+      main {
+         java { srcDirs = [ ".", ] }
+         resources { srcDirs = [ ".", ] }
+      }
+   }
+
+   dependencies {
+      compile "com.google.appengine:appengine-api-1.0-sdk:${config_appEngineVersion}"
+      compile "com.googlecode.objectify:objectify:3.1"
+      compile "commons-io:commons-io:2.4"
+      compile "javax.mail:mail:1.4.4"
+      compile "javax.servlet:servlet-api:2.5"
+      compile "org.apache.velocity:velocity:1.7"
+      compile "org.springframework.security:spring-security-core:2.0.8.RELEASE"
+      compile "org.springframework.security:spring-security-core-tiger:2.0.8.RELEASE"
+      compile project(":util")
+      compile project(":gwt")
+
+      runtime "org.apache.geronimo.specs:geronimo-jpa_3.0_spec:1.1.1"
+      runtime "org.apache.velocity:velocity-tools:2.0"
+      runtime "javax.jdo:jdo2-api:2.3-eb"
+   }
+
+   publishing {
+      publications {
+         maven(MavenPublication) {
+            artifactId group + "-gae"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
+         }
+      }
+   }
+}
+
+// Subproject for cedar-common-testutil
+project(":testutil") {
+
+   def name = "Test Utilities"
+   def description = "Library of utility code for use with junit, such as assertions and test setup mechanisms."
+
+   buildDir = "../build/testutil"
+   archivesBaseName = group
+
+   sourceSets {
+      main {
+         java { srcDirs = [ ".", ] }
+         resources { srcDirs = [ ".", ] }
+      }
+   }
+
+   dependencies {
+      compile "javax.servlet:servlet-api:2.5"
+      compile "junit:junit:4.11"
+      compile "org.mockito:mockito-all:1.9.5"
+      compile "org.springframework:spring-test:3.2.4.RELEASE"
+      compile project(":util")
+   }
+
+   publishing {
+      publications {
+         maven(MavenPublication) {
+            artifactId group + "-testutil"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
+         }
+      }
+   }
+}
+
+// Subproject for cedar-common-gwttestutil
+project(":gwttestutil") {
+
+   def name = "GWT Test Utilities"
+   def description = "Library of utility code for use in testing GWT, including a stubbed test runner using Mockito."
+
+   buildDir = "../build/gwttestutil"
+   archivesBaseName = group
+
+   sourceSets {
+      main {
+         java { srcDirs = [ ".", ] }
+         resources { srcDirs = [ ".", ] }
+      }
+   }
+
+   dependencies {
+      compile "com.google.gwt:gwt-user:${config_gwtVersion}"
+      compile "junit-addons:junit-addons:1.4"
+      compile "junit:junit:4.11"
+      compile "org.javassist:javassist:3.18.0-GA"
+      compile "org.mockito:mockito-all:1.9.5"
+      compile project(":util")
+   }
+
+   publishing {
+      publications {
+         maven(MavenPublication) {
+            artifactId group + "-gwttestutil"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
+         }
+      }
+   }
+}
+
+// Subproject for cedar-common-gaetestutil
+project(":gaetestutil") {
+
+   def name = "GAE Test Utilities"
+   def description = "Library of utility code for use in testing GWT applications on Google App Engine."
+
+   buildDir = "../build/gaetestutil"
+   archivesBaseName = group
+
+   sourceSets {
+      main {
+         java { srcDirs = [ ".", ] }
+         resources { srcDirs = [ ".", ] }
+      }
+   }
+
+   dependencies {
+      compile "com.google.gwt:gwt-user:${config_gwtVersion}"
+      compile "junit-addons:junit-addons:1.4"
+      compile "junit:junit:4.11"
+      compile "org.javassist:javassist:3.18.0-GA"
+      compile "org.mockito:mockito-all:1.9.5"
+      compile project(":util")
+      compile project(":gae")
+      compile project(":testutil")
+
+      runtime "com.google.appengine:appengine-api-stubs:${config_appEngineVersion}"
+      runtime "com.google.appengine:appengine-testing:${config_appEngineVersion}"
+   }
+
+   publishing {
+      publications {
+         maven(MavenPublication) {
+            artifactId group + "-gaetestutil"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
+         }
+      }
+   }
+}
+
+// Subproject for cedar-common-tools
+project(":tools") {
+
+   def name = "Command Line Tools"
+   def description = "Command line tools, mostly tied to internal development processes using Mercurial."
+
+   buildDir = "../build/tools"
+   archivesBaseName = group
+
+   sourceSets {
+      main {
+         java { srcDirs = [ ".", "../generated", ] }
+         resources { srcDirs = [ ".", "../generated", ] }
+      }
+   }
+
+   dependencies {
+      compile project(":util")
+      compile project(":gwttestutil")
+   }
+
+   publishing {
+      publications {
+         maven(MavenPublication) {
+            artifactId group + "-tools"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
+         }
+      }
+   }
+
+}
+
+// Unit tests
+project(":test") {
+
+   buildDir = "../build/test"
+   archivesBaseName = group
+
+   sourceSets {
+      test {
+         java { srcDirs = [ ".", "../externaltest", "../gradle/src/suites", ] }
+         resources { srcDirs = [  ".", "../externaltest", "../gradle/src/suites", ] }
+         runtimeClasspath += files(project(":util").sourceSets.main.java.srcDirs)
+         runtimeClasspath += files(project(":gwt").sourceSets.main.java.srcDirs)
+         runtimeClasspath += files(sourceSets.test.java.srcDirs)
+      }
+   }
+
+   dependencies {
+      testCompile "cedar-common:cpsuite:1.2.6"
+      testCompile project(":util")
+      testCompile project(":gwt")
+      testCompile project(":gae")
+      testCompile project(":testutil")
+      testCompile project(":gwttestutil")
+      testCompile project(":gaetestutil")
+      testCompile project(":tools")
+   }
+
+   // Unit tests are defined by the UnitTestSuite
+   task unittest(type: Test) {
+      workingDir = "../"
+      scanForTestClasses = false
+      enableAssertions = false
+      outputs.upToDateWhen { false }
+      include "**/UnitTestSuite.class"
+   }
+
+   // Client tests are defined by the ClientTestSuite
+   task clienttest(type: Test) {
+      workingDir = "../"
+      scanForTestClasses = false
+      enableAssertions = false
+      outputs.upToDateWhen { false }
+      systemProperty "gwt.args", "-out build/www-test -logLevel ERROR"
+      include "**/ClientTestSuite.class"
+
+      beforeSuite { descriptor ->
+         delete "build/www-test"
+         delete "build/gwt-unitCache"
+      }
+
+      afterSuite { descriptor ->
+         delete "build/www-test"
+         delete "build/gwt-unitCache"
+      }
+   }
+
+   // Effectively disable the standard test runner
+   test {
+      include "**/bogus.class"  // so nothing gets run
+   }
+
+   // Redefine the test runner in terms of the unit and client test suites
+   tasks.test.dependsOn(clienttest, unittest)
+
+}
+
+// Add POM fields to a Maven publisher
+def addPomFields(node, n, d) {
+   node.children().last() + {
+      resolveStrategy = Closure.DELEGATE_FIRST
+      name n
+      description d
+      url "https://code.google.com/p/cedar-common/"
+      scm {
+         url "scm:hg:https://code.google.com/p/cedar-common/"
+         connection "scm:hg:https://code.google.com/p/cedar-common/"
+         developerConnection "scm:hg:https://code.google.com/p/cedar-common/"
+      }
+      licenses {
+         license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/license/LICENSE-2.0.txt"
+            distribution "repo"
+         }
+      }
+      developers {
+         developer {
+            id "pronovic"
+            name "Kenneth J. Pronovici"
+            email "pronovic@ieee.org"
+         }
+      }
+   }
+}
+
+
+// ********************
+// * Other build tasks
+// ********************
+
+// Label the current release using the configured config_mavenPublishVersion
+task labelCurrentRelease(dependsOn: project(":tools").jar) << {
+   def toolClass = "com.cedarsolutions.tools.label.LabelTool"
+   def label = "CedarCommon__v" + config_mavenPublishVersion + '__$${special:ntimestamp}'
+
+   ant.java(classname : toolClass, fork : "true", failonerror : "true") {
+      arg(value : "--label")
+      arg(value : label)
+      arg(value : "--hg")
+      arg(value : config_mercurialPath)
+      arg(value : "--repo")
+      arg(value : projectDir)
+      classpath() {
+          pathelement(location : project(":tools").jar.archivePath.canonicalPath)
+          pathelement(path: project(":tools").configurations.runtime.asPath)
+      }
+   }
+}
+
+// Make the publish task also label the current release
+tasks.publish.dependsOn(labelCurrentRelease)
+
+// Update all copyright statements based on Mercurial repository
+task updateCopyrightStatements(dependsOn: project(":tools").jar) << {
+   def toolClass = "com.cedarsolutions.tools.copyright.CopyrightTool"
+   def licensePattern = '^.*LICENSE$'
+   def sourcePatterns = '"^.*\\.java$" "^.*\\.rb$" "^.*\\.feature$" "^.*build.xml$"'
+
+   ant.java(classname : toolClass, fork : "true", failonerror : "true") {
+      arg(value : config_mercurialPath)
+      arg(value : projectDir)
+      arg(value : licensePattern)
+      arg(line  : sourcePatterns)
+      classpath() {
+          pathelement(location : project(":tools").jar.archivePath.canonicalPath)
+          pathelement(path: project(":tools").configurations.runtime.asPath)
+      }
+   }
+}
+
+// Generate XML bindings for the Mercurial XML output
+task generateHgBindings << {
+   def resourcesDir = "gradle/resources"
+   def schemaDir = "generated/com/cedarsolutions/xml/schema/hg/log"
+   def bindingsDir = "generated/com/cedarsolutions/xml/bindings/hg/log"
+   def bindingsPackage = "com.cedarsolutions.xml.bindings.hg.log"
+   def sourceXml = resourcesDir + "/hglog.xml"
+   def schema = schemaDir + "/hglog.xsd"
+
+   mkdir schemaDir
+   mkdir bindingsDir
+
+   ant.delete(quiet : "true") {
+      fileset(dir: schemaDir, includes : "*.xsd")
+      fileset(dir: bindingsDir, includes : "**/*.java")
+   }
+
+   ant.java(jar : config_trangJarPath, fork : "true", failonerror : "true") {
+      arg(value : sourceXml)
+      arg(value : schema)
+   }
+
+   ant.exec(executable : config_xjcPath) {
+      arg(value : "-d")
+      arg(value : "generated")
+      arg(value : "-p")
+      arg(value : bindingsPackage)
+      arg(value : "-xmlschema")
+      arg(value : schema)
+   }
+}
+
+// Generate all XML bindings
+task generateXmlBindings(dependsOn: generateHgBindings)
+
+
+// ************************
+// * Eclipse configuration
+// ************************
+// The eclipse plugin is used to generate Eclipse project files
+
+// Always re-generate everything, otherwise we get duplicate sections in files
+tasks.eclipse.dependsOn(cleanEclipse)
+
+// Clean up extended settings
+task cleanEclipseExtendedSettings(type: Delete) {
+
+   // Delete the settings we copied in
+   delete file(".settings/de.loskutov.anyedit.AnyEditTools.prefs")
+   delete file(".settings/org.eclipse.jdt.core.prefs")
+   delete file(".settings/org.eclipse.jdt.ui.prefs")
+   delete file(".checkstyle")
+
+   // Remove .settings only if it's empty
+   ant.delete(includeemptydirs : "true", quiet : "true") {
+      fileset(dir: ".settings", excludes : "**/*")
+   }
+
+}
+
+// Clean up custom settings whenever the rest of Eclipse gets cleaned up
+tasks.cleanEclipseJdt.dependsOn(cleanEclipseExtendedSettings)
+
+// Copy skeleton settings into the workspace
+eclipseJdt << {
+   copy {
+      from "gradle/eclipse/settings"
+      into ".settings"
+      include "*.prefs"
+   }
+
+   copy {
+      from "gradle/eclipse/.checkstyle"
+      into "."
+   }
+}
+
+// Customize the Eclipse .project file
+eclipse {
+   project {
+      natures "org.eclipse.jdt.core.javanature"
+      natures "com.google.appengine.eclipse.core.gaeNature"
+      natures "com.google.gwt.eclipse.core.gwtNature"
+      natures "net.sf.eclipsecs.core.CheckstyleNature"
+      natures "net.sourceforge.metrics.nature"
+
+      buildCommand "org.eclipse.jdt.core.javabuilder"
+      buildCommand "net.sf.eclipsecs.core.CheckstyleBuilder"
+      buildCommand "net.sourceforge.metrics.builder"
+   }
+}
+
+// Hide the build directory from Eclipse
+project.eclipse.project.file.withXml { provider ->
+   ignoreResourcesFromDirectories(provider, ["build", "gwt-unitCache", "www-test", "war", ])
+}
+
+// Customize the Eclipse .classpath file
+// By default, Gradle generates one Eclipse project per configured subproject
+// For CedarCommon, I want one big project with a bunch of source folders, so I
+// have to implement it myself.
+eclipse.classpath.file {
+   whenMerged { classpath ->
+
+      // List of subprojects in the proper order
+      def projects = [ "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", "tools", "test", ]
+
+      // List of source folders in the proper order
+      def sources = [ "resources", "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", "tools",
+                      "test", "externalutil", "externalgwt", "externaltest", "generated", "suites", ]
+
+      // List of all the unique libraries among all of the subprojects, ignoring internal builds
+      def libraries = new java.util.TreeMap()
+      projects.each() { 
+         project(":${it}").configurations.runtime.each {
+            if (!it.canonicalPath.startsWith(buildDir.canonicalPath)) {
+               libraries.put(it.canonicalPath, null)
+            }
+         }
+         project(":${it}").configurations.testCompile.each {
+            if (!it.canonicalPath.startsWith(buildDir.canonicalPath)) {
+               libraries.put(it.canonicalPath, null)
+            }
+         }
+      }
+
+      // Remove the default output target
+      classpath.entries.removeAll { entry -> entry.kind == "output" }
+
+      // Add each of our source folders in the proper order
+      withXml { xml ->
+         def node = xml.asNode()
+         sources.each() { source -> 
+            node.appendNode("classpathentry", [ kind : "src", output : source + "-bin", path : source ])
+         }
+      }
+
+      // Add an extra "ignore optional problems" attribute for generated and external code
+      withXml { xml ->
+         def node = xml.asNode()
+         node."classpathentry".findAll { it.@path.startsWith("external") || it.@path == "generated" }.each { entry ->
+            entry.appendNode("attributes").appendNode("attribute",  [ name : "ignore_optional_problems", value : "true", ])
+         }
+      }
+
+      // Add an entry for each library in the list
+      withXml { xml ->
+         def node = xml.asNode()
+         libraries.each() { key, value -> 
+            node.appendNode("classpathentry", [ kind : "lib", path : key, exported : "false", ])
+         }
+      }
+
+      // Put all of the "con" classpath entries (like the JRE container) at the bottom
+      def all = classpath.entries.findAll { entry -> entry.kind == "con" }
+      classpath.entries.removeAll(all)
+      withXml { xml ->
+         def node = xml.asNode()
+         all.findAll { entry ->
+            node.appendNode("classpathentry", [ kind : "con", path : entry.path, exported : entry.exported, ])
+         }
+      }
+   }
+}
+
+// Ignore resources in a specific directory
+// See: http://forums.gradle.org/gradle/topics/eclipse_generated_files_should_be_put_in_the_same_place_as_the_gradle_generated_files
+def ignoreResourcesFromDirectories(provider, directories) {
+   def filter = provider.asNode().appendNode("filteredResources").appendNode("filter")
+   filter.appendNode("id", String.valueOf(System.currentTimeMillis()))  // this id must be unique
+   filter.appendNode("name")
+   filter.appendNode("type", "26")
+   def matcher = filter.appendNode("matcher")
+   matcher.appendNode("id", "org.eclipse.ui.ide.orFilterMatcher")
+   def arguments = matcher.appendNode("arguments")
+   directories.each {
+      def dirMatcher = arguments.appendNode("matcher")
+      dirMatcher.appendNode("id", "org.eclipse.ui.ide.multiFilter")
+      dirMatcher.appendNode("arguments", "1.0-projectRelativePath-matches-true-false-${it}")
+   }
+}
+
+
+// ***************
+// * Gradle hooks
+// ***************
+// This code hooks into Gradle to modify behavior at build
+
+// Test summary listener that prints out test results when tests are executed
+// This makes the output legible in Eclipse; normally, the output isn't printed because Eclipse as a dumb terminal
+// See: http://forums.gradle.org/gradle/topics/how_to_print_a_maven_like_test_summary_on_the_console
+class TestSummary implements org.gradle.api.tasks.testing.TestListener {
+    long passed;
+    long failed;
+    long skipped;
+
+    public void beforeSuite(org.gradle.api.tasks.testing.TestDescriptor suite) {
+        passed = 0;
+        failed = 0;
+        skipped = 0;
+    }
+
+    public void afterSuite(org.gradle.api.tasks.testing.TestDescriptor suite, org.gradle.api.tasks.testing.TestResult result) {
+        System.out.printf("*** Test results: passed=%d, failed=%d, skipped=%d\n", passed, failed, skipped);
+    }
+
+    public void beforeTest(org.gradle.api.tasks.testing.TestDescriptor test) {
+    }
+
+    public void afterTest(org.gradle.api.tasks.testing.TestDescriptor test, org.gradle.api.tasks.testing.TestResult result) {
+        passed += result.getSuccessfulTestCount();
+        failed += result.getFailedTestCount();
+        skipped += result.getSkippedTestCount();
+    }
+}
+
+// Add a test sumamry listener to print test output
+gradle.addListener(new TestSummary())
+

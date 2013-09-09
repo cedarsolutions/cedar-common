@@ -1,0 +1,64 @@
+CREDITS
+
+This project relies on functionality taken from a variety of open source
+software packages.
+
+Most external functionality has been pulled into the project in compiled form,
+as part of a jar file.  These jar files are referred to as dependencies.
+Dependencies are documented in README.dependencies.
+
+In a few cases, functionality has been pulled into this project either
+by directly copying external source code, or by deriving new code from an
+external source. If the external source is a relatively small posting from a
+newsgroup or forum, the derived code is usually placed in the src folder and
+is marked appropriately with @see and @author.  Code that is larger, or is
+taken from a released product, is managed a little more formally.
+
+In the list below, external code is code that has been pulled in directly,
+sometimes with customizations.  Derived code is code that was written for
+CedarCommon, but which is substantially based on some other code.  For
+both external code and derived code, we track two attributes:
+
+- License is the open-source license the code was released under
+- Upstream source is the original source of the code
+
+See README.license for a discussion of license compatibility.
+
+
+LICENSES
+
+   License                       License Text
+   ================================================================================================
+   Apache License v2.0           doc/licenses/apache_v2.0_license.txt
+   Sun License                   doc/licenses/sun_license.txt
+
+
+UPSTREAM SOURCES
+
+   Source                        License                    URL
+   ================================================================================================
+   ArcBees ElementId             Apache License v2.0        http://code.google.com/p/gwt-platform/issues/detail?id=389
+   Base64Coder                   Apache License v2.0        http://www.source-code.biz/base64coder/java/
+   gwt-test-utils                Apache License v2.0        http://code.google.com/p/gwt-test-utils/
+   GWT 2.4.0                     Apache License v2.0        http://http://gwt.google.com
+   Sun                           Sun License                http://java.sun.com/developer/technicalArticles/Programming/sprintf/
+
+
+EXTERNAL CODE
+
+   Source                        Code
+   ================================================================================================
+   ArcBees ElementId             com.gwtplatform.idhandler.*
+   Base64Coder                   biz.source_code.base64Coder.*
+   GWT 2.4.0                     com.cedarsolutions.client.gwt.custom.*
+   Sun                           com.sun.util.*
+
+
+DERIVED CODE
+
+   Upstream Project              Code
+   ================================================================================================
+   gwt-test-utils                com.cedarsolutions.junit.gwt.GwtStubbedTestRunner
+   gwt-test-utils                com.cedarsolutions.junit.gwt.classloader.GwtClassLoader
+   gwt-test-utils                com.cedarsolutions.junit.gwt.classloader.GwtCreateTranslator
+   gwt-test-utils                com.cedarsolutions.junit.gwt.classloader.GwtResourceCreator
