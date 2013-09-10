@@ -97,4 +97,4 @@ will tell you about the overall coverage for both kinds of tests.
 Unfortunately, the first time the client tests run (with invalid configuration)
 they will probably create a bogus war directory that isn't needed for CedarCommon.
 The next time you refresh your workspace, Eclipse may notice this directory
-and will complain.
+and complain.
