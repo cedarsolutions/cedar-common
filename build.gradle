@@ -55,15 +55,15 @@ propFileLoader.traditionalPropertiesInit()
 // Common setup for all projects
 allprojects {
    apply plugin: "java"
-   apply plugin: "maven-publish"
    compileJava.options.fork(memoryMaximumSize: config_javaCompilerMemory) 
 }
 
 // Common setup for subprojects
 subprojects {
+   apply plugin: "maven"
+
    group = "com.googlecode.cedar-common"
    version = config_mavenPublishVersion
-   archivesBaseName = "cedar-common"
 
    sourceCompatibility = JavaVersion.VERSION_1_6
    targetCompatibility = JavaVersion.VERSION_1_6
@@ -82,21 +82,65 @@ subprojects {
       excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
    }
 
-   publishing {
-      publications {
-         repositories {
-            maven { url config_mavenPublishRepositoryUrl }
-         }
-      }
+   task sourcesJar(type: Jar) {
+      classifier = 'sources'
+      from sourceSets.main.allSource
    }
+
+   task javadocJar(type: Jar) {
+       classifier = 'javadoc'
+       from "README"
+   }
+
+   artifacts {
+      archives jar
+      archives javadocJar
+      archives sourcesJar
+   }
+ 
+   uploadArchives {
+       repositories {
+           mavenDeployer {
+               repository(url: config_mavenPublishRepositoryUrl)
+               pom.project {
+                  url "https://code.google.com/p/cedar-common/"
+                  scm {
+                     url "scm:hg:https://code.google.com/p/cedar-common/"
+                     connection "scm:hg:https://code.google.com/p/cedar-common/"
+                     developerConnection "scm:hg:https://code.google.com/p/cedar-common/"
+                  }
+                  licenses {
+                     license {
+                        name "The Apache Software License, Version 2.0"
+                        url "http://www.apache.org/license/LICENSE-2.0.txt"
+                        distribution "repo"
+                     }
+                  }
+                  developers {
+                     developer {
+                        id "pronovic"
+                        name "Kenneth J. Pronovici"
+                        email "pronovic@ieee.org"
+                     }
+                  }
+               }
+           }
+       }
+   }
+
+   install {
+       repositories.mavenInstaller {
+           pom.version = config_mavenPublishVersion + "-SNAPSHOT"
+       }
+   }
+
+   task publish(dependsOn: uploadArchives)
 
 }
 
+
 // Subproject for cedar-common-util
 project(":util") {
-
-   def name = "Utility Library"
-   def description = "Library of common utility code."
 
    buildDir = "../build/util"
 
@@ -122,22 +166,28 @@ project(":util") {
       compile "org.springframework:spring-webmvc:3.2.4.RELEASE"
    }
 
-   publishing {
-      publications {
-         maven(MavenPublication) {
-            artifactId "cedar-common-util"
-            from components.java
-         }
-      }
+   uploadArchives {
+       repositories {
+           mavenDeployer {
+               pom.artifactId = "cedar-common-util"
+               pom.project {
+                  name "Cedar Common Utility Library"
+                  description "Library of common utility code."
+               }
+           }
+       }
+   }
+
+   install {
+       repositories.mavenInstaller {
+          pom.artifactId = "cedar-common-util"
+       }
    }
 
 }
 
 // Subproject for cedar-common-gwt
 project(":gwt") {
-
-   def name = "GWT Library"
-   def description = "Library of utility code for use with GWT and Mvp4g."
 
    buildDir = "../build/gwt"
 
@@ -152,29 +202,33 @@ project(":gwt") {
       compile "com.google.gwt:gwt-dev:${config_gwtVersion}"
       compile "com.google.gwt:gwt-user:${config_gwtVersion}"
       compile "com.googlecode.mvp4g:mvp4g:1.5.0-SNAPSHOT"
-      compile "cedar-common:gwt-sl:1.2"
+      compile "com.googlecode.cedar-common:gwt-sl:1.2"
       compile project(":util")
       runtime "com.google.gwt.inject:gin:1.5.0"
    }
 
-   publishing {
-      publications {
-         maven(MavenPublication) {
-            artifactId "cedar-common-gwt"
-            from components.java
-            pom.withXml {
-               addPomFields(asNode(), name, description)
-            }
-         }
-      }
+   uploadArchives {
+       repositories {
+           mavenDeployer {
+               pom.artifactId = "cedar-common-gwt"
+               pom.project {
+                  name "Cedar Common GWT Library"
+                  description "Library of utility code for use with GWT and Mvp4g."
+               }
+           }
+       }
    }
+
+   install {
+       repositories.mavenInstaller {
+          pom.artifactId = "cedar-common-gwt"
+       }
+   }
+
 }
 
 // Subproject for cedar-common-gae
 project(":gae") {
-
-   def name = "GAE Library"
-   def description = "Library of utility code for use with GWT on Google App Engine."
 
    buildDir = "../build/gae"
 
@@ -202,25 +256,28 @@ project(":gae") {
       runtime "javax.jdo:jdo2-api:2.3-eb"
    }
 
-   publishing {
-      publications {
-         maven(MavenPublication) {
-            artifactId "cedar-common-gae"
-            from components.java
-            pom.withXml {
-               addPomFields(asNode(), name, description)
-            }
-         }
-      }
+   uploadArchives {
+       repositories {
+           mavenDeployer {
+               pom.artifactId = "cedar-common-gae"
+               pom.project {
+                  name "Cedar Common GAE Library"
+                  description "Library of utility code for use with GWT on Google App Engine."
+               }
+           }
+       }
    }
+
+   install {
+       repositories.mavenInstaller {
+          pom.artifactId = "cedar-common-gae"
+       }
+   }
+
 }
 
 // Subproject for cedar-common-testutil
 project(":testutil") {
-
-   def name = "Test Utilities"
-   def description = "Library of utility code for use with junit, such as assertions and test setup mechanisms."
-
    buildDir = "../build/testutil"
 
    sourceSets {
@@ -238,24 +295,28 @@ project(":testutil") {
       compile project(":util")
    }
 
-   publishing {
-      publications {
-         maven(MavenPublication) {
-            artifactId "cedar-common-testutil"
-            from components.java
-            pom.withXml {
-               addPomFields(asNode(), name, description)
-            }
-         }
-      }
+   uploadArchives {
+       repositories {
+           mavenDeployer {
+               pom.artifactId = "cedar-common-testutil"
+               pom.project {
+                  name "Cedar Common Test Utilities"
+                  description "Library of utility code for use with junit, such as assertions and test setup mechanisms."
+               }
+           }
+       }
    }
+
+   install {
+       repositories.mavenInstaller {
+          pom.artifactId = "cedar-common-testutil"
+       }
+   }
+
 }
 
 // Subproject for cedar-common-gwttestutil
 project(":gwttestutil") {
-
-   def name = "GWT Test Utilities"
-   def description = "Library of utility code for use in testing GWT, including a stubbed test runner using Mockito."
 
    buildDir = "../build/gwttestutil"
 
@@ -275,24 +336,28 @@ project(":gwttestutil") {
       compile project(":util")
    }
 
-   publishing {
-      publications {
-         maven(MavenPublication) {
-            artifactId "cedar-common-gwttestutil"
-            from components.java
-            pom.withXml {
-               addPomFields(asNode(), name, description)
-            }
-         }
-      }
+   uploadArchives {
+       repositories {
+           mavenDeployer {
+               pom.artifactId = "cedar-common-gwttestutil"
+               pom.project {
+                  name "Cedar Common GWT Test Utilities"
+                  description "Library of utility code for use in testing GWT, including a stubbed test runner using Mockito."
+               }
+           }
+       }
    }
+
+   install {
+       repositories.mavenInstaller {
+          pom.artifactId = "cedar-common-gwttestutil"
+       }
+   }
+
 }
 
 // Subproject for cedar-common-gaetestutil
 project(":gaetestutil") {
-
-   def name = "GAE Test Utilities"
-   def description = "Library of utility code for use in testing GWT applications on Google App Engine."
 
    buildDir = "../build/gaetestutil"
 
@@ -317,24 +382,28 @@ project(":gaetestutil") {
       runtime "com.google.appengine:appengine-testing:${config_appEngineVersion}"
    }
 
-   publishing {
-      publications {
-         maven(MavenPublication) {
-            artifactId "cedar-common-gaetestutil"
-            from components.java
-            pom.withXml {
-               addPomFields(asNode(), name, description)
-            }
-         }
-      }
+   uploadArchives {
+       repositories {
+           mavenDeployer {
+               pom.artifactId = "cedar-common-gaetestutil"
+               pom.project {
+                  name "Cedar Common GAE Test Utilities"
+                  description "Library of utility code for use in testing GWT applications on Google App Engine."
+               }
+           }
+       }
    }
+
+   install {
+       repositories.mavenInstaller {
+          pom.artifactId = "cedar-common-gaetestutil"
+       }
+   }
+
 }
 
 // Subproject for cedar-common-tools
 project(":tools") {
-
-   def name = "Command Line Tools"
-   def description = "Command line tools, mostly tied to internal development processes using Mercurial."
 
    buildDir = "../build/tools"
 
@@ -350,16 +419,22 @@ project(":tools") {
       compile project(":gwttestutil")
    }
 
-   publishing {
-      publications {
-         maven(MavenPublication) {
-            artifactId "cedar-common-tools"
-            from components.java
-            pom.withXml {
-               addPomFields(asNode(), name, description)
-            }
-         }
-      }
+   uploadArchives {
+       repositories {
+           mavenDeployer {
+               pom.artifactId = "cedar-common-tools"
+               pom.project {
+                  name "Cedar Common Command Line Tools"
+                  description "Command line tools, mostly tied to internal development processes using Mercurial."
+               }
+           }
+       }
+   }
+
+   install {
+       repositories.mavenInstaller {
+          pom.artifactId = "cedar-common-tools"
+       }
    }
 
 }
@@ -368,6 +443,8 @@ project(":tools") {
 project(":test") {
 
    buildDir = "../build/test"
+   uploadArchives.enabled = false
+   install.enabled = false
 
    sourceSets {
       test {
@@ -380,7 +457,7 @@ project(":test") {
    }
 
    dependencies {
-      testCompile "cedar-common:cpsuite:1.2.6"
+      testCompile "com.googlecode.cedar-common:cpsuite:1.2.6"
       testCompile project(":util")
       testCompile project(":gwt")
       testCompile project(":gae")
@@ -427,35 +504,6 @@ project(":test") {
    // Redefine the test runner in terms of the unit and client test suites
    tasks.test.dependsOn(clienttest, unittest)
 
-}
-
-// Add POM fields to a Maven publisher
-def addPomFields(node, n, d) {
-   node.children().last() + {
-      resolveStrategy = Closure.DELEGATE_FIRST
-      name n
-      description d
-      url "https://code.google.com/p/cedar-common/"
-      scm {
-         url "scm:hg:https://code.google.com/p/cedar-common/"
-         connection "scm:hg:https://code.google.com/p/cedar-common/"
-         developerConnection "scm:hg:https://code.google.com/p/cedar-common/"
-      }
-      licenses {
-         license {
-            name "The Apache Software License, Version 2.0"
-            url "http://www.apache.org/license/LICENSE-2.0.txt"
-            distribution "repo"
-         }
-      }
-      developers {
-         developer {
-            id "pronovic"
-            name "Kenneth J. Pronovici"
-            email "pronovic@ieee.org"
-         }
-      }
-   }
 }
 
 
@@ -595,7 +643,7 @@ eclipse {
    }
 }
 
-// Hide the build directory from Eclipse
+// Hide the various derived directories from Eclipse 
 project.eclipse.project.file.withXml { provider ->
    ignoreResourcesFromDirectories(provider, ["build", "gwt-unitCache", "www-test", "war", ])
 }
