@@ -79,20 +79,7 @@ subprojects {
    jar {
       from sourceSets.main.output
       from sourceSets.main.allSource
-   }
-
-   javadoc {
-      source = []   // just upload empty jars for now, can't find a way to make Javadoc work
-   }
-
-   task sourceJar(type: Jar, dependsOn: classes) {
-      classifier = 'sources'
-      from sourceSets.main.allSource
-   }
-
-   task javadocJar(type: Jar, dependsOn: javadoc) {
-      classifier = 'javadoc'
-      from javadoc.destinationDir
+      excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
    }
 
    publishing {
@@ -100,16 +87,6 @@ subprojects {
          repositories {
             maven { url config_mavenPublishRepositoryUrl }
          }
-
-         maven(MavenPublication) {
-            from components.java
-            artifact sourceJar
-            artifact javadocJar
-            pom.withXml {
-               addPomFields(asNode(), name, description)
-            }
-         }
-
       }
    }
 
@@ -149,6 +126,7 @@ project(":util") {
       publications {
          maven(MavenPublication) {
             artifactId "cedar-common-util"
+            from components.java
          }
       }
    }
@@ -183,6 +161,10 @@ project(":gwt") {
       publications {
          maven(MavenPublication) {
             artifactId "cedar-common-gwt"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
          }
       }
    }
@@ -224,6 +206,10 @@ project(":gae") {
       publications {
          maven(MavenPublication) {
             artifactId "cedar-common-gae"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
          }
       }
    }
@@ -256,6 +242,10 @@ project(":testutil") {
       publications {
          maven(MavenPublication) {
             artifactId "cedar-common-testutil"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
          }
       }
    }
@@ -289,6 +279,10 @@ project(":gwttestutil") {
       publications {
          maven(MavenPublication) {
             artifactId "cedar-common-gwttestutil"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
          }
       }
    }
@@ -327,6 +321,10 @@ project(":gaetestutil") {
       publications {
          maven(MavenPublication) {
             artifactId "cedar-common-gaetestutil"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
          }
       }
    }
@@ -356,6 +354,10 @@ project(":tools") {
       publications {
          maven(MavenPublication) {
             artifactId "cedar-common-tools"
+            from components.java
+            pom.withXml {
+               addPomFields(asNode(), name, description)
+            }
          }
       }
    }
