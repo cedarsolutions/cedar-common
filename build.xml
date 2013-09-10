@@ -22,7 +22,7 @@
 *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 -->
-<project name="CedarCommon2" basedir="." default="help">
+<project name="CedarCommon" basedir="." default="help">
 
     <!-- The goal of this build script is to make common Gradle tasks accessible from Eclipse. -->
 
@@ -58,8 +58,8 @@
         <gradle target="publish" />
     </target>
 
-    <target name="publish.local" description="Publish a snapshot to the local Maven repository">
-        <gradle target="publishToMavenLocal" />
+    <target name="install" description="Publish a snapshot to the local Maven repository">
+        <gradle target="install" />
     </target>
 
     <target name="update.copyright.statements" description="Update copyright statements based on Mercurial" >
