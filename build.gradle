@@ -69,7 +69,7 @@ subprojects {
 
    group = "com.googlecode.cedar-common"
    version = config_mavenPublishVersion
-   buildDir = "../build/${project.name}"
+   buildDir = { "../build/${project.name}" }
 
    sourceCompatibility = JavaVersion.VERSION_1_6
    targetCompatibility = JavaVersion.VERSION_1_6
