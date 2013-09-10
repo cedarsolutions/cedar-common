@@ -7,7 +7,6 @@ syntax: glob
 .settings/de.loskutov.anyedit.AnyEditTools.prefs
 .project
 .classpath
-.checkstyle
 local.properties
 build/*
 gwt-unitCache/*
