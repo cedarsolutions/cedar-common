@@ -409,13 +409,13 @@ project(":test") {
       include "**/ClientTestSuite.class"
 
       beforeSuite { descriptor ->
-         delete "build/www-test"
-         delete "build/gwt-unitCache"
+         file("build/www-test").delete()
+         file("build/gwt-unitCache").delete()
       }
 
       afterSuite { descriptor ->
-         delete "build/www-test"
-         delete "build/gwt-unitCache"
+         file("build/www-test").delete()
+         file("build/gwt-unitCache").delete()
       }
    }
 
@@ -512,8 +512,8 @@ task generateHgBindings << {
    def sourceXml = resourcesDir + "/hglog.xml"
    def schema = schemaDir + "/hglog.xsd"
 
-   mkdir schemaDir
-   mkdir bindingsDir
+   file(schemaDir).mkdir()
+   file(bindingsDir).mkdir()
 
    ant.delete(quiet : "true") {
       fileset(dir: schemaDir, includes : "*.xsd")
@@ -551,10 +551,10 @@ tasks.eclipse.dependsOn(cleanEclipse)
 task cleanEclipseExtendedSettings(type: Delete) {
 
    // Delete the settings we copied in
-   delete file(".settings/de.loskutov.anyedit.AnyEditTools.prefs")
-   delete file(".settings/org.eclipse.jdt.core.prefs")
-   delete file(".settings/org.eclipse.jdt.ui.prefs")
-   delete file(".checkstyle")
+   file(".settings/de.loskutov.anyedit.AnyEditTools.prefs").delete()
+   file(".settings/org.eclipse.jdt.core.prefs").delete()
+   file(".settings/org.eclipse.jdt.ui.prefs").delete()
+   file(".checkstyle").delete()
 
    // Remove .settings only if it's empty
    ant.delete(includeemptydirs : "true", quiet : "true") {
