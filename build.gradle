@@ -43,6 +43,10 @@ apply plugin: "base"
 apply plugin: "eclipse"
 apply plugin: "javaPropFile"
 
+// Imports
+import groovy.swing.SwingBuilder
+import javax.swing.JFrame
+
 // This loads configuration from app.properties and overrides with local.properties
 // See: https://github.com/unsaved/gradle-javaPropFile-plugin/tree/master/doc#void-propfileloadertraditionalpropertiesinit
 propFileLoader.traditionalPropertiesInit()
@@ -61,9 +65,11 @@ allprojects {
 // Common setup for subprojects
 subprojects {
    apply plugin: "maven"
+   apply plugin: "signing"
 
    group = "com.googlecode.cedar-common"
    version = config_mavenPublishVersion
+   buildDir = "../build/${project.name}"
 
    sourceCompatibility = JavaVersion.VERSION_1_6
    targetCompatibility = JavaVersion.VERSION_1_6
@@ -83,25 +89,21 @@ subprojects {
    }
 
    task sourcesJar(type: Jar) {
-      classifier = 'sources'
+      classifier = "sources"
       from sourceSets.main.allSource
+      excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
    }
 
    task javadocJar(type: Jar) {
-       classifier = 'javadoc'
-       from "README"
+       classifier = "javadoc"
+       from "../README"
    }
 
-   artifacts {
-      archives jar
-      archives javadocJar
-      archives sourcesJar
-   }
- 
    uploadArchives {
        repositories {
            mavenDeployer {
                repository(url: config_mavenPublishRepositoryUrl)
+               pom.artifactId = "cedar-common-${project.name}"
                pom.project {
                   url "https://code.google.com/p/cedar-common/"
                   scm {
@@ -129,20 +131,29 @@ subprojects {
    }
 
    install {
-       repositories.mavenInstaller {
-           pom.version = config_mavenPublishVersion + "-SNAPSHOT"
-       }
+      repositories.mavenInstaller {
+         pom.artifactId = "cedar-common-${project.name}"
+         pom.version = config_mavenPublishVersion + "-SNAPSHOT"
+      }
    }
 
-   task publish(dependsOn: uploadArchives)
+   artifacts {
+      archives jar
+      archives javadocJar
+      archives sourcesJar
+   }
+
+   signing {
+      required = { gradle.taskGraph.hasTask(":${project.name}:uploadArchives") }
+      sign jar
+   }
+
+   task publish(dependsOn: uploadArchives)  // TODO: also label at publish, once we're ready
 
 }
 
-
 // Subproject for cedar-common-util
 project(":util") {
-
-   buildDir = "../build/util"
 
    sourceSets {
       main {
@@ -169,7 +180,6 @@ project(":util") {
    uploadArchives {
        repositories {
            mavenDeployer {
-               pom.artifactId = "cedar-common-util"
                pom.project {
                   name "Cedar Common Utility Library"
                   description "Library of common utility code."
@@ -178,18 +188,10 @@ project(":util") {
        }
    }
 
-   install {
-       repositories.mavenInstaller {
-          pom.artifactId = "cedar-common-util"
-       }
-   }
-
 }
 
 // Subproject for cedar-common-gwt
 project(":gwt") {
-
-   buildDir = "../build/gwt"
 
    sourceSets {
       main {
@@ -210,7 +212,6 @@ project(":gwt") {
    uploadArchives {
        repositories {
            mavenDeployer {
-               pom.artifactId = "cedar-common-gwt"
                pom.project {
                   name "Cedar Common GWT Library"
                   description "Library of utility code for use with GWT and Mvp4g."
@@ -219,18 +220,10 @@ project(":gwt") {
        }
    }
 
-   install {
-       repositories.mavenInstaller {
-          pom.artifactId = "cedar-common-gwt"
-       }
-   }
-
 }
 
 // Subproject for cedar-common-gae
 project(":gae") {
-
-   buildDir = "../build/gae"
 
    sourceSets {
       main {
@@ -259,7 +252,6 @@ project(":gae") {
    uploadArchives {
        repositories {
            mavenDeployer {
-               pom.artifactId = "cedar-common-gae"
                pom.project {
                   name "Cedar Common GAE Library"
                   description "Library of utility code for use with GWT on Google App Engine."
@@ -268,17 +260,10 @@ project(":gae") {
        }
    }
 
-   install {
-       repositories.mavenInstaller {
-          pom.artifactId = "cedar-common-gae"
-       }
-   }
-
 }
 
 // Subproject for cedar-common-testutil
 project(":testutil") {
-   buildDir = "../build/testutil"
 
    sourceSets {
       main {
@@ -298,7 +283,6 @@ project(":testutil") {
    uploadArchives {
        repositories {
            mavenDeployer {
-               pom.artifactId = "cedar-common-testutil"
                pom.project {
                   name "Cedar Common Test Utilities"
                   description "Library of utility code for use with junit, such as assertions and test setup mechanisms."
@@ -307,18 +291,10 @@ project(":testutil") {
        }
    }
 
-   install {
-       repositories.mavenInstaller {
-          pom.artifactId = "cedar-common-testutil"
-       }
-   }
-
 }
 
 // Subproject for cedar-common-gwttestutil
 project(":gwttestutil") {
-
-   buildDir = "../build/gwttestutil"
 
    sourceSets {
       main {
@@ -339,7 +315,6 @@ project(":gwttestutil") {
    uploadArchives {
        repositories {
            mavenDeployer {
-               pom.artifactId = "cedar-common-gwttestutil"
                pom.project {
                   name "Cedar Common GWT Test Utilities"
                   description "Library of utility code for use in testing GWT, including a stubbed test runner using Mockito."
@@ -348,18 +323,10 @@ project(":gwttestutil") {
        }
    }
 
-   install {
-       repositories.mavenInstaller {
-          pom.artifactId = "cedar-common-gwttestutil"
-       }
-   }
-
 }
 
 // Subproject for cedar-common-gaetestutil
 project(":gaetestutil") {
-
-   buildDir = "../build/gaetestutil"
 
    sourceSets {
       main {
@@ -385,7 +352,6 @@ project(":gaetestutil") {
    uploadArchives {
        repositories {
            mavenDeployer {
-               pom.artifactId = "cedar-common-gaetestutil"
                pom.project {
                   name "Cedar Common GAE Test Utilities"
                   description "Library of utility code for use in testing GWT applications on Google App Engine."
@@ -394,18 +360,10 @@ project(":gaetestutil") {
        }
    }
 
-   install {
-       repositories.mavenInstaller {
-          pom.artifactId = "cedar-common-gaetestutil"
-       }
-   }
-
 }
 
 // Subproject for cedar-common-tools
 project(":tools") {
-
-   buildDir = "../build/tools"
 
    sourceSets {
       main {
@@ -422,7 +380,6 @@ project(":tools") {
    uploadArchives {
        repositories {
            mavenDeployer {
-               pom.artifactId = "cedar-common-tools"
                pom.project {
                   name "Cedar Common Command Line Tools"
                   description "Command line tools, mostly tied to internal development processes using Mercurial."
@@ -431,18 +388,11 @@ project(":tools") {
        }
    }
 
-   install {
-       repositories.mavenInstaller {
-          pom.artifactId = "cedar-common-tools"
-       }
-   }
-
 }
 
 // Unit tests
 project(":test") {
 
-   buildDir = "../build/test"
    uploadArchives.enabled = false
    install.enabled = false
 
@@ -467,7 +417,6 @@ project(":test") {
       testCompile project(":tools")
    }
 
-   // Unit tests are defined by the UnitTestSuite
    task unittest(type: Test) {
       workingDir = "../"
       scanForTestClasses = false
@@ -476,7 +425,6 @@ project(":test") {
       include "**/UnitTestSuite.class"
    }
 
-   // Client tests are defined by the ClientTestSuite
    task clienttest(type: Test) {
       workingDir = "../"
       scanForTestClasses = false
@@ -496,12 +444,10 @@ project(":test") {
       }
    }
 
-   // Effectively disable the standard test runner
    test {
       include "**/bogus.class"  // so nothing gets run
    }
 
-   // Redefine the test runner in terms of the unit and client test suites
    tasks.test.dependsOn(clienttest, unittest)
 
 }
@@ -529,9 +475,6 @@ task labelCurrentRelease(dependsOn: project(":tools").jar) << {
       }
    }
 }
-
-// Make the publish task also label the current release
-//tasks.publish.dependsOn(labelCurrentRelease)
 
 // Update all copyright statements based on Mercurial repository
 task updateCopyrightStatements(dependsOn: project(":tools").jar) << {
@@ -587,6 +530,85 @@ task generateHgBindings << {
 task generateXmlBindings(dependsOn: generateHgBindings)
 
 
+// *********************
+// * Digital signatures
+// *********************
+
+// Set all of the signature configuration, for all projects
+def setSignatureConfiguration(passphrase) {
+   allprojects { ext."signing.keyId" = config_gpgKeyId }
+   allprojects { ext."signing.secretKeyRingFile" = config_gpgSecretKey }
+   allprojects { ext."signing.password" = passphrase }
+}
+
+// Get the GPG passphrase from the user when it's needed
+gradle.taskGraph.whenReady { taskGraph ->
+   if (taskGraph.allTasks.any { it instanceof Sign && it.required }) {
+      Console console = System.console()
+      if (console != null) {
+         getInputViaConsole("Enter passphrase for GPG key ${config_gpgKeyId}:", true, { input -> setSignatureConfiguration(input) })
+      } else {
+         getInputViaPopup("GPG Key ${config_gpgKeyId}", "Enter passphrase:", true, { input -> setSignatureConfiguration(input) })
+      }
+   }
+}
+
+// Get input from a user via the system console, executing a closure with the result
+def getInputViaConsole(label, secure, action) {
+   Console console = System.console()
+   if (secure) {
+      def value = console.readPassword("\n\n" + label + " ")
+      action(value)
+   } else {
+      def value = console.readLine("\n\n" + label + " ")
+      action(value)
+   }
+}
+
+// Get password input from a user, executing a closure with the result
+def getInputViaPopup(title, label, secure, action) {
+   boolean alive = true
+
+   def swing = new SwingBuilder()
+   def button = swing.button("Ok")
+   def prefix = swing.label(label)
+   def value = null
+
+   def frame = swing.frame(title: title, defaultCloseOperation: JFrame.EXIT_ON_CLOSE) {
+      panel {
+         widget(prefix)
+         if (secure) {
+            value = passwordField(columns:18)
+         } else {
+            value = textField(columns:18)
+         }
+         widget(button)
+      }
+   }
+
+   frame.setLocationRelativeTo(null)
+
+   button.actionPerformed = {
+      action(value.text)
+      alive = false
+   }
+
+   value.actionPerformed = {
+      action(value.text)
+      alive = false
+   }
+
+   frame.pack()
+   frame.show()
+
+   while (alive) {
+      sleep(1000)
+   }
+
+   frame.hide()
+}
+
+
 // ************************
 // * Eclipse configuration
 // ************************
@@ -602,7 +624,6 @@ task cleanEclipseExtendedSettings(type: Delete) {
    file(".settings/de.loskutov.anyedit.AnyEditTools.prefs").delete()
    file(".settings/org.eclipse.jdt.core.prefs").delete()
    file(".settings/org.eclipse.jdt.ui.prefs").delete()
-   file(".checkstyle").delete()
 
    // Remove .settings only if it's empty
    ant.delete(includeemptydirs : "true", quiet : "true") {
@@ -620,11 +641,6 @@ eclipseJdt << {
       from "gradle/eclipse/settings"
       into ".settings"
       include "*.prefs"
-   }
-
-   copy {
-      from "gradle/eclipse/.checkstyle"
-      into "."
    }
 }
 
@@ -649,7 +665,7 @@ project.eclipse.project.file.withXml { provider ->
 }
 
 // Customize the Eclipse .classpath file
-// By default, Gradle generates one Eclipse project per configured subproject
+// By default, Gradle generates one Eclipse project per configured subproject.
 // For CedarCommon, I want one big project with a bunch of source folders, so I
 // have to implement it myself.
 eclipse.classpath.file {
@@ -740,7 +756,7 @@ def ignoreResourcesFromDirectories(provider, directories) {
 // This code hooks into Gradle to modify behavior at build
 
 // Test summary listener that prints out test results when tests are executed
-// This makes the output legible in Eclipse; normally, the output isn't printed because Eclipse as a dumb terminal
+// This makes the output legible in Eclipse; normally, the output isn't printed because Eclipse as a dumb terminal.
 // See: http://forums.gradle.org/gradle/topics/how_to_print_a_maven_like_test_summary_on_the_console
 class TestSummary implements org.gradle.api.tasks.testing.TestListener {
     long passed;
