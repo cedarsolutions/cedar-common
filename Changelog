@@ -1,0 +1,5 @@
+Version 2.1.3   10 Sep 2013
+
+    * First release on Maven Central
+    * Major reoganization of project layout with some package changes
+    * Convert build process to Gradle (>= 1.7)
