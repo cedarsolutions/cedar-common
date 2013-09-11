@@ -214,18 +214,27 @@ public class GwtDateUtilsClientTest extends ClientTestCase {
             GwtDateUtils.createDate(2011, 1, 21, 14, 27, 54, 1000);
         } catch (IllegalArgumentException e) { }
 
+        // My original tests used hardcoded (pre-calculated) values taken from
+        // DateUtils, because I can't invoke the real DateUtils code from a
+        // client-side test.  Unfortunately, that's brittle because it doesn't
+        // account for the time zone the test is running in.  So, I've had to
+        // settle for a spot-check.
 
         Date date = GwtDateUtils.createDate(2011, 1, 21);
-        assertEquals(1295589600000L, date.getTime());
+        assertEquals("2011-01-21", GwtDateUtils.formatDate(date));
+        assertEquals(DateTimeFormat.getFormat("yyyyMMddHHmmssSSS").parse("20110121000000000").getTime(), date.getTime());
 
         date = GwtDateUtils.createDate(2011, 1, 21, 14, 27);
-        assertEquals(1295641620000L, date.getTime());
+        assertEquals("2011-01-21 14:27", GwtDateUtils.formatDate(date, "yyyy-MM-dd HH:mm"));
+        assertEquals(DateTimeFormat.getFormat("yyyyMMddHHmmssSSS").parse("20110121142700000").getTime(), date.getTime());
 
         date = GwtDateUtils.createDate(2011, 1, 21, 14, 27, 54);
-        assertEquals(1295641674000L, date.getTime());
+        assertEquals("2011-01-21 14:27:54", GwtDateUtils.formatDate(date, "yyyy-MM-dd HH:mm:ss"));
+        assertEquals(DateTimeFormat.getFormat("yyyyMMddHHmmssSSS").parse("20110121142754000").getTime(), date.getTime());
 
         date = GwtDateUtils.createDate(2011, 1, 21, 14, 27, 54, 334);
-        assertEquals(1295641674334L, date.getTime());
+        assertEquals("2011-01-21 14:27:54,334", GwtDateUtils.formatDate(date, "yyyy-MM-dd HH:mm:ss,SSS"));
+        assertEquals(DateTimeFormat.getFormat("yyyyMMddHHmmssSSS").parse("20110121142754334").getTime(), date.getTime());
     }
 
     /** Test the formatElapsedTime() method. */
