@@ -182,6 +182,7 @@ public class VariableResolver {
      * @param variable  Varible to resolve
      * @return Value for the variable, or null if it cannot be resolved.
      */
+    @SuppressWarnings("incomplete-switch")
     private String resolveVariable(Variable variable) {
         String stringValue = null;
 
