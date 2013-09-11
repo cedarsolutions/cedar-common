@@ -1,0 +1,10 @@
+Here's the release process.
+
+1. Run all of the tests, using the run.all.tests Ant task
+2. Update app.properties with the release version number
+3. Update the Changelog file with the release version number and release date
+4. Check in the app.properties and Changelog files
+5. Run the update.copyright.statements Ant task and check in changes
+6. Run the javadoc Ant task and check in changes
+7. Run the publish Ant task 
+8. Push each of the projects to Google Code

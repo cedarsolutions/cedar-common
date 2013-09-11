@@ -1,7 +1,18 @@
-This is the CedarCommon project, which provides common functionality for Cedar
-Solutions Java projects.  You don't actually need this project if all you want
-to do it utilize the code: it's all available in Maven Central, divided up
-more-or-less by source folder.
+This is the CedarCommon project, which provides common Java utilities as well
+as specialized functionality for building GWT applications on Google App Engine
+using the Mvp4g model-view-presenter framework.  The home page for this project 
+is:
+
+    http://code.google.com/p/cedar-common/  
+
+This code was originally built along with the the SantaExchange GWT/GAE
+demonstration project:
+
+   https://code.google.com/p/santa-exchange/
+
+All of this code is available in a Maven repository at:
+
+    http://maven.cedar-common.googlecode.com/hg/maven/
 
 This project is managed by Gradle, and gets most of its dependencies from
 Maven.  You do not need the Google Plugin for Eclipse installed to work with
@@ -17,10 +28,7 @@ This will create all of the files, and then you'll be able to import the
 project into Eclipse.
 
 Look in the doc directory for additional documentation, including credits, etc.
-There is also additional documentation on the Google Code web site.
 
 ---
 
-Google Code: http://code.google.com/p/cedar-common
-Maven Central: http://search.maven.org/
 Gradle: http://www.gradle.org/

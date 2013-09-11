@@ -1,5 +1,10 @@
+Version 2.1.4   10 Sep 2013
+
+    * Push code to private Maven repository at maven.cedar-common.googlecode.com.
+    * Minor changes to documentation and build scripts to support first "public" release.
+
 Version 2.1.3   10 Sep 2013
 
-    * Major reoganization of project layout with some package changes
+    * Major reorganization of project layout with some package changes
     * Convert build process to Gradle (>= 1.7)
 
