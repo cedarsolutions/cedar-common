@@ -1,6 +1,7 @@
 Version 2.1.6   unreleased
 
     * Update dependencies to App Engine 1.8.4
+    * Add StringUtils.wrapLine() method that takes the newline to use.
 
 Version 2.1.5   10 Sep 2013
 
