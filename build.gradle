@@ -433,7 +433,7 @@ project(":test") {
       testCompile project(":tools")
    }
 
-   task unittest(type: Test) << {
+   task unittest(type: Test) {
       workingDir = "../"
       scanForTestClasses = false
       enableAssertions = false
@@ -441,7 +441,7 @@ project(":test") {
       include "**/UnitTestSuite.class"
    }
 
-   task clienttest(type: Test) << {
+   task clienttest(type: Test) {
       workingDir = "../"
       scanForTestClasses = false
       enableAssertions = false
