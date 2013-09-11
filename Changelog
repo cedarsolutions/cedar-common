@@ -1,3 +1,7 @@
+Version 2.1.5   10 Sep 2013
+
+    * Fix publish process to place Maven artificts into maven/ subdirectory.
+    
 Version 2.1.4   10 Sep 2013
 
     * Push code to private Maven repository at maven.cedar-common.googlecode.com.

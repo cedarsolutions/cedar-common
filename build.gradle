@@ -151,7 +151,7 @@ subprojects {
    }
 
    signing {
-      required = { gradle.taskGraph.hasTask(":${project.name}:uploadArchives") && config_mercurialMavenDir != "unset" }
+      required = { gradle.taskGraph.hasTask(":${project.name}:uploadArchives") && config_mercurialMavenProject != "unset" }
       sign jar
       sign sourcesJar
       sign javadocJar
@@ -469,13 +469,15 @@ project(":test") {
 
 // Get the proper Mercurial-based Maven repository URL
 def getMavenRepositoryUrl() {
-   if (config_mercurialMavenDir == "unset") {
-      throw new InvalidUserDataException("Publish is not allowed: config_mercurialMavenDir is unset")
+   if (config_mercurialMavenProject == "unset") {
+      throw new InvalidUserDataException("Publish is not allowed: config_mercurialMavenProject is unset")
    } else {
-      if (!(file(config_mercurialMavenDir).isDirectory() && file(config_mercurialMavenDir + "/.hg").isDirectory())) {
-         throw new InvalidUserDataException("Publish is not allowed: not a Mercurial repository: " + config_mercurialMavenDir)
+      if (!(file(config_mercurialMavenProject).isDirectory() 
+            && file(config_mercurialMavenProject + "/.hg").isDirectory()
+            && file(config_mercurialMavenProject + "/maven").isDirectory())) {
+         throw new InvalidUserDataException("Publish is not allowed: not a Mercurial repository: " + config_mercurialMavenProject)
       } else {
-         def mavenRepositoryUrl = "file://" + file(config_mercurialMavenDir).canonicalPath.replace("\\", "/")
+         def mavenRepositoryUrl = "file://" + file(config_mercurialMavenProject).canonicalPath.replace("\\", "/") + "/maven"
          return mavenRepositoryUrl
       }
    }
