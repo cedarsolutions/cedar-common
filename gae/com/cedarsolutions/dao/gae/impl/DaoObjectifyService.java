@@ -86,7 +86,7 @@ public class DaoObjectifyService extends AbstractService implements IDaoObjectif
     }
 
     /** Parse the entities configuration file. */
-    @SuppressWarnings({ "rawtypes", "unchecked", })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected static List<Class> parseEntities(Resource entities) {
         try {
             List<Class> classes = new ArrayList<Class>();
