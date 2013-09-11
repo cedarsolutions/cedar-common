@@ -695,6 +695,7 @@ public class StringUtilsTest {
     }
 
     /** Test convertLineEndings(). */
+    @SuppressWarnings("deprecation")
     @Test public void testConvertLineEndings() {
         assertEquals(null, StringUtils.convertLineEndings(null));
         assertEquals("", StringUtils.convertLineEndings(""));

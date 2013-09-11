@@ -425,7 +425,9 @@ public final class StringUtils {
      * The conversion tries to avoid replacing "\r\n" with "\r\r\n" where "\r\n" is the line ending.
      * @param value  String value to operate on
      * @return String with newlines converted to the proper system line ending, possibly null.
+     * @deprecated I'm not convinced that this works properly on non-Windows systems
      */
+    @Deprecated
     public static String convertLineEndings(String value) {
         return value == null ? null : value.replaceAll(LINE_ENDING, "\n").replaceAll("\n", LINE_ENDING);
     }
@@ -438,6 +440,17 @@ public final class StringUtils {
      */
     public static String wrapLine(String value, int columns) {
         return WordUtils.wrap(value, columns);
+    }
+
+    /**
+     * Wrap a line so it's no longer than a certain number of columns.
+     * @param value    String value to wrap
+     * @param columns  Maximum number of columns
+     * @param newline  The newline string to use, like "\r\n"
+     * @return Wrapped line, always non-null.
+     */
+    public static String wrapLine(String value, int columns, String newline) {
+        return WordUtils.wrap(value, columns, newline, true);
     }
 
     /**
