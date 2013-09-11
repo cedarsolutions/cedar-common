@@ -85,6 +85,7 @@ subprojects {
       maven { url "http://maven.objectify-appengine.googlecode.com/git/" } // Objectify 3.x
       maven { url "http://download.java.net/maven/2/" }                    // JavaMail and related code
       maven { url "http://mvp4g.googlecode.com/svn/maven2/snapshots/" }    // Mvp4g snapshots
+      maven { url "http://maven.cedar-common.googlecode.com/hg/maven/" }   // Cedar Common code
    }
 
    jar {
@@ -107,7 +108,8 @@ subprojects {
    uploadArchives {
        repositories {
            mavenDeployer {
-               repository(url: config_mavenPublishRepositoryUrl)
+               repository(url: getMavenRepositoryUrl())
+               beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
                pom.artifactId = "cedar-common-${project.name}"
                pom.project {
                   url "https://code.google.com/p/cedar-common/"
@@ -149,7 +151,7 @@ subprojects {
    }
 
    signing {
-      required = { gradle.taskGraph.hasTask(":${project.name}:uploadArchives") }
+      required = { gradle.taskGraph.hasTask(":${project.name}:uploadArchives") && config_mercurialMavenDir != "unset" }
       sign jar
       sign sourcesJar
       sign javadocJar
@@ -464,6 +466,20 @@ project(":test") {
 // ********************
 // * Other build tasks
 // ********************
+
+// Get the proper Mercurial-based Maven repository URL
+def getMavenRepositoryUrl() {
+   if (config_mercurialMavenDir == "unset") {
+      throw new InvalidUserDataException("Publish is not allowed: config_mercurialMavenDir is unset")
+   } else {
+      if (!(file(config_mercurialMavenDir).isDirectory() && file(config_mercurialMavenDir + "/.hg").isDirectory())) {
+         throw new InvalidUserDataException("Publish is not allowed: not a Mercurial repository: " + config_mercurialMavenDir)
+      } else {
+         def mavenRepositoryUrl = "file://" + file(config_mercurialMavenDir).canonicalPath.replace("\\", "/")
+         return mavenRepositoryUrl
+      }
+   }
+}
 
 // Label the current release using the configured config_mavenPublishVersion
 def labelCode() {
