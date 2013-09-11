@@ -444,13 +444,13 @@ project(":test") {
       include "**/ClientTestSuite.class"
 
       beforeSuite { descriptor ->
-         file("build/www-test").delete()
-         file("build/gwt-unitCache").delete()
+         file("build/www-test").deleteDir()
+         file("build/gwt-unitCache").deleteDir()
       }
 
       afterSuite { descriptor ->
-         file("build/www-test").delete()
-         file("build/gwt-unitCache").delete()
+         file("build/www-test").deleteDir()
+         file("build/gwt-unitCache").deleteDir()
       }
    }
 
@@ -655,6 +655,15 @@ task cleanEclipseExtendedSettings(type: Delete) {
    }
 
 }
+
+// Clean up the test directories used by Eclipse
+task cleanupEclipseTestDirs() << {
+   file("gwt-unitCache").deleteDir()
+   file("www-test").deleteDir()
+}
+
+// Clean up all of the Eclipse test directories whenever everything else is cleaned
+tasks.clean.dependsOn(cleanupEclipseTestDirs)
 
 // Clean up custom settings whenever the rest of Eclipse gets cleaned up
 tasks.cleanEclipseJdt.dependsOn(cleanEclipseExtendedSettings)
