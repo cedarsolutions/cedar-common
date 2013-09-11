@@ -67,6 +67,11 @@ task labelCurrentRelease(dependsOn: project(":tools").jar) << {
    labelCode()
 }
 
+// Validate publish configuration
+task validatePublishConfig() << {
+   validateMavenRepositoryUrl()
+}
+
 // Common setup for subprojects
 subprojects {
    apply plugin: "maven"
@@ -157,7 +162,8 @@ subprojects {
       sign javadocJar
    }
 
-   task publish(dependsOn: [ uploadArchives, labelCurrentRelease, ])
+   task publish(dependsOn: [ validatePublishConfig, uploadArchives, labelCurrentRelease, ])
+   uploadArchives.mustRunAfter validatePublishConfig
    labelCurrentRelease.mustRunAfter uploadArchives
 
 }
@@ -467,8 +473,8 @@ project(":test") {
 // * Other build tasks
 // ********************
 
-// Get the proper Mercurial-based Maven repository URL
-def getMavenRepositoryUrl() {
+// Validate the Mercurial-based Maven repository URL
+def validateMavenRepositoryUrl() {
    if (config_mercurialMavenProject == "unset") {
       throw new InvalidUserDataException("Publish is not allowed: config_mercurialMavenProject is unset")
    } else {
@@ -476,9 +482,21 @@ def getMavenRepositoryUrl() {
             && file(config_mercurialMavenProject + "/.hg").isDirectory()
             && file(config_mercurialMavenProject + "/maven").isDirectory())) {
          throw new InvalidUserDataException("Publish is not allowed: not a Mercurial repository: " + config_mercurialMavenProject)
+      } 
+   }
+}
+
+// Get the proper Mercurial-based Maven repository URL
+def getMavenRepositoryUrl() {
+   if (config_mercurialMavenProject == "unset") {
+      return null
+   } else {
+      if (!(file(config_mercurialMavenProject).isDirectory() 
+            && file(config_mercurialMavenProject + "/.hg").isDirectory()
+            && file(config_mercurialMavenProject + "/maven").isDirectory())) {
+         return null
       } else {
-         def mavenRepositoryUrl = "file://" + file(config_mercurialMavenProject).canonicalPath.replace("\\", "/") + "/maven"
-         return mavenRepositoryUrl
+         return "file://" + file(config_mercurialMavenProject).canonicalPath.replace("\\", "/") + "/maven"
       }
    }
 }
