@@ -433,7 +433,7 @@ project(":test") {
       testCompile project(":tools")
    }
 
-   task unittest(type: Test) {
+   task unittest(type: Test) << {
       workingDir = "../"
       scanForTestClasses = false
       enableAssertions = false
@@ -441,7 +441,7 @@ project(":test") {
       include "**/UnitTestSuite.class"
    }
 
-   task clienttest(type: Test) {
+   task clienttest(type: Test) << {
       workingDir = "../"
       scanForTestClasses = false
       enableAssertions = false
@@ -662,7 +662,7 @@ def getInputViaPopup(title, label, secure, action) {
 tasks.eclipse.dependsOn(cleanEclipse)
 
 // Clean up extended settings
-task cleanEclipseExtendedSettings(type: Delete) {
+task cleanEclipseExtendedSettings(type: Delete) << {
 
    // Delete the settings we copied in
    file(".settings/de.loskutov.anyedit.AnyEditTools.prefs").delete()
