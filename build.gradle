@@ -29,12 +29,12 @@
 
 // Sources for the build script itself
 buildscript {
-   repositories { 
-      mavenCentral() 
+   repositories {
+      mavenCentral()
    }
 
-   dependencies { 
-      classpath "com.admc:gradle-javaPropFile-plugin:0.6.0" 
+   dependencies {
+      classpath "com.admc:gradle-javaPropFile-plugin:0.6.0"
    }
 }
 
@@ -59,7 +59,7 @@ propFileLoader.traditionalPropertiesInit()
 // Common setup for all projects
 allprojects {
    apply plugin: "java"
-   compileJava.options.fork(memoryMaximumSize: config_javaCompilerMemory) 
+   compileJava.options.fork(memoryMaximumSize: config_javaCompilerMemory)
 }
 
 // Label the current release using the configured config_mavenPublishVersion
@@ -145,7 +145,7 @@ subprojects {
    install {
       repositories.mavenInstaller {
          pom.artifactId = "cedar-common-${project.name}"
-         pom.version = config_mavenPublishVersion + "-SNAPSHOT"
+         pom.version = config_mavenPublishVersion
       }
    }
 
@@ -481,11 +481,11 @@ def validateMavenRepositoryUrl() {
    if (config_mercurialMavenProject == "unset") {
       throw new InvalidUserDataException("Publish is not allowed: config_mercurialMavenProject is unset")
    } else {
-      if (!(file(config_mercurialMavenProject).isDirectory() 
+      if (!(file(config_mercurialMavenProject).isDirectory()
             && file(config_mercurialMavenProject + "/.hg").isDirectory()
             && file(config_mercurialMavenProject + "/maven").isDirectory())) {
          throw new InvalidUserDataException("Publish is not allowed: not a Mercurial repository: " + config_mercurialMavenProject)
-      } 
+      }
    }
 }
 
@@ -494,7 +494,7 @@ def getMavenRepositoryUrl() {
    if (config_mercurialMavenProject == "unset") {
       return null
    } else {
-      if (!(file(config_mercurialMavenProject).isDirectory() 
+      if (!(file(config_mercurialMavenProject).isDirectory()
             && file(config_mercurialMavenProject + "/.hg").isDirectory()
             && file(config_mercurialMavenProject + "/maven").isDirectory())) {
          return null
@@ -715,7 +715,7 @@ eclipse {
    }
 }
 
-// Hide the various derived directories from Eclipse 
+// Hide the various derived directories from Eclipse
 project.eclipse.project.file.withXml { provider ->
    ignoreResourcesFromDirectories(provider, ["build", "gwt-unitCache", "www-test", "war", ])
 }
@@ -736,7 +736,7 @@ eclipse.classpath.file {
 
       // List of all the unique libraries among all of the subprojects, ignoring internal builds
       def libraries = new java.util.TreeMap()
-      projects.each() { 
+      projects.each() {
          project(":${it}").configurations.runtime.each {
             if (!it.canonicalPath.startsWith(buildDir.canonicalPath)) {
                libraries.put(it.canonicalPath, null)
@@ -755,7 +755,7 @@ eclipse.classpath.file {
       // Add each of our source folders in the proper order
       withXml { xml ->
          def node = xml.asNode()
-         sources.each() { source -> 
+         sources.each() { source ->
             node.appendNode("classpathentry", [ kind : "src", output : source + "-bin", path : source ])
          }
       }
@@ -771,7 +771,7 @@ eclipse.classpath.file {
       // Add an entry for each library in the list
       withXml { xml ->
          def node = xml.asNode()
-         libraries.each() { key, value -> 
+         libraries.each() { key, value ->
             node.appendNode("classpathentry", [ kind : "lib", path : key, exported : "false", ])
          }
       }
