@@ -42,14 +42,30 @@ buildscript {
 apply plugin: "base"
 apply plugin: "eclipse"
 apply plugin: "javaPropFile"
-
-// Imports
-import groovy.swing.SwingBuilder
-import javax.swing.JFrame
+apply plugin: "cedarBuild"
 
 // This loads configuration from app.properties and overrides with local.properties
 // See: https://github.com/unsaved/gradle-javaPropFile-plugin/tree/master/doc#void-propfileloadertraditionalpropertiesinit
 propFileLoader.traditionalPropertiesInit()
+
+
+// *********************
+// * Digital signatures
+// *********************
+
+// Set all of the signature configuration, for all projects
+def setSignatureConfiguration(passphrase) {
+   allprojects { ext."signing.keyId" = config_gpgKeyId }
+   allprojects { ext."signing.secretKeyRingFile" = config_gpgSecretKey }
+   allprojects { ext."signing.password" = passphrase }
+}
+
+// Get the GPG passphrase from the user when it's needed
+gradle.taskGraph.whenReady { taskGraph ->
+   if (taskGraph.allTasks.any { it instanceof Sign && it.required }) {
+      getInput("GPG key ${config_gpgKeyId}:", "Enter passphrase", true, { input -> setSignatureConfiguration(input) })
+   }
+}
 
 
 // ************************
@@ -577,85 +593,6 @@ task generateHgBindings << {
 task generateXmlBindings(dependsOn: generateHgBindings)
 
 
-// *********************
-// * Digital signatures
-// *********************
-
-// Set all of the signature configuration, for all projects
-def setSignatureConfiguration(passphrase) {
-   allprojects { ext."signing.keyId" = config_gpgKeyId }
-   allprojects { ext."signing.secretKeyRingFile" = config_gpgSecretKey }
-   allprojects { ext."signing.password" = passphrase }
-}
-
-// Get the GPG passphrase from the user when it's needed
-gradle.taskGraph.whenReady { taskGraph ->
-   if (taskGraph.allTasks.any { it instanceof Sign && it.required }) {
-      Console console = System.console()
-      if (console != null) {
-         getInputViaConsole("Enter passphrase for GPG key ${config_gpgKeyId}:", true, { input -> setSignatureConfiguration(input) })
-      } else {
-         getInputViaPopup("GPG Key ${config_gpgKeyId}", "Enter passphrase:", true, { input -> setSignatureConfiguration(input) })
-      }
-   }
-}
-
-// Get input from a user via the system console, executing a closure with the result
-def getInputViaConsole(label, secure, action) {
-   Console console = System.console()
-   if (secure) {
-      def value = console.readPassword("\n\n" + label + " ")
-      action(value)
-   } else {
-      def value = console.readLine("\n\n" + label + " ")
-      action(value)
-   }
-}
-
-// Get password input from a user, executing a closure with the result
-def getInputViaPopup(title, label, secure, action) {
-   boolean alive = true
-
-   def swing = new SwingBuilder()
-   def button = swing.button("Ok")
-   def prefix = swing.label(label)
-   def value = null
-
-   def frame = swing.frame(title: title, defaultCloseOperation: JFrame.EXIT_ON_CLOSE) {
-      panel {
-         widget(prefix)
-         if (secure) {
-            value = passwordField(columns:18)
-         } else {
-            value = textField(columns:18)
-         }
-         widget(button)
-      }
-   }
-
-   frame.setLocationRelativeTo(null)
-
-   button.actionPerformed = {
-      action(value.text)
-      alive = false
-   }
-
-   value.actionPerformed = {
-      action(value.text)
-      alive = false
-   }
-
-   frame.pack()
-   frame.show()
-
-   while (alive) {
-      sleep(1000)
-   }
-
-   frame.hide()
-}
-
-
 // ************************
 // * Eclipse configuration
 // ************************
@@ -787,61 +724,4 @@ eclipse.classpath.file {
       }
    }
 }
-
-// Ignore resources in a specific directory
-// See: http://forums.gradle.org/gradle/topics/eclipse_generated_files_should_be_put_in_the_same_place_as_the_gradle_generated_files
-def ignoreResourcesFromDirectories(provider, directories) {
-   def filter = provider.asNode().appendNode("filteredResources").appendNode("filter")
-   filter.appendNode("id", String.valueOf(System.currentTimeMillis()))  // this id must be unique
-   filter.appendNode("name")
-   filter.appendNode("type", "26")
-   def matcher = filter.appendNode("matcher")
-   matcher.appendNode("id", "org.eclipse.ui.ide.orFilterMatcher")
-   def arguments = matcher.appendNode("arguments")
-   directories.each {
-      def dirMatcher = arguments.appendNode("matcher")
-      dirMatcher.appendNode("id", "org.eclipse.ui.ide.multiFilter")
-      dirMatcher.appendNode("arguments", "1.0-projectRelativePath-matches-true-false-${it}")
-   }
-}
-
-
-// ***************
-// * Gradle hooks
-// ***************
-// This code hooks into Gradle to modify behavior at build
-
-// Test summary listener that prints out test results when tests are executed
-// This makes the output legible in Eclipse; normally, the output isn't printed because Eclipse as a dumb terminal.
-// See: http://forums.gradle.org/gradle/topics/how_to_print_a_maven_like_test_summary_on_the_console
-class TestSummary implements org.gradle.api.tasks.testing.TestListener {
-   long passed;
-   long failed;
-   long skipped;
-
-   public void beforeSuite(org.gradle.api.tasks.testing.TestDescriptor suite) {
-      passed = 0;
-      failed = 0;
-      skipped = 0;
-   }
-
-   public void afterSuite(org.gradle.api.tasks.testing.TestDescriptor suite, org.gradle.api.tasks.testing.TestResult result) {
-      // On Windows, we get one result called "Test Run".  On Linux, there are several results, and "Test Run" is one of them.
-      if (suite.getName() == "Test Run") {
-         System.out.printf("*** Test results: passed=%d, failed=%d, skipped=%d\n", passed, failed, skipped);
-      }
-   }
-
-   public void beforeTest(org.gradle.api.tasks.testing.TestDescriptor test) {
-   }
-
-   public void afterTest(org.gradle.api.tasks.testing.TestDescriptor test, org.gradle.api.tasks.testing.TestResult result) {
-      passed += result.getSuccessfulTestCount();
-      failed += result.getFailedTestCount();
-      skipped += result.getSkippedTestCount();
-   }
-}
-
-// Add a test sumamry listener to print test output
-gradle.addListener(new TestSummary())
 
