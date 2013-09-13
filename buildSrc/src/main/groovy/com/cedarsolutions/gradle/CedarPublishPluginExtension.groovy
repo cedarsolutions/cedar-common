@@ -41,12 +41,6 @@ class CedarPublishPluginExtension {
    /** Path to the Mercurial-based Maven project that code will be published into. */
    String mercurialMavenProject
 
-   /** The id of the GPG key that will be used to sign code. */
-   String gpgKeyId
-
-   /** Path to the GPG secret key that will be used to sign code. */
-   String gpgSecretKey
-
    /** Whether digital signatures are required for the current publish actions. */
    def isSignatureRequired() {
       return project.gradle.taskGraph.hasTask(":${project.name}:uploadArchives") && 
