@@ -39,33 +39,6 @@ class CedarBuildPluginConvention {
       this.project = project;
    }
 
-   /**
-    * Load properties from disk in a standard way, setting project.ext.
-    * @param files  List of properties files to load, in order
-    */ 
-   def loadProperties(files) {
-      Properties properties = new Properties()
-      project.logger.info("Cedar Build properties loader: loading project properties")
-
-      files.each { file -> 
-         def fp = project.file(file)
-         if (fp.isFile()) {
-            fp.withInputStream { 
-               properties.load(it) 
-            } 
-         }
-      }
-
-      def added = 0
-      properties.propertyNames().each { property ->
-         project.logger.info("Set project.ext[" + property + "] to [" + properties.getProperty(property) + "]")
-         project.ext[property] = properties.getProperty(property)
-         added += 1
-      }
-
-      project.logger.lifecycle("CedarBuild properties loader: added ${added} project.ext properties from: " + files)
-   }
-
    /** 
     * Configure Eclipse to ignore resources in a set of directories.
     * This adds a new stanza at the bottom of the Eclipse .project file.

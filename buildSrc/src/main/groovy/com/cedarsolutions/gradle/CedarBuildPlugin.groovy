@@ -32,6 +32,7 @@ class CedarBuildPlugin implements Plugin<Project> {
    @Override
    void apply(Project project) {
       project.extensions.create("cedarSigning", CedarSigningPluginExtension, project)
+      project.extensions.cedarProperties = new CedarProperties(project)
 
       project.convention.plugins.cedarBuild = new CedarBuildPluginConvention(project)
       project.convention.plugins.cedarSigning = new CedarSigningPluginConvention(project)
