@@ -44,54 +44,35 @@ apply plugin: "eclipse"
 apply plugin: "javaPropFile"
 apply plugin: "cedarBuild"
 
+// Configure gradle so the parent project is always executed last
+// This is necessary so we only label code after everything has been published
+evaluationDependsOnChildren()
+
 // This loads configuration from app.properties and overrides with local.properties
 // See: https://github.com/unsaved/gradle-javaPropFile-plugin/tree/master/doc#void-propfileloadertraditionalpropertiesinit
 propFileLoader.traditionalPropertiesInit()
 
 
-// *********************
-// * Digital signatures
-// *********************
-
-// Set all of the signature configuration, for all projects
-def setSignatureConfiguration(passphrase) {
-   allprojects { ext."signing.keyId" = config_gpgKeyId }
-   allprojects { ext."signing.secretKeyRingFile" = config_gpgSecretKey }
-   allprojects { ext."signing.password" = passphrase }
-}
-
-// Get the GPG passphrase from the user when it's needed
-gradle.taskGraph.whenReady { taskGraph ->
-   if (taskGraph.allTasks.any { it instanceof Sign && it.required }) {
-      getInput("GPG key ${config_gpgKeyId}:", "Enter passphrase", true, { input -> setSignatureConfiguration(input) })
-   }
-}
-
-
-// ************************
+// ******************************
 // * Project configuration
-// ************************
+// ******************************
 
-// Common setup for all projects
+// Configuration for digital signatures
+cedarSigning {
+   gpgKeyId = config_gpgKeyId
+   gpgSecretKey = config_gpgSecretKey
+   projects = allprojects
+}
+
+// Configuration for all projects
 allprojects {
    apply plugin: "java"
    compileJava.options.fork(memoryMaximumSize: config_javaCompilerMemory)
 }
 
-// Label the current release using the configured config_mavenPublishVersion
-task labelCurrentRelease(dependsOn: project(":tools").jar) << {
-   labelCode()
-}
-
-// Validate publish configuration
-task validatePublishConfig() << {
-   validateMavenRepositoryUrl()
-}
-
 // Common setup for subprojects
 subprojects {
-   apply plugin: "maven"
-   apply plugin: "signing"
+   apply plugin: "cedarPublish"
 
    group = "com.googlecode.cedar-common"
    version = config_mavenPublishVersion
@@ -126,10 +107,27 @@ subprojects {
        from "../README"
    }
 
+   artifacts {
+      archives jar
+      archives javadocJar
+      archives sourcesJar
+   }
+
+   signing {
+      required = { isSignatureRequired() }
+      sign jar
+      sign sourcesJar
+      sign javadocJar
+   }
+
+   cedarPublish {
+      mercurialMavenProject = config_mercurialMavenProject
+   }
+
    uploadArchives {
        repositories {
            mavenDeployer {
-               repository(url: getMavenRepositoryUrl())
+               repository(url: cedarPublish.getPublishRepositoryUrl())
                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
                pom.artifactId = "cedar-common-${project.name}"
                pom.project {
@@ -165,24 +163,12 @@ subprojects {
       }
    }
 
-   artifacts {
-      archives jar
-      archives javadocJar
-      archives sourcesJar
-   }
-
-   signing {
-      required = { gradle.taskGraph.hasTask(":${project.name}:uploadArchives") && config_mercurialMavenProject != "unset" }
-      sign jar
-      sign sourcesJar
-      sign javadocJar
-   }
-
-   task publish(dependsOn: [ validatePublishConfig, uploadArchives, labelCurrentRelease, ])
-   uploadArchives.mustRunAfter validatePublishConfig
-   labelCurrentRelease.mustRunAfter uploadArchives
-
 }
+
+// Make a main publish task that depends on the children, as a hook to label code
+task publish(dependsOn: subprojects.publish) << {
+   tasks.labelCurrentRelease.execute()
+}   
 
 // Subproject for cedar-common-util
 project(":util") {
@@ -488,40 +474,12 @@ project(":test") {
 }
 
 
-// ********************
-// * Other build tasks
-// ********************
-
-// Validate the Mercurial-based Maven repository URL
-def validateMavenRepositoryUrl() {
-   if (config_mercurialMavenProject == "unset") {
-      throw new InvalidUserDataException("Publish is not allowed: config_mercurialMavenProject is unset")
-   } else {
-      if (!(file(config_mercurialMavenProject).isDirectory()
-            && file(config_mercurialMavenProject + "/.hg").isDirectory()
-            && file(config_mercurialMavenProject + "/maven").isDirectory())) {
-         throw new InvalidUserDataException("Publish is not allowed: not a Mercurial repository: " + config_mercurialMavenProject)
-      }
-   }
-}
-
-// Get the proper Mercurial-based Maven repository URL
-def getMavenRepositoryUrl() {
-   if (config_mercurialMavenProject == "unset") {
-      return null
-   } else {
-      if (!(file(config_mercurialMavenProject).isDirectory()
-            && file(config_mercurialMavenProject + "/.hg").isDirectory()
-            && file(config_mercurialMavenProject + "/maven").isDirectory())) {
-         return null
-      } else {
-         return "file://" + file(config_mercurialMavenProject).canonicalPath.replace("\\", "/") + "/maven"
-      }
-   }
-}
+// **********************
+// * General build tasks
+// **********************
 
 // Label the current release using the configured config_mavenPublishVersion
-def labelCode() {
+task labelCurrentRelease(dependsOn: project(":tools").jar) << {
    def toolClass = "com.cedarsolutions.tools.label.LabelTool"
    def label = "CedarCommon__v" + config_mavenPublishVersion + '__$${special:ntimestamp}'
 
@@ -591,6 +549,7 @@ task generateHgBindings << {
 
 // Generate all XML bindings
 task generateXmlBindings(dependsOn: generateHgBindings)
+
 
 
 // ************************

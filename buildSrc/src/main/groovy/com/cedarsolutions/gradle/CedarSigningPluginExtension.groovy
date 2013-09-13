@@ -24,22 +24,27 @@
 
 package com.cedarsolutions.gradle
 
-import org.gradle.api.Project
-import org.gradle.api.Plugin
+import org.gradle.api.Project 
+import org.gradle.api.InvalidUserDataException
+import java.io.File
 
-class CedarBuildPlugin implements Plugin<Project> {
+class CedarSigningPluginExtension {
 
-   @Override
-   void apply(Project project) {
-      project.extensions.create("cedarSigning", CedarSigningPluginExtension, project)
+   /** Project tied to this extension. */
+   private Project project;
 
-      project.convention.plugins.cedarBuild = new CedarBuildPluginConvention()
-      project.convention.plugins.cedarSigning = new CedarSigningPluginConvention(project)
-
-      project.gradle.addListener(new TestSummary())
-      project.gradle.taskGraph.whenReady { 
-         taskGraph -> project.convention.plugins.cedarSigning.applySignatureConfiguration(taskGraph) 
-      }
+   /** Create an extension for a project. */
+   public CedarSigningPluginExtension(Project project) {
+      this.project = project;
    }
+
+   /** The id of the GPG key that will be used to sign code. */
+   String gpgKeyId
+
+   /** Path to the GPG secret key that will be used to sign code. */
+   String gpgSecretKey
+   
+   /** Projects that require configuration for digital signatures. */
+   def projects
 
 }

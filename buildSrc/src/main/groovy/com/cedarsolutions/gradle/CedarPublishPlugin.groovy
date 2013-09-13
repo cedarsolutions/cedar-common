@@ -26,20 +26,24 @@ package com.cedarsolutions.gradle
 
 import org.gradle.api.Project
 import org.gradle.api.Plugin
+import org.gradle.api.plugins.MavenPlugin
+import org.gradle.plugins.signing.SigningPlugin
 
-class CedarBuildPlugin implements Plugin<Project> {
+class CedarPublishPlugin implements Plugin<Project> {
 
    @Override
    void apply(Project project) {
-      project.extensions.create("cedarSigning", CedarSigningPluginExtension, project)
+      project.plugins.apply(MavenPlugin)
+      project.plugins.apply(SigningPlugin)
 
-      project.convention.plugins.cedarBuild = new CedarBuildPluginConvention()
-      project.convention.plugins.cedarSigning = new CedarSigningPluginConvention(project)
+      project.extensions.create("cedarPublish", CedarPublishPluginExtension, project)
 
-      project.gradle.addListener(new TestSummary())
-      project.gradle.taskGraph.whenReady { 
-         taskGraph -> project.convention.plugins.cedarSigning.applySignatureConfiguration(taskGraph) 
+      project.task("validatePublishSetup") << {
+         project.cedarPublish.validateMavenRepositoryConfig()
       }
+
+      project.task("publish", dependsOn: [ project.tasks.validatePublishSetup, project.tasks.uploadArchives, ])
+      project.tasks.uploadArchives.mustRunAfter project.tasks.validatePublishSetup
    }
 
 }
