@@ -32,12 +32,12 @@ apply plugin: "base"
 apply plugin: "eclipse"
 apply plugin: "cedarBuild"
 
+// Load properties from standard configuration files (build.properties and local.properties)
+cedarProperties.loadStandardProperties()
+
 // Configure gradle so the parent project is always executed last
 // This is necessary so we only label code after everything has been published
 evaluationDependsOnChildren()
-
-// Load properties from standard configuration files (build.properties and local.properties)
-cedarProperties.loadStandardProperties()
 
 
 // ******************************
@@ -538,7 +538,6 @@ task generateHgBindings << {
 task generateXmlBindings(dependsOn: generateHgBindings)
 
 
-
 // ************************
 // * Eclipse configuration
 // ************************
@@ -600,7 +599,7 @@ eclipse {
 
 // Hide the various derived directories from Eclipse
 project.eclipse.project.file.withXml { provider ->
-   ignoreResourcesFromDirectories(provider, ["build", "gwt-unitCache", "www-test", "war", ])
+   ignoreResourcesFromDirectories(provider, [ ".gradle", "build", "gwt-unitCache", "www-test", "war", ])
 }
 
 // Customize the Eclipse .classpath file
