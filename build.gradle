@@ -27,10 +27,23 @@
 // * Gradle setup
 // ***************
 
+// Sources for the build script itself
+buildscript {
+   repositories {
+      mavenLocal()   // Local Maven repository
+      maven { url "http://maven.cedar-common.googlecode.com/hg/maven/" }   // Cedar Common code
+   }
+
+   dependencies {
+      classpath "com.googlecode.cedar-common:cedar-build:0.8.1"
+   }
+}
+
 // Plugins
 apply plugin: "base"
 apply plugin: "eclipse"
 apply plugin: "cedarBuild"
+apply plugin: "cedarCopyright"
 
 // Load properties from standard configuration files (build.properties and local.properties)
 cedarProperties.loadStandardProperties()
@@ -40,9 +53,25 @@ cedarProperties.loadStandardProperties()
 evaluationDependsOnChildren()
 
 
-// ******************************
+// ************************
 // * Project configuration
-// ******************************
+// ************************
+
+// Configuration for labeling the code
+cedarLabel {
+   projectName = "CedarCommon"
+   projectVersion = config_mavenPublishVersion
+   repositories = [ projectDir, ]
+   mercurialPath = config_mercurialPath
+}
+
+// Configuration for updating copyright statements
+cedarCopyright {
+   licensePattern = '^.*LICENSE$'
+   sourcePatterns = [ '^.*\\.java$', '^.*\\.rb$', '^.*\\.feature$', '^.*\\.gradle$', '^.*build.xml$', ]
+   repositories = [ projectDir, ]
+   mercurialPath = config_mercurialPath
+}
 
 // Configuration for digital signatures
 cedarSigning {
@@ -101,7 +130,7 @@ subprojects {
    }
 
    signing {
-      required = { isSignatureRequired() }
+      required = { cedarPublish.isSignatureRequired() }
       sign jar
       sign sourcesJar
       sign javadocJar
@@ -153,8 +182,9 @@ subprojects {
 }
 
 // Make a main publish task that depends on the children, as a hook to label code
+// In order to work, this requires evaluationDependsOnChildren()
 task publish(dependsOn: subprojects.publish) << {
-   tasks.labelCurrentRelease.execute()
+   tasks.label.execute()
 }   
 
 // Subproject for cedar-common-util
@@ -372,8 +402,8 @@ project(":tools") {
 
    sourceSets {
       main {
-         java { srcDirs = [ ".", "../generated", ] }
-         resources { srcDirs = [ ".", "../generated", ] }
+         java { srcDirs = [ ".", ] }
+         resources { srcDirs = [ ".", ] }
       }
    }
 
@@ -465,25 +495,6 @@ project(":test") {
 // * General build tasks
 // **********************
 
-// Label the current release using the configured config_mavenPublishVersion
-task labelCurrentRelease(dependsOn: project(":tools").jar) << {
-   def toolClass = "com.cedarsolutions.tools.label.LabelTool"
-   def label = "CedarCommon__v" + config_mavenPublishVersion + '__$${special:ntimestamp}'
-
-   ant.java(classname : toolClass, fork : "true", failonerror : "true") {
-      arg(value : "--label")
-      arg(value : label)
-      arg(value : "--hg")
-      arg(value : config_mercurialPath)
-      arg(value : "--repo")
-      arg(value : projectDir)
-      classpath() {
-          pathelement(location : project(":tools").jar.archivePath.canonicalPath)
-          pathelement(path: project(":tools").configurations.runtime.asPath)
-      }
-   }
-}
-
 // Update all copyright statements based on Mercurial repository
 task updateCopyrightStatements(dependsOn: project(":tools").jar) << {
    def toolClass = "com.cedarsolutions.tools.copyright.CopyrightTool"
@@ -501,41 +512,6 @@ task updateCopyrightStatements(dependsOn: project(":tools").jar) << {
       }
    }
 }
-
-// Generate XML bindings for the Mercurial XML output
-task generateHgBindings << {
-   def resourcesDir = "gradle/resources"
-   def schemaDir = "generated/com/cedarsolutions/xml/schema/hg/log"
-   def bindingsDir = "generated/com/cedarsolutions/xml/bindings/hg/log"
-   def bindingsPackage = "com.cedarsolutions.xml.bindings.hg.log"
-   def sourceXml = resourcesDir + "/hglog.xml"
-   def schema = schemaDir + "/hglog.xsd"
-
-   file(schemaDir).mkdir()
-   file(bindingsDir).mkdir()
-
-   ant.delete(quiet : "true") {
-      fileset(dir: schemaDir, includes : "*.xsd")
-      fileset(dir: bindingsDir, includes : "**/*.java")
-   }
-
-   ant.java(jar : config_trangJarPath, fork : "true", failonerror : "true") {
-      arg(value : sourceXml)
-      arg(value : schema)
-   }
-
-   ant.exec(executable : config_xjcPath) {
-      arg(value : "-d")
-      arg(value : "generated")
-      arg(value : "-p")
-      arg(value : bindingsPackage)
-      arg(value : "-xmlschema")
-      arg(value : schema)
-   }
-}
-
-// Generate all XML bindings
-task generateXmlBindings(dependsOn: generateHgBindings)
 
 
 // ************************
@@ -614,7 +590,7 @@ eclipse.classpath.file {
 
       // List of source folders in the proper order
       def sources = [ "resources", "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", "tools",
-                      "test", "externalutil", "externalgwt", "externaltest", "generated", "suites", ]
+                      "test", "externalutil", "externalgwt", "externaltest", "suites", ]
 
       // List of all the unique libraries among all of the subprojects, ignoring internal builds
       def libraries = new java.util.TreeMap()
@@ -642,10 +618,10 @@ eclipse.classpath.file {
          }
       }
 
-      // Add an extra "ignore optional problems" attribute for generated and external code
+      // Add an extra "ignore optional problems" attribute for external code
       withXml { xml ->
          def node = xml.asNode()
-         node."classpathentry".findAll { it.@path.startsWith("external") || it.@path == "generated" }.each { entry ->
+         node."classpathentry".findAll { it.@path.startsWith("external") }.each { entry ->
             entry.appendNode("attributes").appendNode("attribute",  [ name : "ignore_optional_problems", value : "true", ])
          }
       }
