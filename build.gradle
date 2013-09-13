@@ -36,6 +36,9 @@ apply plugin: "cedarBuild"
 // This is necessary so we only label code after everything has been published
 evaluationDependsOnChildren()
 
+// Load configuration properties from standard files
+loadProperties([ "build.properties", "local.properties", ])
+
 
 // ******************************
 // * Project configuration

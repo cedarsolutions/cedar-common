@@ -40,8 +40,6 @@ class CedarBuildPlugin implements Plugin<Project> {
       project.gradle.taskGraph.whenReady { 
          taskGraph -> project.convention.plugins.cedarSigning.applySignatureConfiguration(taskGraph) 
       }
-
-      project.convention.plugins.cedarBuild.loadProperties([ "app.properties", "local.properties", ])
    }
 
 }
