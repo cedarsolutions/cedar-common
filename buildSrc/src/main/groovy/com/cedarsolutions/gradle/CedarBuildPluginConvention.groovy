@@ -24,10 +24,47 @@
 
 package com.cedarsolutions.gradle
 
+import org.gradle.api.Project
 import groovy.swing.SwingBuilder
 import javax.swing.JFrame 
+import java.util.Properties
 
 class CedarBuildPluginConvention {
+
+   /** Project tied to this convention. */
+   private Project project;
+
+   /** Create a convention for a project. */
+   public CedarBuildPluginConvention(Project project) {
+      this.project = project;
+   }
+
+   /**
+    * Load properties from disk in a standard way, setting project.ext.
+    * @param files  List of properties files to load, in order
+    */ 
+   def loadProperties(files) {
+      Properties properties = new Properties()
+      project.logger.info("Cedar Build properties loader: loading project properties")
+
+      files.each { file -> 
+         def fp = project.file(file)
+         if (fp.isFile()) {
+            fp.withInputStream { 
+               properties.load(it) 
+            } 
+         }
+      }
+
+      def added = 0
+      properties.propertyNames().each { property ->
+         project.logger.info("Set project.ext[" + property + "] to [" + properties.getProperty(property) + "]")
+         project.ext[property] = properties.getProperty(property)
+         added += 1
+      }
+
+      project.logger.lifecycle("CedarBuild properties loader: added ${added} project.ext properties from: " + files)
+   }
 
    /** 
     * Configure Eclipse to ignore resources in a set of directories.

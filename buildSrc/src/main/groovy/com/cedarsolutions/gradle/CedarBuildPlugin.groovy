@@ -33,13 +33,15 @@ class CedarBuildPlugin implements Plugin<Project> {
    void apply(Project project) {
       project.extensions.create("cedarSigning", CedarSigningPluginExtension, project)
 
-      project.convention.plugins.cedarBuild = new CedarBuildPluginConvention()
+      project.convention.plugins.cedarBuild = new CedarBuildPluginConvention(project)
       project.convention.plugins.cedarSigning = new CedarSigningPluginConvention(project)
 
       project.gradle.addListener(new TestSummary())
       project.gradle.taskGraph.whenReady { 
          taskGraph -> project.convention.plugins.cedarSigning.applySignatureConfiguration(taskGraph) 
       }
+
+      project.convention.plugins.cedarBuild.loadProperties([ "app.properties", "local.properties", ])
    }
 
 }

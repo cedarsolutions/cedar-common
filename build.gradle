@@ -27,30 +27,14 @@
 // * Gradle setup
 // ***************
 
-// Sources for the build script itself
-buildscript {
-   repositories {
-      mavenCentral()
-   }
-
-   dependencies {
-      classpath "com.admc:gradle-javaPropFile-plugin:0.6.0"
-   }
-}
-
 // Plugins
 apply plugin: "base"
 apply plugin: "eclipse"
-apply plugin: "javaPropFile"
 apply plugin: "cedarBuild"
 
 // Configure gradle so the parent project is always executed last
 // This is necessary so we only label code after everything has been published
 evaluationDependsOnChildren()
-
-// This loads configuration from app.properties and overrides with local.properties
-// See: https://github.com/unsaved/gradle-javaPropFile-plugin/tree/master/doc#void-propfileloadertraditionalpropertiesinit
-propFileLoader.traditionalPropertiesInit()
 
 
 // ******************************
