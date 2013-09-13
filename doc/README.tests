@@ -59,8 +59,7 @@ double-count tests, but you can ignore that for the time being.
 
 Once the suite has finished running, right-click on UnitTestSuite again and
 choose Coverage Configurations.  In the Coverage tab, uncheck the external
-folders, the generated folder, the test folder, the suites folder, and the 
-resources folder.
+folders, the test folder, the suites folder, and the resources folder.
 
 Now that things are configured properly, click Apply, then click Coverage.
 This time, when the suite runs, you should get the correct number of tests and
