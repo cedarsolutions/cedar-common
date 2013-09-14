@@ -294,7 +294,6 @@ project(":gae") {
 
 // Subproject for cedar-common-testutil
 project(":testutil") {
-
    sourceSets {
       main {
          java { srcDirs = [ ".", ] }
@@ -395,6 +394,8 @@ project(":gaetestutil") {
 // Unit tests
 project(":test") {
 
+   apply plugin: "cedarTestSuite"
+
    uploadArchives.enabled = false
    install.enabled = false
 
@@ -412,6 +413,10 @@ project(":test") {
       srcDirs = []
    }
 
+   cedarTestSuite {
+      workingDir = "../"
+   }
+
    dependencies {
       testCompile "com.googlecode.cedar-common:cpsuite:1.2.6"
       testCompile project(":util")
@@ -421,42 +426,6 @@ project(":test") {
       testCompile project(":gwttestutil")
       testCompile project(":gaetestutil")
    }
-
-   task unittest(type: Test) {
-      workingDir = "../"
-      scanForTestClasses = false
-      enableAssertions = false
-      outputs.upToDateWhen { false }
-      include "**/UnitTestSuite.class"
-   }
-
-   task clienttest(type: Test) {
-      workingDir = "../"
-      scanForTestClasses = false
-      enableAssertions = false
-      outputs.upToDateWhen { false }
-
-      systemProperty "gwt.args", "-out build/www-test -logLevel ERROR"
-      systemProperty "java.awt.headless", "true"   // required on Linux to avoid deferred binding errors
-
-      include "**/ClientTestSuite.class"
-
-      beforeSuite { descriptor ->
-         file("build/www-test").deleteDir()
-         file("build/gwt-unitCache").deleteDir()
-      }
-
-      afterSuite { descriptor ->
-         file("build/www-test").deleteDir()
-         file("build/gwt-unitCache").deleteDir()
-      }
-   }
-
-   test {
-      include "**/bogus.class"  // so nothing gets run
-   }
-
-   tasks.test.dependsOn(clienttest, unittest)
 
 }
 
