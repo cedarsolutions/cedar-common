@@ -131,14 +131,8 @@ subprojects {
       excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
    }
 
-   task javadocJar(type: Jar, dependsOn: jdoc) {
-       classifier = "javadoc"
-       from cedarJavadoc.output
-   }
-
    artifacts {
       archives jar
-      archives javadocJar
       archives sourcesJar
    }
 
@@ -146,7 +140,6 @@ subprojects {
       required = { cedarPublish.isSignatureRequired() }
       sign jar
       sign sourcesJar
-      sign javadocJar
    }
 
    uploadArchives {
@@ -189,12 +182,6 @@ subprojects {
    }
 
 }
-
-// Make a main publish task that depends on the children, as a hook to label code
-// In order to work, this requires evaluationDependsOnChildren()
-task publish(dependsOn: subprojects.publish) << {
-   tasks.label.execute()
-}   
 
 // Subproject for cedar-common-util
 project(":util") {
@@ -500,6 +487,39 @@ project(":test") {
 
    tasks.test.dependsOn(clienttest, unittest)
 
+}
+
+
+// ********************
+// * Other build tasks
+// ********************
+
+// Label all of the code, only after all subprojects have been published.
+// In order to work, this requires evaluationDependsOnChildren().
+task publish(dependsOn: subprojects.publish) << {
+   tasks.label.execute()
+}   
+
+// Generate Javadoc for all subprojects into a single directory tree.
+// In order to work, this requires evaluationDependsOnChildren().
+task jdoc(dependsOn: subprojects.jdoc) << {
+   if (config_mercurialJavadocProject != null && config_mercurialJavadocProject != "unset") {
+      if (file(config_mercurialJavadocProject).isDirectory()) {
+         def baseDir = file(config_mercurialJavadocProject)
+         subprojects.each { subproject ->
+            def sourceDir = file(subproject.docsDir.canonicalPath + "/javadoc")
+            def index = file(sourceDir.canonicalPath + "/index.html")
+            def targetDir = file(baseDir.canonicalPath + "/cedar-common-${subproject.name}")
+            if (index.isFile()) {
+               targetDir.deleteDir()
+               targetDir.mkdirs()
+               ant.copy(todir: targetDir) {
+                  fileset(dir: sourceDir, includes: "**/*")
+               }
+            }
+         }
+      }
+   }
 }
 
 
