@@ -35,7 +35,7 @@ buildscript {
    }
 
    dependencies {
-      classpath "com.googlecode.cedar-common:cedar-build:0.8.2"
+      classpath "com.googlecode.cedar-common:cedar-build:0.8.3"
    }
 }
 
@@ -89,6 +89,7 @@ allprojects {
 // Common setup for subprojects
 subprojects {
    apply plugin: "cedarPublish"
+   apply plugin: "cedarJavadoc"
 
    group = "com.googlecode.cedar-common"
    version = config_mavenPublishVersion
@@ -106,6 +107,18 @@ subprojects {
       maven { url "http://maven.cedar-common.googlecode.com/hg/maven/" }   // Cedar Common code
    }
 
+   cedarPublish {
+      mercurialMavenProject = config_mercurialMavenProject
+   }
+
+   cedarJavadoc {
+      title = "cedar-common-${project.name} ${config_mavenPublishVersion} API"
+      output = "${project.docsDir}/javadoc"
+      classpath = { project.configurations.runtime }
+      srcDirs = { sourceSets.main.java.srcDirs }
+      subpackages = [ "com", "biz", ]
+   }
+
    jar {
       from sourceSets.main.output
       from sourceSets.main.allSource
@@ -118,9 +131,9 @@ subprojects {
       excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
    }
 
-   task javadocJar(type: Jar) {
+   task javadocJar(type: Jar, dependsOn: jdoc) {
        classifier = "javadoc"
-       from "../README"
+       from cedarJavadoc.output
    }
 
    artifacts {
@@ -134,10 +147,6 @@ subprojects {
       sign jar
       sign sourcesJar
       sign javadocJar
-   }
-
-   cedarPublish {
-      mercurialMavenProject = config_mercurialMavenProject
    }
 
    uploadArchives {
@@ -254,7 +263,6 @@ project(":gwt") {
            }
        }
    }
-
 }
 
 // Subproject for cedar-common-gae
@@ -441,6 +449,10 @@ project(":test") {
       }
    }
 
+   cedarJavadoc {
+      srcDirs = []
+   }
+
    dependencies {
       testCompile "com.googlecode.cedar-common:cpsuite:1.2.6"
       testCompile project(":util")
@@ -488,29 +500,6 @@ project(":test") {
 
    tasks.test.dependsOn(clienttest, unittest)
 
-}
-
-
-// **********************
-// * General build tasks
-// **********************
-
-// Update all copyright statements based on Mercurial repository
-task updateCopyrightStatements(dependsOn: project(":tools").jar) << {
-   def toolClass = "com.cedarsolutions.tools.copyright.CopyrightTool"
-   def licensePattern = '^.*LICENSE$'
-   def sourcePatterns = '"^.*\\.java$" "^.*\\.rb$" "^.*\\.feature$" "^.*\\.gradle$" "^.*build.xml$"'
-
-   ant.java(classname : toolClass, fork : "true", failonerror : "true") {
-      arg(value : config_mercurialPath)
-      arg(value : projectDir)
-      arg(value : licensePattern)
-      arg(line  : sourcePatterns)
-      classpath() {
-          pathelement(location : project(":tools").jar.archivePath.canonicalPath)
-          pathelement(path: project(":tools").configurations.runtime.asPath)
-      }
-   }
 }
 
 
