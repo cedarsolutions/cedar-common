@@ -213,7 +213,7 @@ project(":util") {
            mavenDeployer {
                pom.project {
                   name "Cedar Common Utility Library"
-                  description "Library of common utility code."
+                  description "General utility code."
                }
            }
        }
@@ -245,7 +245,7 @@ project(":gwt") {
            mavenDeployer {
                pom.project {
                   name "Cedar Common GWT Library"
-                  description "Library of utility code for use with GWT and Mvp4g."
+                  description "Utility code for use with GWT and Mvp4g."
                }
            }
        }
@@ -284,7 +284,7 @@ project(":gae") {
            mavenDeployer {
                pom.project {
                   name "Cedar Common GAE Library"
-                  description "Library of utility code for use with GWT on Google App Engine."
+                  description "Utility code for use with GWT on Google App Engine."
                }
            }
        }
@@ -314,7 +314,7 @@ project(":testutil") {
            mavenDeployer {
                pom.project {
                   name "Cedar Common Test Utilities"
-                  description "Library of utility code for use with junit, such as assertions and test setup mechanisms."
+                  description "Utility code for use with junit, such as assertions and test setup mechanisms."
                }
            }
        }
@@ -346,7 +346,7 @@ project(":gwttestutil") {
            mavenDeployer {
                pom.project {
                   name "Cedar Common GWT Test Utilities"
-                  description "Library of utility code for use in testing GWT, including a stubbed test runner using Mockito."
+                  description "Utility code for use in testing GWT, including a stubbed test runner using Mockito."
                }
            }
        }
@@ -383,7 +383,7 @@ project(":gaetestutil") {
            mavenDeployer {
                pom.project {
                   name "Cedar Common GAE Test Utilities"
-                  description "Library of utility code for use in testing GWT applications on Google App Engine."
+                  description "Utility code for use in testing GWT applications on Google App Engine."
                }
            }
        }
