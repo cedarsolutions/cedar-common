@@ -62,12 +62,8 @@
         <gradle target="install" />
     </target>
 
-    <target name="update.copyright.statements" description="Update copyright statements based on Mercurial" >
-        <gradle target="updateCopyrightStatements" />
-    </target>
-
-    <target name="generate.xml.bindings" description="Generate all of the XML bindings">
-        <gradle target="generateXmlBindings" />
+    <target name="copyright" description="Update copyright statements based on Mercurial" >
+        <gradle target="copyright" />
     </target>
 
     <target name="run.all.tests" description="Run all tests for this project">
