@@ -35,7 +35,7 @@ buildscript {
    }
 
    dependencies {
-      classpath "com.googlecode.cedar-common:cedar-build:0.8.3"
+      classpath "com.googlecode.cedar-common:cedar-build:0.8.4"
    }
 }
 
@@ -474,23 +474,7 @@ task publish(dependsOn: subprojects.publish) << {
 // Generate Javadoc for all subprojects into a single directory tree.
 // In order to work, this requires evaluationDependsOnChildren().
 task generateJavadoc(dependsOn: subprojects.jdoc) << {
-   if (config_mercurialJavadocProject != null && config_mercurialJavadocProject != "unset") {
-      if (file(config_mercurialJavadocProject).isDirectory()) {
-         def baseDir = file(config_mercurialJavadocProject)
-         subprojects.each { subproject ->
-            def sourceDir = file(subproject.docsDir.canonicalPath + "/javadoc")
-            def index = file(sourceDir.canonicalPath + "/index.html")
-            def targetDir = file(baseDir.canonicalPath + "/cedar-common-${subproject.name}")
-            if (index.isFile()) {
-               targetDir.deleteDir()
-               targetDir.mkdirs()
-               ant.copy(todir: targetDir) {
-                  fileset(dir: sourceDir, includes: "**/*")
-               }
-            }
-         }
-      }
-   }
+   copyJavadocToMercurial(config_mercurialJavadocProject, subprojects, { name -> "cedar-common-" + name })
 }
 
 
