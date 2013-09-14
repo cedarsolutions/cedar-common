@@ -1,7 +1,8 @@
-Version 2.1.6   unreleased
+Version 2.1.6   13 Sep 2013
 
-    * Update dependencies to App Engine 1.8.4
+    * Update dependencies to App Engine 1.8.4.
     * Add StringUtils.wrapLine() method that takes the newline to use.
+    * Refactor out a lot of build functionality into shared Gradles plugins (cedar-build).
 
 Version 2.1.5   10 Sep 2013
 
