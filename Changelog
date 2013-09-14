@@ -1,7 +1,7 @@
-Version 2.1.7   unreleased
+Version 2.1.7   14 Sep 2013
 
-    * Add build code to generate Javadoc (equivalent to pre-split behavior).
-    * Remove the tools subprojects, which has been obsoleted by the Gradle build process.
+    * Refactor out common build code, such as code to run tests and generated Javadoc
+    * Remove the tools subproject, which has been obsoleted by the Gradle build process.
 
 Version 2.1.6   13 Sep 2013
 
