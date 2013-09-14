@@ -392,34 +392,6 @@ project(":gaetestutil") {
 
 }
 
-// Subproject for cedar-common-tools
-project(":tools") {
-
-   sourceSets {
-      main {
-         java { srcDirs = [ ".", ] }
-         resources { srcDirs = [ ".", ] }
-      }
-   }
-
-   dependencies {
-      compile project(":util")
-      compile project(":gwttestutil")
-   }
-
-   uploadArchives {
-       repositories {
-           mavenDeployer {
-               pom.project {
-                  name "Cedar Common Command Line Tools"
-                  description "Command line tools, mostly tied to internal development processes using Mercurial."
-               }
-           }
-       }
-   }
-
-}
-
 // Unit tests
 project(":test") {
 
@@ -448,7 +420,6 @@ project(":test") {
       testCompile project(":testutil")
       testCompile project(":gwttestutil")
       testCompile project(":gaetestutil")
-      testCompile project(":tools")
    }
 
    task unittest(type: Test) {
@@ -595,10 +566,10 @@ eclipse.classpath.file {
    whenMerged { classpath ->
 
       // List of subprojects in the proper order
-      def projects = [ "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", "tools", "test", ]
+      def projects = [ "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", "test", ]
 
       // List of source folders in the proper order
-      def sources = [ "resources", "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", "tools",
+      def sources = [ "resources", "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", 
                       "test", "externalutil", "externalgwt", "externaltest", "suites", ]
 
       // List of all the unique libraries among all of the subprojects, ignoring internal builds
