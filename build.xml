@@ -74,8 +74,8 @@
         <gradle target="clean" />
     </target>
 
-    <target name="javadoc" description="Generate Javadoc into the configured Mecurial repository.">
-        <gradle target="jdoc" />
+    <target name="generate.javadoc" description="Generate Javadoc into the configured Mecurial repository.">
+        <gradle target="generateJavadoc" />
     </target>
 
 </project>

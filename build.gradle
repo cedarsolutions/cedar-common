@@ -502,7 +502,7 @@ task publish(dependsOn: subprojects.publish) << {
 
 // Generate Javadoc for all subprojects into a single directory tree.
 // In order to work, this requires evaluationDependsOnChildren().
-task jdoc(dependsOn: subprojects.jdoc) << {
+task generateJavadoc(dependsOn: subprojects.jdoc) << {
    if (config_mercurialJavadocProject != null && config_mercurialJavadocProject != "unset") {
       if (file(config_mercurialJavadocProject).isDirectory()) {
          def baseDir = file(config_mercurialJavadocProject)
