@@ -35,7 +35,7 @@ buildscript {
    }
 
    dependencies {
-      classpath "com.googlecode.cedar-common:cedar-build:0.8.4"
+      classpath "com.googlecode.cedar-common:cedar-build:0.8.5"
    }
 }
 
@@ -59,6 +59,7 @@ evaluationDependsOnChildren()
 
 // Configuration for labeling the code
 cedarLabel {
+   enabled = config_mercurialLabelEnabled
    projectName = "CedarCommon"
    projectVersion = config_mavenPublishVersion
    repositories = [ projectDir, ]
