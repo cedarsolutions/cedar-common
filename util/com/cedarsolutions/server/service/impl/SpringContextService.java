@@ -59,6 +59,9 @@ import com.cedarsolutions.server.service.ISpringContextService;
  */
 public class SpringContextService extends AbstractService implements ISpringContextService {
 
+    /** Whether to create a session if one is needed and doesn't exist. */
+    private boolean createSessionIfNecessary = false;
+
     /**
      * Get the currently-assigned session id.
      * @return Session id of the current session, possibly null.
@@ -151,11 +154,21 @@ public class SpringContextService extends AbstractService implements ISpringCont
         return cookieToReturn;
     }
 
+    /** Whether to create a session if one is needed and doesn't exist. */
+    public boolean getCreateSessionIfNecessary() {
+        return this.createSessionIfNecessary;
+    }
+
+    /** Whether to create a session if one is needed and doesn't exist. */
+    public void setCreateSessionIfNecessary(boolean createSessionIfNecessary) {
+        this.createSessionIfNecessary = createSessionIfNecessary;
+    }
+
     /** Get the current servlet request's HTTP session, possibly null. */
     protected HttpSession getRequestSession() {
         HttpServletRequest request = this.getServletRequest();
         if (request != null) {
-            return request.getSession(false);
+            return request.getSession(this.createSessionIfNecessary);
         }
 
         return null;
