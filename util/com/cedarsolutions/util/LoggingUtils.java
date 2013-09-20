@@ -32,7 +32,6 @@ public class LoggingUtils {
 
     /**
      * Retrieve a log4j logger via Logger.getLogger(String).
-     * The logger will be standardized to start with the common application-wide prefix.
      * @param name The name of the logger to retrieve.
      */
     public static Logger getLogger(String name) {
@@ -41,7 +40,6 @@ public class LoggingUtils {
 
     /**
      * Retrieve a log4j logger via Logger.getLogger(Class).
-     * The logger will be standardized to start with the common application-wide prefix.
      * @param clazz Class of the logger to retrieve
      */
     @SuppressWarnings("rawtypes")
