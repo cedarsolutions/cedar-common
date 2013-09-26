@@ -58,20 +58,34 @@ public class GaeUserServiceTest {
         UserService userService = mock(UserService.class);
         service.setUserService(userService);
         assertSame(userService, service.getUserService());
+
+        SpringContextService springContextService = mock(SpringContextService.class);
+        service.setSpringContextService(springContextService);
+        assertSame(springContextService, service.getSpringContextService());
     }
 
     /** Test the afterPropertiesSet() method. */
     @Test public void testAfterPropertiesSet() throws Exception {
         GaeUserService service = new GaeUserService();
         UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
+
+        try {
+            service.setUserService(userService);
+            service.setSpringContextService(null);
+            service.afterPropertiesSet();
+            fail("Expected NotConfiguredException");
+        } catch (NotConfiguredException e) { }
 
         try {
             service.setUserService(null);
+            service.setSpringContextService(springContextService);
             service.afterPropertiesSet();
             fail("Expected NotConfiguredException");
         } catch (NotConfiguredException e) { }
 
         service.setUserService(userService);
+        service.setSpringContextService(springContextService);
         service.afterPropertiesSet();
     }
 
@@ -85,8 +99,10 @@ public class GaeUserServiceTest {
         Set<String> attributes = new HashSet<String>();
 
         UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
         GaeUserService service = new GaeUserService();
         service.setUserService(userService);
+        service.setSpringContextService(springContextService);
         service.afterPropertiesSet();
 
         when(userService.createLoginURL(destinationUrl, null, providerUrl, attributes)).thenReturn(loginUrl);
@@ -110,8 +126,10 @@ public class GaeUserServiceTest {
         Set<String> attributes = new HashSet<String>();
 
         UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
         GaeUserService service = new GaeUserService();
         service.setUserService(userService);
+        service.setSpringContextService(springContextService);
         service.afterPropertiesSet();
 
         when(userService.createLoginURL(destinationUrl, null, providerUrl, attributes)).thenReturn(loginUrl);
@@ -124,8 +142,10 @@ public class GaeUserServiceTest {
         String destinationUrl = "destinationUrl";
 
         UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
         GaeUserService service = new GaeUserService();
         service.setUserService(userService);
+        service.setSpringContextService(springContextService);
         service.afterPropertiesSet();
 
         when(userService.createLogoutURL(destinationUrl)).thenReturn(logoutUrl);
@@ -135,8 +155,11 @@ public class GaeUserServiceTest {
     /** Test isUserLoggedIn(). */
     @Test public void testIsUserLoggedIn() {
         UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
         GaeUserService service = new GaeUserService();
         service.setUserService(userService);
+        service.setSpringContextService(springContextService);
+        service.afterPropertiesSet();
 
         when(userService.isUserLoggedIn()).thenReturn(true);
         assertTrue(service.isUserLoggedIn());
@@ -148,8 +171,11 @@ public class GaeUserServiceTest {
     /** Test isUserAdmin(). */
     @Test public void testIsUserAdmin() {
         UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
         GaeUserService service = new GaeUserService();
         service.setUserService(userService);
+        service.setSpringContextService(springContextService);
+        service.afterPropertiesSet();
 
         when(userService.isUserAdmin()).thenReturn(true);
         assertTrue(service.isUserAdmin());
@@ -162,8 +188,11 @@ public class GaeUserServiceTest {
     @Test public void testGetCurrentUser() {
         User user = new User("email", "google.com", "userId", "federatedIdentity");
         UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
         GaeUserService service = new GaeUserService();
         service.setUserService(userService);
+        service.setSpringContextService(springContextService);
+        service.afterPropertiesSet();
 
         when(userService.isUserLoggedIn()).thenReturn(false);
         FederatedUser currentUser = service.getCurrentUser();

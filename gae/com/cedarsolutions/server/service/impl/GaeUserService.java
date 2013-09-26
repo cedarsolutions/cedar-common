@@ -28,6 +28,7 @@ import static com.cedarsolutions.shared.domain.OpenIdProvider.MYOPENID;
 import static com.cedarsolutions.shared.domain.OpenIdProvider.MYSPACE;
 import static com.cedarsolutions.shared.domain.OpenIdProvider.UNKNOWN;
 import static com.cedarsolutions.shared.domain.OpenIdProvider.YAHOO;
+import static com.cedarsolutions.wiring.gae.security.GaeAuthenticationFilter.CLIENT_ROLES_ATTRIBUTE;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +39,7 @@ import com.cedarsolutions.exception.EnumException;
 import com.cedarsolutions.exception.NotConfiguredException;
 import com.cedarsolutions.exception.ServiceException;
 import com.cedarsolutions.server.service.IGaeUserService;
+import com.cedarsolutions.server.service.ISpringContextService;
 import com.cedarsolutions.shared.domain.FederatedUser;
 import com.cedarsolutions.shared.domain.OpenIdProvider;
 import com.cedarsolutions.util.StringUtils;
@@ -61,6 +63,9 @@ public class GaeUserService extends AbstractService implements IGaeUserService {
     /** The underlying Google user service. */
     private UserService userService;
 
+    /** Spring context service. */
+    private ISpringContextService springContextService;
+
     /**
      * Invoked by a bean factory after it has set all bean properties.
      * @throws NotConfiguredException In the event of misconfiguration.
@@ -68,7 +73,7 @@ public class GaeUserService extends AbstractService implements IGaeUserService {
     @Override
     public void afterPropertiesSet() throws NotConfiguredException {
         super.afterPropertiesSet();
-        if (this.userService == null) {
+        if (this.userService == null || this.springContextService == null) {
             throw new NotConfiguredException("GaeUserService is not properly configured.");
         }
     }
@@ -159,6 +164,13 @@ public class GaeUserService extends AbstractService implements IGaeUserService {
             return currentUser;
         }
     }
+
+    /** Add extra roles for the current user, for use by the security framework. */
+    @Override
+    public void addClientRoles(String ... roles) {
+        this.springContextService.setSessionAttribute(CLIENT_ROLES_ATTRIBUTE, roles);
+    }
+
 
     /**
      * Derive the proper URL to use when logging in with an OpenIdProvider.
@@ -318,6 +330,14 @@ public class GaeUserService extends AbstractService implements IGaeUserService {
 
     public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public ISpringContextService getSpringContextService() {
+        return this.springContextService;
+    }
+
+    public void setSpringContextService(ISpringContextService springContextService) {
+        this.springContextService = springContextService;
     }
 
 }
