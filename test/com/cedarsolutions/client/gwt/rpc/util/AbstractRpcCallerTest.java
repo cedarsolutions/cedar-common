@@ -345,6 +345,11 @@ public class AbstractRpcCallerTest {
         }
 
         @Override
+        public int getXsrfRpcProxyTimeoutMs() {
+            return 30000;
+        }
+
+        @Override
         public boolean onValidationError(InvalidDataException caught) {
             this.invalidDataException = caught;
             return super.onValidationError(caught);

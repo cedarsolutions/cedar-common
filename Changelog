@@ -1,3 +1,8 @@
+Version 2.2.0   unreleased
+
+    * Build a mechanism to configure the timeout used by the XSRF RPC proxy.
+    * Add required method AbstractRpcCaller.getXsrfRpcProxyTimeoutMs().
+
 Version 2.1.8   26 Sep 2013
 
     * Add createSessionIfNecessary to SpringContextService (default false).

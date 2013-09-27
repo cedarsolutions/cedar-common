@@ -22,6 +22,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.rpc.util;
 
+import com.cedarsolutions.client.gwt.rpc.proxy.XsrfRpcProxyConfig;
 import com.cedarsolutions.exception.InvalidDataException;
 import com.cedarsolutions.exception.RpcSecurityException;
 import com.cedarsolutions.shared.domain.ErrorDescription;
@@ -102,6 +103,21 @@ public abstract class AbstractRpcCaller<A, T> implements IRpcCaller<T> {
         this.maxAttempts = 1;  // by default, calls are not retried
     }
 
+    /** Apply global policies that are required for all RPCs. */
+    protected void applyGlobalPolicies() {
+        // This is hideous. I'm setting a global property every single time an
+        // RPC is invoked.  Unfortunately, there's no other obvious way to
+        // inject configuration into the XsrfRpcProxy class that we're using
+        // underneath.  On the positive side, client-side code is
+        // single-threaded, so there's no real chance for thread conflict.
+        // If callers set different values for different RPC invocations,
+        // they'll probably get what they expect.
+        XsrfRpcProxyConfig.getInstance().setTimeoutMs(this.getXsrfRpcProxyTimeoutMs());
+    }
+
+    /** Sets the global timeout to be used by the XSRF RPC proxy, or null to use the default. */
+    public abstract int getXsrfRpcProxyTimeoutMs();
+
     /** Hook that lets child classes apply policies to an RPC. */
     public abstract void applyPolicies();
 
@@ -178,6 +194,7 @@ public abstract class AbstractRpcCaller<A, T> implements IRpcCaller<T> {
      */
     @Override
     public void invoke(AsyncCallback<T> callback) {
+        this.applyGlobalPolicies();
         this.applyPolicies();
         this.showProgressIndicator();
         this.incrementAttempts();

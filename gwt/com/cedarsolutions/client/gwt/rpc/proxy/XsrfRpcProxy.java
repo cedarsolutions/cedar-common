@@ -63,22 +63,18 @@ import com.google.gwt.user.client.rpc.impl.Serializer;
  * </p>
  *
  * <p>
- * I would like to make the RPC timeout configurable.  However, I can't find a
- * way to do it.  I can read configuration from the <code>.gwt.xml</code> file
- * via the generator context (i.e. in the proxy generator or creator), but
- * there doesn't seem to be any way to propagate that information into this
- * code.  So, the RPC call timeout is hardcoded at 30 seconds.  Normally, it
- * completes very quickly, but when an AppEngine instance is booting, it can
- * take much longer.
+ * Configuration for this class feels like a humongous hack.  I would like to
+ * make the XSRF RPC timeout configurable.  However, there's no obvious way to
+ * do it.  The proxy is instantiated on the client side at runtime, but there's
+ * no hook to set properties on the proxy when it's instantiated.  I've fallen
+ * back on using the XsrfRpcProxyConfig singleton to hold the value.  See notes
+ * in that class for more details.
  * </p>
  *
  * @see <a href="https://developers.google.com/web-toolkit/doc/latest/DevGuideSecurityRpcXsrf">GWT RPC XSRF protection</a>
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public abstract class XsrfRpcProxy extends RemoteServiceProxy {
-
-    /** Timeout for XSRF RPC call. */
-    public static final int TIMEOUT_MS = 30000;
 
     /** Instantiates a new remote service proxy. */
     public XsrfRpcProxy(String moduleBaseURL, String remoteServiceRelativePath,
@@ -124,8 +120,10 @@ public abstract class XsrfRpcProxy extends RemoteServiceProxy {
     protected static class TimeoutBuilder extends RpcRequestBuilder {
         @Override
         protected RequestBuilder doCreate(String serviceEntryPoint) {
+            int timeoutMs = XsrfRpcProxyConfig.getInstance().getConfiguredTimeoutMs();
+            GWT.log("XsrfRpcProxy using timeout: " + timeoutMs + " ms");
             RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, serviceEntryPoint);
-            builder.setTimeoutMillis(TIMEOUT_MS);
+            builder.setTimeoutMillis(timeoutMs);
             return builder;
         }
     }
