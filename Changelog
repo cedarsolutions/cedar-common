@@ -1,4 +1,4 @@
-Version 2.1.8   unreleased
+Version 2.1.8   26 Sep 2013
 
     * Add createSessionIfNecessary to SpringContextService (default false).
     * Add addClientRoles() to IGaeUserContextService, to create a better abstraction.
