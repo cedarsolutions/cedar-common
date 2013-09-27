@@ -49,20 +49,20 @@
         <echo message="Once the project has been bootstrapped, you can import it into Eclipse as usual." />
     </target>
 
-    <target name="eclipse" description="Rebuild the Eclipse project files">
-        <gradle target="eclipse --refresh-dependencies" />
-        <echo message="Remember to close and open your Eclipse project if you ran this from Eclipse." />
+    <target name="generate.eclipse" description="Regenerate the Eclipse project files">
+        <gradle target="eclipse" />
+        <echo message="Done. Remember to close and open your Eclipse project to pick up changes." />
     </target>
 
-    <target name="publish" description="Publish to the public maven repository, labeling the code first">
+    <target name="publish.maven" description="Publish to the public maven repository, labeling the code first">
         <gradle target="publish" />
     </target>
 
-    <target name="install" description="Publish a snapshot to the local Maven repository">
+    <target name="install.maven" description="Publish a snapshot to the local Maven repository">
         <gradle target="install" />
     </target>
 
-    <target name="copyright" description="Update copyright statements based on Mercurial" >
+    <target name="update.copyright.statements" description="Update copyright statements based on Mercurial" >
         <gradle target="copyright" />
     </target>
 
