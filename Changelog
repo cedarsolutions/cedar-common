@@ -1,4 +1,4 @@
-Version 2.2.0   unreleased
+Version 2.2.0   27 Sep 2013
 
     * Build a mechanism to configure the timeout used by the XSRF RPC proxy.
     * Add required method AbstractRpcCaller.getXsrfRpcProxyTimeoutMs().
