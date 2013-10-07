@@ -47,6 +47,7 @@ import com.cedarsolutions.dao.domain.Pagination;
  * </p>
  *
  * @see <a href="http://groups.google.com/group/objectify-appengine/browse_thread/thread/b640b5d377b620b4">Google Groups</a>
+ * @see <a href="https://code.google.com/p/cedar-common/wiki/Pagination">The wiki for notes on pagination for non-GAE platforms</a>
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public class PaginationUtils {

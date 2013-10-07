@@ -30,7 +30,8 @@ import com.flipthebird.gwthashcodeequals.EqualsBuilder;
 import com.flipthebird.gwthashcodeequals.HashCodeBuilder;
 
 /**
- * Controls pagination state for back-end GAE queries.
+ * Controls pagination state for back-end queries.
+ * @see <a href="https://code.google.com/p/cedar-common/wiki/Pagination">The wiki for notes on pagination for non-GAE platforms</a>
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 @SuppressWarnings("serial")
@@ -60,10 +61,14 @@ public class Pagination extends TranslatableDomainObject {
     /** The total number of rows so far, possibly not finalized. */
     protected int totalRows;
 
-    /** The GAE cursor for the current page, as from Cursor.toWebSafeString(). */
+    /**
+     * Current datastore location for pagination, useful for platforms that have such a concept.
+     * This is an opaque value from the perspective of a DAO client.
+     * For GAE, this is the cursor for the current page, as from Cursor.toWebSafeString().
+     */
     protected String current;
 
-    /** A map from page number to GAE cursor. */
+    /** A map from page number datastore location, useful for platforms that have such a concept. */
     protected Map<Integer, String> cursors;
 
     /** A map from page number to number of rows on the page. */
@@ -104,7 +109,8 @@ public class Pagination extends TranslatableDomainObject {
     }
 
     /**
-     * Current location for pagination, an opaque value from the perspective of a DAO client.
+     * Current datastore location for pagination, useful for platforms that have such a concept.
+     * This is an opaque value from the perspective of a DAO client.
      * For GAE, this is the cursor for the current page, as from Cursor.toWebSafeString().
      */
     public String getCurrent() {
@@ -233,7 +239,6 @@ public class Pagination extends TranslatableDomainObject {
 
     /**
      * Update the pagination state in place.
-     * The current and next values are cursor strings as from Cursor.toWebSafeString().
      * @param current   Cursor for current page
      * @param next      Cursor for next page, null if no next page exists
      */
