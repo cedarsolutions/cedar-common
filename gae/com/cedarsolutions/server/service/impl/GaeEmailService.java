@@ -31,6 +31,7 @@ import java.util.Map;
 import javax.mail.Message;
 
 import org.apache.log4j.Logger;
+import org.apache.velocity.tools.generic.DateTool;
 
 import com.cedarsolutions.exception.NotConfiguredException;
 import com.cedarsolutions.server.service.IEmailService;
@@ -68,7 +69,7 @@ public class GaeEmailService extends AbstractService implements IEmailService {
     }
 
     /**
-     * Send an email message via the container infrastructure.
+     * Send an email message via the GAE container infrastructure.
      * @param email   Email message to send
      */
     @Override
@@ -79,7 +80,7 @@ public class GaeEmailService extends AbstractService implements IEmailService {
     }
 
     /**
-     * Send an email message via the container infrastructure.
+     * Send an email message via the GAE container infrastructure.
      * @param template  Email message template to send
      */
     @Override
