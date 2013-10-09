@@ -31,6 +31,7 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.tools.generic.DateTool;
 
 import com.cedarsolutions.exception.CedarRuntimeException;
 import com.cedarsolutions.util.LoggingUtils;
@@ -87,6 +88,7 @@ public class GaeVelocityUtils {
      * @throws CedarRuntimeException If the template cannot be rendered.
      */
     public String renderTemplate(String templateDir, String template, VelocityContext context) {
+        context.put("dateTool", new DateTool());  // give everyone access to the date tool
         StringWriter writer = new StringWriter();
         getTemplate(templateDir, template).merge(context, writer);
         String result = writer.toString();

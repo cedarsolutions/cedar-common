@@ -270,13 +270,13 @@ project(":gae") {
       compile "javax.mail:mail:1.4.4"
       compile "javax.servlet:servlet-api:2.5"
       compile "org.apache.velocity:velocity:1.7"
+      compile "org.apache.velocity:velocity-tools:2.0"
       compile "org.springframework.security:spring-security-core:2.0.8.RELEASE"
       compile "org.springframework.security:spring-security-core-tiger:2.0.8.RELEASE"
       compile project(":util")
       compile project(":gwt")
 
       runtime "org.apache.geronimo.specs:geronimo-jpa_3.0_spec:1.1.1"
-      runtime "org.apache.velocity:velocity-tools:2.0"
       runtime "javax.jdo:jdo2-api:2.3-eb"
    }
 
