@@ -31,7 +31,7 @@ import org.apache.velocity.VelocityContext;
 import org.junit.Test;
 
 /**
- * Unit tests for GaeVelocityUtils.getInstance().
+ * Unit tests for GaeVelocityUtils.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public class GaeVelocityUtilsTest {
