@@ -31,7 +31,6 @@ import java.util.Map;
 import javax.mail.Message;
 
 import org.apache.log4j.Logger;
-import org.apache.velocity.tools.generic.DateTool;
 
 import com.cedarsolutions.exception.NotConfiguredException;
 import com.cedarsolutions.server.service.IEmailService;
