@@ -32,13 +32,13 @@ import com.cedarsolutions.shared.domain.email.EmailTemplate;
 public interface IEmailService {
 
     /**
-     * Send an email message via the container infrastructure.
+     * Send an email message.
      * @param message   Email message to send
      */
     void sendEmail(EmailMessage message);
 
     /**
-     * Send an email message via the container infrastructure.
+     * Send an email message.
      * @param template  Email message template to send
      */
     void sendEmail(EmailTemplate template);
