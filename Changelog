@@ -1,4 +1,4 @@
-Version 2.2.1   unreleased
+Version 2.2.1   09 Oct 2013
 
 	* Add Velocity's DateTool to the context whenever rendering templates.
 	* Add velocity-tools as a compile-time dependency now that we're using it directly.
