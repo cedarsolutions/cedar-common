@@ -20,14 +20,12 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.util;
+package com.cedarsolutions.util.gwt;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-
-import com.cedarsolutions.util.gwt.GwtExceptionUtils;
 
 /**
  * Unit tests for GwtExceptionUtils.
