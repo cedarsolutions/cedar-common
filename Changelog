@@ -1,3 +1,7 @@
+Version 2.2.2   unreleased
+
+	* Add new GwtConfigUtils class for use with GWT configuration on the server side.
+
 Version 2.2.1   09 Oct 2013
 
 	* Add Velocity's DateTool to the context whenever rendering templates.
