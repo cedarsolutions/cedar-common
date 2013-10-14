@@ -104,7 +104,6 @@ subprojects {
       mavenCentral() // Maven Central repository
       maven { url "http://maven.objectify-appengine.googlecode.com/git/" } // Objectify 3.x
       maven { url "http://download.java.net/maven/2/" }                    // JavaMail and related code
-      maven { url "http://mvp4g.googlecode.com/svn/maven2/snapshots/" }    // Mvp4g snapshots
       maven { url "http://maven.cedar-common.googlecode.com/hg/maven/" }   // Cedar Common code
    }
 
@@ -235,10 +234,10 @@ project(":gwt") {
    dependencies {
       compile "com.google.gwt:gwt-dev:${config_gwtVersion}"
       compile "com.google.gwt:gwt-user:${config_gwtVersion}"
-      compile "com.googlecode.mvp4g:mvp4g:1.5.0-SNAPSHOT"
+      compile "com.google.gwt.inject:gin:2.0.0"
+      compile "com.googlecode.cedar-common:mvp4g:1.5.0-20120509.003820-1-pre"
       compile "com.googlecode.cedar-common:gwt-sl:1.2"
       compile project(":util")
-      runtime "com.google.gwt.inject:gin:1.5.0"
    }
 
    uploadArchives {
