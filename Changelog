@@ -1,4 +1,4 @@
-Version 2.2.2   unreleased
+Version 2.2.2   14 Oct 2013
 
 	* Add new GwtConfigUtils class for use with GWT configuration on the server side.
 
