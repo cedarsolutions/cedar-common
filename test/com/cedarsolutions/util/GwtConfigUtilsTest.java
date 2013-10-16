@@ -124,4 +124,16 @@ public class GwtConfigUtilsTest {
         } catch (NotFoundException e) { }
     }
 
+    /** Test getMessage(). */
+    @Test public void testGetMessage() {
+        GwtConfigUtils utils = new GwtConfigUtils();
+
+        assertEquals("Message", utils.getMessage(TestMessages.class, "testMessage"));
+
+        try {
+            utils.getMessage(TestMessages.class, "bogus");
+            fail("Expected NotFoundException");
+        } catch (NotFoundException e) { }
+    }
+
 }

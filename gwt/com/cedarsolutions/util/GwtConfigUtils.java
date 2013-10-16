@@ -32,16 +32,27 @@ import com.google.gwt.i18n.client.Constants.DefaultDoubleValue;
 import com.google.gwt.i18n.client.Constants.DefaultFloatValue;
 import com.google.gwt.i18n.client.Constants.DefaultIntValue;
 import com.google.gwt.i18n.client.Constants.DefaultStringValue;
+import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.i18n.client.Messages.DefaultMessage;
 
 /**
  * Reads GWT configuration on the server-side.
  *
  * <p>
- * This is intended for use with GWT constants interfaces that are used for
- * configuration or settings rather than for localization.  It looks at the
- * default value annotations on the interface, but does not interpret any of
- * the underlying properties files that are used for translations.  Also, it
- * only supports the more common configuration types (no String array or Map).
+ * This is intended for use with GWT Constants and Messages interfaces.  It
+ * looks at the default value and default message annotations on the
+ * interfaces, but does not interpret any of the underlying properties files
+ * that are used for translations.  It only supports the more common
+ * configuration types (no string arrays or maps), and does not support any
+ * argument subsitution in messages.  It just gives you back the value from the
+ * annotation.
+ * </p>
+ *
+ * <p>
+ * Clearly, this class is not a substitute for the real GWT functionality, but
+ * does at least allow for putting "shared" constants and user-facing messages
+ * in a single place.  Pure server-side configuration should still be retrieved
+ * from a properties file via config classes.
  * </p>
  *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
@@ -71,6 +82,33 @@ public class GwtConfigUtils {
     /** Get a String constant from a GWT resource class. */
     public String getString(Class<? extends Constants> clazz, String name) {
         return (String) get(clazz, ConstantType.STRING, name);
+    }
+
+    /** Get a message string from a GWT resource class. */
+    public String getMessage(Class<? extends Messages> clazz, String name) {
+        return (String) get(clazz, name);
+    }
+
+    /** Get a mocked value of a particular type from a class. */
+    private Object get(Class<? extends Messages> clazz, String name) {
+        for (Method method : clazz.getMethods()) {
+            if (method.getName().equals(name)) {
+                return get(clazz, method);
+            }
+        }
+
+        throw new NotFoundException("Could not find: " + clazz.getCanonicalName() + "." + name + "()");
+    }
+
+    /** Get a mocked value of a message from a method. */
+    private Object get(Class<? extends Messages> clazz, Method method) {
+        for (Annotation annotation : method.getDeclaredAnnotations()) {
+            if (annotation instanceof DefaultMessage) {
+                return ((DefaultMessage) annotation).value();
+            }
+        }
+
+        throw new NotFoundException("Wrong type: " + clazz.getCanonicalName() + "." + method.getName() + "() is not a message");
     }
 
     /** Get a mocked value of a particular type from a class. */
@@ -128,7 +166,7 @@ public class GwtConfigUtils {
     }
 
     /** Available constant types. */
-    protected enum ConstantType {
+    private enum ConstantType {
         BOOLEAN,
         DOUBLE,
         FLOAT,

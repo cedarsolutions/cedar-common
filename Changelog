@@ -1,3 +1,7 @@
+Version 2.3.2   unreleased
+
+    * Add support for Messages interface into GwtConfigUtils.
+    
 Version 2.3.1   14 Oct 2013
 
     * Bump up to a later version of the Mvp4g 1.5.0 snapshot due to GIN 2.0.0 problems downstream. 
