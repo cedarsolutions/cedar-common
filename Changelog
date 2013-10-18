@@ -1,4 +1,4 @@
-Version 2.4.0   unreleased
+Version 2.4.0   17 Oct 2013
 
     * Add HttpStatusCode.AUTHENTICATION_TIMEOUT for non-standard 419 code.
     * Add AbstractRpcCaller.handleSpecialErrors() to give child classes a hook for special problems.
