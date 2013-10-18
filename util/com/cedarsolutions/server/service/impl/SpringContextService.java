@@ -83,7 +83,7 @@ public class SpringContextService extends AbstractService implements ISpringCont
      */
     @Override
     public void invalidateCurrentSession() {
-        HttpSession session = this.getRequestSession();
+        HttpSession session = this.getRequestSessionNeverCreate();
         if (session != null) {
             session.invalidate();
         }
@@ -162,6 +162,16 @@ public class SpringContextService extends AbstractService implements ISpringCont
     /** Whether to create a session if one is needed and doesn't exist. */
     public void setCreateSessionIfNecessary(boolean createSessionIfNecessary) {
         this.createSessionIfNecessary = createSessionIfNecessary;
+    }
+
+    /** Get the current servlet request's HTTP session, possibly null, never creating it if it doesn't exist. */
+    protected HttpSession getRequestSessionNeverCreate() {
+        HttpServletRequest request = this.getServletRequest();
+        if (request != null) {
+            return request.getSession(false);
+        }
+
+        return null;
     }
 
     /** Get the current servlet request's HTTP session, possibly null. */

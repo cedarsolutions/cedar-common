@@ -33,6 +33,7 @@ import static org.mockito.Mockito.mock;
 import org.junit.Test;
 
 import com.cedarsolutions.exception.InvalidDataException;
+import com.cedarsolutions.exception.NotImplementedException;
 import com.cedarsolutions.exception.RpcSecurityException;
 import com.cedarsolutions.shared.domain.ErrorDescription;
 import com.cedarsolutions.web.metadata.HttpStatusCode;
@@ -198,7 +199,7 @@ public class AbstractRpcCallerTest {
         assertNull(caller.result);
     }
 
-    /** Test onUnhandledError() for HTTP error (not FORBIDDEN). */
+    /** Test onUnhandledError() for HTTP error (not FORBIDDEN or UNAUTHORIZED). */
     @Test public void testOnUnhandledError2() {
         Throwable exception = new StatusCodeException(HttpStatusCode.INTERNAL_SERVER_ERROR.getValue(), "whatever");
         Caller caller = new Caller();
@@ -317,6 +318,70 @@ public class AbstractRpcCallerTest {
         assertNull(caller.result);
     }
 
+    /** Test onUnhandledError() for no response received. */
+    @Test public void testOnUnhandledError9() {
+        Throwable exception = new StatusCodeException(0, "whatever");
+        Caller caller = new Caller();
+        caller.onUnhandledError(exception);
+
+        assertEquals("generateNoResponseReceivedError", caller.error.getMessage());
+        assertNull(caller.statusCode);
+        assertNull(caller.invalidDataException);
+        assertNull(caller.rpcSecurityException);
+        assertNull(caller.rpcTokenException);
+        assertNull(caller.requestTimeoutException);
+        assertNull(caller.incompatibleRemoteServiceException);
+        assertSame(exception, caller.exception);
+        assertNull(caller.result);
+    }
+
+    /** Test onUnhandledError() for HTTP error (UNAUTHORIZED). */
+    @Test public void testOnUnhandledError10() {
+        Throwable exception = new StatusCodeException(HttpStatusCode.UNAUTHORIZED.getValue(), "whatever");
+        Caller caller = new Caller();
+        caller.onUnhandledError(exception);
+
+        assertEquals("generateNotAuthorized", caller.error.getMessage());
+        assertEquals(HttpStatusCode.UNAUTHORIZED, caller.statusCode);
+        assertNull(caller.invalidDataException);
+        assertNull(caller.rpcSecurityException);
+        assertNull(caller.rpcTokenException);
+        assertNull(caller.requestTimeoutException);
+        assertNull(caller.incompatibleRemoteServiceException);
+        assertNull(caller.exception);
+        assertNull(caller.result);
+    }
+
+    /** Test special error-handling behavior. */
+    @Test public void testSpecialErrorHandling() {
+        Throwable exception = new NotImplementedException("Whatever");
+
+        Caller caller = new Caller();
+        caller.onUnhandledError(exception);
+        assertEquals("generateGeneralRpcError", caller.error.getMessage());
+        assertNull(caller.statusCode);
+        assertNull(caller.invalidDataException);
+        assertNull(caller.rpcSecurityException);
+        assertNull(caller.rpcTokenException);
+        assertNull(caller.requestTimeoutException);
+        assertNull(caller.incompatibleRemoteServiceException);
+        assertSame(exception, caller.exception);
+        assertNull(caller.result);
+
+        // The special caller just ignores NotImplementedException
+        SpecialCaller specialCaller = new SpecialCaller();
+        specialCaller.onUnhandledError(exception);
+        assertNull(specialCaller.error);
+        assertNull(specialCaller.statusCode);
+        assertNull(specialCaller.invalidDataException);
+        assertNull(specialCaller.rpcSecurityException);
+        assertNull(specialCaller.rpcTokenException);
+        assertNull(specialCaller.requestTimeoutException);
+        assertNull(specialCaller.incompatibleRemoteServiceException);
+        assertNull(specialCaller.exception);
+        assertNull(specialCaller.result);
+    }
+
     /** Dummy asynchronous interface. */
     protected interface IDummyAsync {
     }
@@ -421,6 +486,12 @@ public class AbstractRpcCallerTest {
         }
 
         @Override
+        public ErrorDescription generateNoResponseReceivedError(Throwable exception) {
+            this.exception = exception;
+            return new ErrorDescription("generateNoResponseReceivedError");
+        }
+
+        @Override
         public ErrorDescription generateIncompatibleRemoteServiceExceptionError(IncompatibleRemoteServiceException exception) {
             this.incompatibleRemoteServiceException = exception;
             return new ErrorDescription("generateIncompatibleRemoteServiceExceptionError");
@@ -440,4 +511,13 @@ public class AbstractRpcCallerTest {
         }
     }
 
+    /** Concrete class that we can use for testing, which implements the special exception handler method. */
+    protected static class SpecialCaller extends Caller {
+
+        @Override
+        public boolean handleSpecialErrors(Throwable caught) {
+            return caught instanceof NotImplementedException;
+        }
+
+    }
 }

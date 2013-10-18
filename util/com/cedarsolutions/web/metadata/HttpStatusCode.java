@@ -28,10 +28,12 @@ import com.cedarsolutions.shared.domain.IntegerEnum;
 /**
  * List of the HTTP 1.1 status codes.
  * @see <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">Status Code Definitions</a>
+ * @see <a href="http://en.wikipedia.org/wiki/List_of_HTTP_status_codes">Wikipedia</a>
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public enum HttpStatusCode implements IntegerEnum {
 
+    // Standard HTTP errors
     UNKNOWN(),
     CONTINUE(100),
     SWITCHING_PROTOCOLS(101),
@@ -67,6 +69,7 @@ public enum HttpStatusCode implements IntegerEnum {
     UNSUPPORTED_MEDIA_TYPE(415),
     REQUEST_RANGE_NOT_SATISFIABLE(416),
     EXPECTATION_FAILED(417),
+    AUTHENTICATION_TIMEOUT(419),  // not in RFC 2616, means previously valid authentication has expired
     INTERNAL_SERVER_ERROR(500),
     NOT_IMPLEMENTED(501),
     BAD_GATEWAY(502),
@@ -165,6 +168,8 @@ public enum HttpStatusCode implements IntegerEnum {
                 return REQUEST_RANGE_NOT_SATISFIABLE;
              case 417:
                 return EXPECTATION_FAILED;
+             case 419:
+                 return AUTHENTICATION_TIMEOUT;
              case 500:
                 return INTERNAL_SERVER_ERROR;
              case 501:

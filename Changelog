@@ -1,24 +1,32 @@
+Version 2.4.0   unreleased
+
+    * Add HttpStatusCode.AUTHENTICATION_TIMEOUT for non-standard 419 code.
+    * Add AbstractRpcCaller.handleSpecialErrors() to give child classes a hook for special problems.
+    * Rework SpringContextService.invalidateSession() so it doesn't create a session before invalidating it.
+    * Extend AbstractRpcCaller so it handles GWT's goofy HTTP status zero error (basically "no response").
+    * Handle UNAUTHORIZED (401) status the same as FORBIDDEN (403) when calling RPCs.
+
 Version 2.3.2   16 Oct 2013
 
     * Add support for Messages interface into GwtConfigUtils.
-    
+
 Version 2.3.1   14 Oct 2013
 
-    * Bump up to a later version of the Mvp4g 1.5.0 snapshot due to GIN 2.0.0 problems downstream. 
-    
+    * Bump up to a later version of the Mvp4g 1.5.0 snapshot due to GIN 2.0.0 problems downstream.
+
 Version 2.3.0   14 Oct 2013
 
     * Change build.gradle to get Mvp4g from com.googlecode.cedar-common rather than snapshot repo.
     * Explicitly list GIN 2.0.0 in build.gradle, rather than relying on implicit Mvp4g dependency.
-    
+
 Version 2.2.2   14 Oct 2013
 
-	* Add new GwtConfigUtils class for use with GWT configuration on the server side.
+    * Add new GwtConfigUtils class for use with GWT configuration on the server side.
 
 Version 2.2.1   09 Oct 2013
 
-	* Add Velocity's DateTool to the context whenever rendering templates.
-	* Add velocity-tools as a compile-time dependency now that we're using it directly.
+    * Add Velocity's DateTool to the context whenever rendering templates.
+    * Add velocity-tools as a compile-time dependency now that we're using it directly.
 
 Version 2.2.0   27 Sep 2013
 

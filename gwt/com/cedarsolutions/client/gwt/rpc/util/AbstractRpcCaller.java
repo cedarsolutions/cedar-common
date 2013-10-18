@@ -142,6 +142,9 @@ public abstract class AbstractRpcCaller<A, T> implements IRpcCaller<T> {
     /** Generate an error due to a RequestTimeoutException. */
     public abstract ErrorDescription generateRequestTimeoutExceptionError(RequestTimeoutException exception);
 
+    /** Generate an error due to no response received. */
+    public abstract ErrorDescription generateNoResponseReceivedError(Throwable exception);
+
     /** Generate an error due to an IncompatibleRemoteServiceException. */
     public abstract ErrorDescription generateIncompatibleRemoteServiceExceptionError(IncompatibleRemoteServiceException exception);
 
@@ -221,8 +224,30 @@ public abstract class AbstractRpcCaller<A, T> implements IRpcCaller<T> {
      */
     @Override
     public void onUnhandledError(Throwable caught) {
-        ErrorDescription error = this.generateError(caught);
-        this.showError(error);
+        boolean handled = this.handleSpecialErrors(caught);
+        if (!handled) {
+            ErrorDescription error = this.generateError(caught);
+            this.showError(error);
+        }
+    }
+
+    /**
+     * Hook that lets child classes handle particular exceptions in a special way.
+     *
+     * <p>
+     * By default, this is a no-op.  Child classes can override the method,
+     * implement their own behavior for specific exceptions, and return true if
+     * the exception was handled in a special way.  A typical use case might be
+     * to handle the non-standard AUTHENTICATION_TIMEOUT status and redirect the
+     * user to a login page rather than showing them an RPC error.
+     * </p>
+     *
+     * @param caught  Unhandled error that was caught
+     *
+     * @return True if the exception has been handled, false to follow the existing error-handling logic.
+     */
+    public boolean handleSpecialErrors(Throwable caught) {
+        return false; // default implementation is a no-op
     }
 
     /** Get descriptive call state, like "(1 of 2 attempts)", possibly empty. */
@@ -284,12 +309,18 @@ public abstract class AbstractRpcCaller<A, T> implements IRpcCaller<T> {
         try {
             throw caught;
         } catch (StatusCodeException exception) {
-            HttpStatusCode statusCode = HttpStatusCode.convert(exception.getStatusCode());
-            switch(statusCode) {
-            case FORBIDDEN:
-                return this.generateNotAuthorizedError(statusCode);
-            default:
-                return this.generateGeneralRpcError(exception, statusCode);
+            if (exception.getStatusCode() == 0) {
+                // No idea why a status code of zero means "nothing received"...?
+                return this.generateNoResponseReceivedError(exception);
+            } else {
+                HttpStatusCode statusCode = HttpStatusCode.convert(exception.getStatusCode());
+                switch(statusCode) {
+                case UNAUTHORIZED:
+                case FORBIDDEN:
+                    return this.generateNotAuthorizedError(statusCode);
+                default:
+                    return this.generateGeneralRpcError(exception, statusCode);
+                }
             }
         } catch (RpcSecurityException exception) {
             return this.generateRpcSecurityExceptionError(exception);
