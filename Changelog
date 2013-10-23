@@ -1,3 +1,7 @@
+Version 2.4.1   unreleased
+
+	* Add new PropertiesUtils class.
+
 Version 2.4.0   17 Oct 2013
 
     * Add HttpStatusCode.AUTHENTICATION_TIMEOUT for non-standard 419 code.
