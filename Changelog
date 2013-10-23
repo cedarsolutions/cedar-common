@@ -1,7 +1,7 @@
 Version 2.4.1   unreleased
 
-	* Add new PropertiesUtils and HierarchicalProperties utility classes.
-	* Pull up AbstractStandardDialog, AbstractWidgetUtils and NativeUtils now that it's clear they're common.
+    * Add new PropertiesUtils and HierarchicalProperties utility classes.
+    * Pull up AbstractStandardDialog, AbstractWidgetUtils and NativeUtils now that it's clear they're common.
 
 Version 2.4.0   17 Oct 2013
 
@@ -9,6 +9,7 @@ Version 2.4.0   17 Oct 2013
     * Add AbstractRpcCaller.handleSpecialErrors() to give child classes a hook for special problems.
     * Rework SpringContextService.invalidateSession() so it doesn't create a session before invalidating it.
     * Extend AbstractRpcCaller so it handles GWT's goofy HTTP status zero error (basically "no response").
+    * Add new method AbstractRpcCaller.generateNoResponseReceivedError(), which child classes must implement.
     * Handle UNAUTHORIZED (401) status the same as FORBIDDEN (403) when calling RPCs.
 
 Version 2.3.2   16 Oct 2013
