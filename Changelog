@@ -1,6 +1,6 @@
 Version 2.4.1   unreleased
 
-	* Add new PropertiesUtils class.
+	* Add new PropertiesUtils and HierarchicalProperties classes.
 
 Version 2.4.0   17 Oct 2013
 
