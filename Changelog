@@ -1,4 +1,4 @@
-Version 2.4.1   unreleased
+Version 2.4.1   23 Oct 2013
 
     * Add new PropertiesUtils and HierarchicalProperties utility classes.
     * Pull up AbstractStandardDialog, AbstractWidgetUtils and NativeUtils now that it's clear they're common.
