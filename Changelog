@@ -1,6 +1,7 @@
 Version 2.4.2   unreleased
 
    * Reformat build.gradle to tabstop=4, to be consistent with Eclipse editors.
+   * Pull definitions for test suites back down into build.gradle, rather than CedarBuild.
 
 Version 2.4.1   23 Oct 2013
 

@@ -40,7 +40,6 @@ buildscript {
 }
 
 // Plugins
-apply plugin: "base"
 apply plugin: "eclipse"
 apply plugin: "cedarBuild"
 apply plugin: "cedarCopyright"
@@ -396,8 +395,6 @@ project(":gaetestutil") {
 // Unit tests
 project(":test") {
 
-    apply plugin: "cedarTestSuite"
-
     uploadArchives.enabled = false
     install.enabled = false
 
@@ -415,10 +412,6 @@ project(":test") {
         srcDirs = []
     }
 
-    cedarTestSuite {
-        workingDir = "../"
-    }
-
     dependencies {
         testCompile "com.googlecode.cedar-common:cpsuite:1.2.6"
         testCompile project(":util")
@@ -427,6 +420,51 @@ project(":test") {
         testCompile project(":testutil")
         testCompile project(":gwttestutil")
         testCompile project(":gaetestutil")
+    }
+
+    // Run unit tests, assumed to be found in a class suites/UnitTestSuite.
+    // The caller that applies this plugin still has responsibility for making sure the suite gets compiled.
+    project.task("unittest", type: org.gradle.api.tasks.testing.Test) {
+        workingDir = "../"
+        scanForTestClasses = false
+        enableAssertions = false
+        outputs.upToDateWhen { false }
+        include "suites/UnitTestSuite.class"
+    }
+
+    // Run GWT client tests, assumed to be found in a class suites/ClientTestSuite.
+    // The caller that applies this plugin still has responsibility for making sure the suite gets compiled.
+    project.task("clienttest", type: org.gradle.api.tasks.testing.Test) {
+        workingDir = "../"
+        scanForTestClasses = false
+        scanForTestClasses = false
+        enableAssertions = false
+        outputs.upToDateWhen { false }
+
+        systemProperty "gwt.args", "-out www-test -logLevel ERROR"
+        systemProperty "java.awt.headless", "true"   // required on Linux to avoid deferred binding errors
+
+        include "suites/ClientTestSuite.class"
+
+        beforeSuite { descriptor ->
+            // Ugh, this gets called several different times for different internal Gradle "suites"
+            if (descriptor.className == "suites.ClientTestSuite") {
+                def wwwTest = project.file(workingDir.canonicalPath + "/www-test")
+                def gwtCache = project.file(workingDir.canonicalPath + "/gwt-unitCache")
+                wwwTest.deleteDir()
+                gwtCache.deleteDir()
+            }
+        }
+
+        afterSuite { descriptor ->
+            // Ugh, this gets called several different times for different internal Gradle "suites"
+            if (descriptor.className == "suites.ClientTestSuite") {
+                def wwwTest = project.file(workingDir.canonicalPath + "/www-test")
+                def gwtCache = project.file(workingDir.canonicalPath + "/gwt-unitCache")
+                wwwTest.deleteDir()
+                gwtCache.deleteDir()
+            }
+        }
     }
 
 }
