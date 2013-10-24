@@ -1,3 +1,7 @@
+Version 2.4.2   unreleased
+
+   * Reformat build.gradle to tabstop=4, to be consistent with Eclipse editors.
+
 Version 2.4.1   23 Oct 2013
 
     * Add new PropertiesUtils and HierarchicalProperties utility classes.
