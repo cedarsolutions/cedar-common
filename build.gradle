@@ -30,6 +30,7 @@
 // Sources for the build script itself
 buildscript {
     repositories {
+        mavenCentral()
         mavenLocal()   // Local Maven repository
         maven { url "http://maven.cedar-common.googlecode.com/hg/maven/" }   // Cedar Common code
     }
