@@ -20,7 +20,7 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.user.cellview.client.Column;

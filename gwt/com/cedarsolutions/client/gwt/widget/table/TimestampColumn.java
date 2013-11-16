@@ -20,47 +20,50 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
+import java.util.Date;
+
+import com.cedarsolutions.util.gwt.GwtDateUtils;
 
 /**
- * A ColumnWithName that displays Long data in a "typical" way.
+ * A ColumnWithName that displays a Date in standard "timestamp" format.
  * @param <T> the row type
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class LongColumn<T> extends TypedColumnWithName<T, Long> {
+public abstract class TimestampColumn<T> extends TypedColumn<T, Date> {
 
     /** Create a column with no name. */
-    public LongColumn() {
+    public TimestampColumn() {
         super();
     }
 
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
-    public LongColumn(Enum name) {
+    public TimestampColumn(Enum name) {
         super(name);
     }
 
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
-    public LongColumn(Enum name, Sortable sortable) {
+    public TimestampColumn(Enum name, Sortable sortable) {
         super(name, sortable);
     }
 
     /** Create a column with a name. */
-    public LongColumn(String name) {
+    public TimestampColumn(String name) {
         super(name);
     }
 
     /** Create a column with a name. */
-    public LongColumn(String name, Sortable sortable) {
+    public TimestampColumn(String name, Sortable sortable) {
         super(name, sortable);
     }
 
     /** Format a non-null field value properly. */
     @Override
-    protected String formatField(Long field) {
-        return String.valueOf(field);
+    protected String formatField(Date field) {
+        return GwtDateUtils.formatTimestamp(field);
     }
 
 }

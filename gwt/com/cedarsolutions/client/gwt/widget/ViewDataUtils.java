@@ -73,6 +73,50 @@ public class ViewDataUtils {
      * @param input  Input to fill in
      * @param values List of values (the first one will be used)
      */
+    public static <T> void fillInput(HasValue<T> input, List<T> values) {
+        if (values == null || values.isEmpty()) {
+            input.setValue(null);
+        } else {
+            input.setValue(values.get(0));
+        }
+    }
+
+    /**
+     * Fill an input field based on a value from criteria.
+     * @param input  Input to fill in
+     * @param value  Value to fill in
+     */
+    public static <T> void fillInput(AbstractDropdownList<T> input, T value) {
+        input.setSelectedValue(value);
+    }
+
+    /**
+     * Fill an input field based on a criteria list, using the first value in the list.
+     * @param input  Input to fill in
+     * @param values List of values (the first one will be used)
+     */
+    public static <T> void fillInput(AbstractDropdownList<T> input, List<T> values) {
+        if (values == null || values.isEmpty()) {
+            input.setSelectedValue(null);
+        } else {
+            input.setSelectedValue(values.get(0));
+        }
+    }
+
+    /**
+     * Fill an input field based on a criteria list.
+     * @param input  Input to fill in
+     * @param value  Value to fill in
+     */
+    public static <T> void fillInput(ValueBoxBase<T> input, T value) {
+        input.setValue(value);
+    }
+
+    /**
+     * Fill an input field based on a criteria list, using the first value in the list.
+     * @param input  Input to fill in
+     * @param values List of values (the first one will be used)
+     */
     public static <T> void fillInput(ValueBoxBase<T> input, List<T> values) {
         if (values == null || values.isEmpty()) {
             input.setValue(null);
@@ -82,11 +126,11 @@ public class ViewDataUtils {
     }
 
     /**
-     * Build list criteria based on an input field.
+     * Get a list of criteria based on an input field.
      * @param input  Input field to get data from
      * @return A single-item list containing the criteria, or null if criteria is empty.
      */
-    public static <T> List<T> buildCriteria(ValueBoxBase<T> input) {
+    public static <T> List<T> getCriteriaList(ValueBoxBase<T> input) {
         if (GwtStringUtils.isEmpty(input.getText())) {
             return null;
         } else {
@@ -97,12 +141,61 @@ public class ViewDataUtils {
     }
 
     /**
-     * Build date criteria based on an input field, resetting the time.
+     * Get criteria based on an input field.
+     * @param input  Input field to get data from
+     * @return Value from the input field.
+     */
+    public static <T> T getCriteria(ValueBoxBase<T> input) {
+        if (GwtStringUtils.isEmpty(input.getText())) {
+            return null;
+        } else {
+            return input.getValue();
+        }
+    }
+
+    /**
+     * Get a list of criteria based on an input field.
+     * @param input  Input field to get data from
+     * @return A single-item list containing the criteria, or null if criteria is empty.
+     */
+    public static <T> List<T> getCriteriaList(AbstractDropdownList<T> input) {
+        if (input.getSelectedValue() == null) {
+            return null;
+        } else {
+            List<T> result = new ArrayList<T>();
+            result.add(input.getSelectedValue());
+            return result;
+        }
+    }
+
+    /**
+     * Get criteria based on an input field.
+     * @param input  Input field to get data from
+     * @return Value from the input field.
+     */
+    public static <T> T getCriteria(AbstractDropdownList<T> input) {
+        return input.getSelectedValue();
+    }
+
+    /**
+     * Build a list of criteria based on an input field.
      * @param input  Input field to get data from
      * @param time   Time to reset the returned data to
      * @return Date from the input field, with time reset.
      */
-    public static Date buildCriteria(DateBox input) {
+    public static List<Date> getCriteriaList(DateBox input) {
+        List<Date> result = new ArrayList<Date>();
+        result.add(input.getDatePicker().getValue());
+        return result;
+    }
+
+    /**
+     * Build criteria based on an input field.
+     * @param input  Input field to get data from
+     * @param time   Time to reset the returned data to
+     * @return Date from the input field, with time reset.
+     */
+    public static Date getCriteria(DateBox input) {
         return input.getDatePicker().getValue();
     }
 
@@ -112,8 +205,8 @@ public class ViewDataUtils {
      * @param time   Time to reset the returned data to
      * @return Date from the input field, with time reset.
      */
-    public static Date buildCriteria(DateBox input, String time) {
-        Date result = buildCriteria(input);
+    public static Date getDateCriteria(DateBox input, String time) {
+        Date result = getCriteria(input);
         return GwtDateUtils.resetTime(result, time);
     }
 

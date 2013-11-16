@@ -20,46 +20,46 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
 
 /**
- * A ColumnWithName that displays Integer data in a "typical" way.
+ * A ColumnWithName that displays Long data in a "typical" way.
  * @param <T> the row type
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class IntegerColumn<T> extends TypedColumnWithName<T, Integer> {
+public abstract class LongColumn<T> extends TypedColumn<T, Long> {
 
     /** Create a column with no name. */
-    public IntegerColumn() {
+    public LongColumn() {
         super();
     }
 
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
-    public IntegerColumn(Enum name) {
+    public LongColumn(Enum name) {
         super(name);
     }
 
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
-    public IntegerColumn(Enum name, Sortable sortable) {
+    public LongColumn(Enum name, Sortable sortable) {
         super(name, sortable);
     }
 
     /** Create a column with a name. */
-    public IntegerColumn(String name) {
+    public LongColumn(String name) {
         super(name);
     }
 
     /** Create a column with a name. */
-    public IntegerColumn(String name, Sortable sortable) {
+    public LongColumn(String name, Sortable sortable) {
         super(name, sortable);
     }
 
     /** Format a non-null field value properly. */
     @Override
-    protected String formatField(Integer field) {
+    protected String formatField(Long field) {
         return String.valueOf(field);
     }
 

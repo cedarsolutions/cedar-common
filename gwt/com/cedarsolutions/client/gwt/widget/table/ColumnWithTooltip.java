@@ -20,7 +20,9 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
+
+import static com.cedarsolutions.client.gwt.widget.table.ColumnWithName.Sortable.NOT_SORTABLE;
 
 import com.google.gwt.cell.client.SafeHtmlCell;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -44,21 +46,38 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
  */
 public abstract class ColumnWithTooltip<T> extends ColumnWithName<T, SafeHtml> {
 
-    /** Create a column with a tooltip. */
-    public ColumnWithTooltip(String name) {
-        super(name, new SafeHtmlCell());
+    /** Create a column with no name. */
+    public ColumnWithTooltip() {
+        this((String) null);
     }
 
-    /** Create a column with a tooltip. */
-    public ColumnWithTooltip() {
-        super(new SafeHtmlCell());
+    /** Create a column with a name taken from an enum. */
+    @SuppressWarnings("rawtypes")
+    public ColumnWithTooltip(Enum name) {
+        this(name, NOT_SORTABLE);
+    }
+
+    /** Create a column with a name taken from an enum. */
+    @SuppressWarnings("rawtypes")
+    public ColumnWithTooltip(Enum name, Sortable sortable) {
+        super(name, new SafeHtmlCell(), sortable);
+    }
+
+    /** Create a column with a name. */
+    public ColumnWithTooltip(String name) {
+        this(name, NOT_SORTABLE);
+    }
+
+    /** Create a column with a name. */
+    public ColumnWithTooltip(String name, Sortable sortable) {
+        super(name, new SafeHtmlCell(), sortable);
     }
 
     /** Display the string value with tooltip, using a custom span. */
     @Override
     public SafeHtml getValue(T item) {
         String value = getStringValue(item);
-        String tooltip = getTooltip(item);
+        String tooltip = item == null ? null : getTooltip(item);
         String contents = new SafeHtmlBuilder().appendEscaped(value).toSafeHtml().asString();
         if (tooltip != null) {
             String title = new SafeHtmlBuilder().appendEscaped(tooltip).toSafeHtml().asString();
@@ -71,7 +90,10 @@ public abstract class ColumnWithTooltip<T> extends ColumnWithName<T, SafeHtml> {
     /** Get the string value to be displayed. */
     public abstract String getStringValue(T item);
 
-    /** Get the tooltip value to be displayed. */
+    /**
+     * Get the tooltip value to be displayed.
+     * You can assume the item is non-null, and you can safely return null.
+     */
     public abstract String getTooltip(T item);
 
 }

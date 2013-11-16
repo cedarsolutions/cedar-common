@@ -20,14 +20,14 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
 import java.io.Serializable;
 
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
-import com.cedarsolutions.client.gwt.widget.DataTable.DataTableStyle;
-import com.cedarsolutions.client.gwt.widget.DataTable.SelectionColumn;
-import com.cedarsolutions.client.gwt.widget.DataTable.SelectionHeader;
+import com.cedarsolutions.client.gwt.widget.table.DataTable.DataTableStyle;
+import com.cedarsolutions.client.gwt.widget.table.DataTable.SelectionColumn;
+import com.cedarsolutions.client.gwt.widget.table.DataTable.SelectionHeader;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.cellview.client.CellTable;
