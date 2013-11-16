@@ -38,6 +38,12 @@ import com.google.gwt.user.client.ui.ValueBoxBase;
  */
 public class ViewDataUtils {
 
+    /** The timestamp used for creating start dates. */
+    public static final String START_TIMESTAMP = "00:00:00,000";
+
+    /** The timestamp used for creating end dates. */
+    public static final String END_TIMESTAMP = "23:59:59,999";
+
     /** Create a DateBox using the standard GwtDateUtils date format. */
     public static DateBox createDateBoxForDate() {
         DateBox dateBox = new DateBox();
@@ -131,7 +137,7 @@ public class ViewDataUtils {
      * @return A single-item list containing the criteria, or null if criteria is empty.
      */
     public static <T> List<T> getCriteriaList(ValueBoxBase<T> input) {
-        if (GwtStringUtils.isEmpty(input.getText())) {
+        if (input.getValue() == null || GwtStringUtils.isEmpty(input.getText())) {
             return null;
         } else {
             List<T> result = new ArrayList<T>();
@@ -146,7 +152,7 @@ public class ViewDataUtils {
      * @return Value from the input field.
      */
     public static <T> T getCriteria(ValueBoxBase<T> input) {
-        if (GwtStringUtils.isEmpty(input.getText())) {
+        if (input.getValue() == null || GwtStringUtils.isEmpty(input.getText())) {
             return null;
         } else {
             return input.getValue();
@@ -191,8 +197,7 @@ public class ViewDataUtils {
 
     /**
      * Build criteria based on an input field.
-     * @param input  Input field to get data from
-     * @param time   Time to reset the returned data to
+     * @param input     Input field to get data from
      * @return Date from the input field, with time reset.
      */
     public static Date getCriteria(DateBox input) {
@@ -201,13 +206,31 @@ public class ViewDataUtils {
 
     /**
      * Build date criteria based on an input field, resetting the time.
-     * @param input  Input field to get data from
-     * @param time   Time to reset the returned data to
+     * @param input       Input field to get data from
+     * @param timestamp   Timestamp to reset the returned data to, like "23:59:59,999"
      * @return Date from the input field, with time reset.
      */
-    public static Date getDateCriteria(DateBox input, String time) {
+    public static Date getDateCriteria(DateBox input, String timestamp) {
         Date result = getCriteria(input);
-        return GwtDateUtils.resetTime(result, time);
+        return GwtDateUtils.resetTimestamp(result, timestamp);
+    }
+
+    /**
+     * Build date criteria based on an input field, treating as a start date (starts at 00:00:00,000).
+     * @param input  Input field to get data from
+     * @return Date from the input field, with time reset so it's a sensible start date.
+     */
+    public static Date getStartDateCriteria(DateBox input) {
+        return getDateCriteria(input, START_TIMESTAMP);
+    }
+
+    /**
+     * Build date criteria based on an input field, treating as an end date (ends at 23:59:59,999).
+     * @param input  Input field to get data from
+     * @return Date from the input field, with time reset so it's a sensible end date.
+     */
+    public static Date getEndDateCriteria(DateBox input) {
+        return getDateCriteria(input, END_TIMESTAMP);
     }
 
 }
