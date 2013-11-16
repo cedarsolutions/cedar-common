@@ -20,50 +20,58 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
-import java.util.Date;
 
-import com.cedarsolutions.util.gwt.GwtDateUtils;
 
 /**
- * A ColumnWithName that displays a Date in standard "timestamp" format.
+ * A ColumnWithName that displays Boolean data in a "typical" way.
  * @param <T> the row type
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class TimestampColumn<T> extends TypedColumnWithName<T, Date> {
+public abstract class BooleanColumn<T> extends TypedColumn<T, Boolean> {
 
     /** Create a column with no name. */
-    public TimestampColumn() {
+    public BooleanColumn() {
         super();
     }
 
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
-    public TimestampColumn(Enum name) {
+    public BooleanColumn(Enum name) {
         super(name);
     }
 
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
-    public TimestampColumn(Enum name, Sortable sortable) {
+    public BooleanColumn(Enum name, Sortable sortable) {
         super(name, sortable);
     }
 
     /** Create a column with a name. */
-    public TimestampColumn(String name) {
+    public BooleanColumn(String name) {
         super(name);
     }
 
     /** Create a column with a name. */
-    public TimestampColumn(String name, Sortable sortable) {
+    public BooleanColumn(String name, Sortable sortable) {
         super(name, sortable);
+    }
+
+    /** The string used for "true". */
+    public String getTrue() {
+        return "true";
+    }
+
+    /** The string used for "false". */
+    public String getFalse() {
+        return "false";
     }
 
     /** Format a non-null field value properly. */
     @Override
-    protected String formatField(Date field) {
-        return GwtDateUtils.formatTimestamp(field);
+    protected String formatField(Boolean field) {
+        return field.booleanValue() ? this.getTrue() : this.getFalse();
     }
 
 }

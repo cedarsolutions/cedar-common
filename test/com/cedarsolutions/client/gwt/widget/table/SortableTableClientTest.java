@@ -20,14 +20,14 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
 import java.io.Serializable;
 
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
-import com.cedarsolutions.client.gwt.widget.DataTable.DataTableStyle;
-import com.cedarsolutions.client.gwt.widget.DataTable.SelectionColumn;
-import com.cedarsolutions.client.gwt.widget.DataTable.SelectionHeader;
+import com.cedarsolutions.client.gwt.widget.table.DataTable.DataTableStyle;
+import com.cedarsolutions.client.gwt.widget.table.DataTable.SelectionColumn;
+import com.cedarsolutions.client.gwt.widget.table.DataTable.SelectionHeader;
 import com.cedarsolutions.dao.domain.AbstractSearchCriteriaWithSort;
 import com.cedarsolutions.dao.domain.ISearchCriteriaWithSort;
 import com.cedarsolutions.dao.domain.SortOrder;

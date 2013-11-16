@@ -20,7 +20,7 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
 import static com.cedarsolutions.dao.domain.SortOrder.ASCENDING;
 import static com.cedarsolutions.dao.domain.SortOrder.DESCENDING;

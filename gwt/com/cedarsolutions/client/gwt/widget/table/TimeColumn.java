@@ -20,7 +20,7 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
 import java.util.Date;
 
@@ -31,7 +31,7 @@ import com.cedarsolutions.util.gwt.GwtDateUtils;
  * @param <T> the row type
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class TimeColumn<T> extends TypedColumnWithName<T, Date> {
+public abstract class TimeColumn<T> extends TypedColumn<T, Date> {
 
     /** Create a column with no name. */
     public TimeColumn() {

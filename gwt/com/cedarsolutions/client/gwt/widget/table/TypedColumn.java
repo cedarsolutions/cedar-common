@@ -20,50 +20,48 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.widget;
+package com.cedarsolutions.client.gwt.widget.table;
 
-import static com.cedarsolutions.client.gwt.widget.ColumnWithName.Sortable.NOT_SORTABLE;
-
-import com.google.gwt.cell.client.TextCell;
+import static com.cedarsolutions.client.gwt.widget.table.ColumnWithName.Sortable.NOT_SORTABLE;
 
 /**
- * A ColumnWithName that displays typed data in a TextCell.
+ * A column that displays typed data as a string, optionally displaying a tooltip.
  * @param <T> the row type
  * @param <F> the field type within the row
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class TypedColumnWithName<T, F> extends ColumnWithName<T, String> {
+public abstract class TypedColumn<T, F> extends ColumnWithTooltip<T> {
 
     /** Create a column with no name. */
-    public TypedColumnWithName() {
+    public TypedColumn() {
         this((String) null);
     }
 
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
-    public TypedColumnWithName(Enum name) {
+    public TypedColumn(Enum name) {
         this(name, NOT_SORTABLE);
     }
 
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
-    public TypedColumnWithName(Enum name, Sortable sortable) {
-        super(name, new TextCell(), sortable);
+    public TypedColumn(Enum name, Sortable sortable) {
+        super(name, sortable);
     }
 
     /** Create a column with a name. */
-    public TypedColumnWithName(String name) {
+    public TypedColumn(String name) {
         this(name, NOT_SORTABLE);
     }
 
     /** Create a column with a name. */
-    public TypedColumnWithName(String name, Sortable sortable) {
-        super(name, new TextCell(), sortable);
+    public TypedColumn(String name, Sortable sortable) {
+        super(name, sortable);
     }
 
     /** Get the value to display for an item. */
     @Override
-    public String getValue(T item) {
+    public String getStringValue(T item) {
         if (item == null) {
             return this.getDefaultValue();
         } else {
@@ -74,6 +72,12 @@ public abstract class TypedColumnWithName<T, F> extends ColumnWithName<T, String
                 return this.formatField(field);
             }
         }
+    }
+
+    /** Get the tooltip value to be displayed. */
+    @Override
+    public String getTooltip(T item) {
+        return null; // no tooltip by default
     }
 
     /** Get the default string value for the cell, if nothing is set. */
