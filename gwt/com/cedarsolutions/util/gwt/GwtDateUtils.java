@@ -91,12 +91,23 @@ public class GwtDateUtils {
 
     /**
      * Reset a date to a particular time.
+     * The result will always have seconds and milliseconds of zero.
      * @param date  Date to reset
-     * @param time  Time to set, like "00:00"
+     * @param time  Time to set, like "00:00" or "23:59"
      */
     public static Date resetTime(Date date, String time) {
         // This is pretty hokey, but it does seem to work reliably
         return date == null ? date : parseDate(formatDate(date) + "T" + time, TIME_FORMAT);
+    }
+
+    /**
+     * Reset a date to a particular time.
+     * @param date  Date to reset
+     * @param time  Time to set, like "00:00:00,000" or "23:59:59,999"
+     */
+    public static Date resetTimestamp(Date date, String time) {
+        // This is pretty hokey, but it does seem to work reliably
+        return date == null ? date : parseDate(formatDate(date) + "T" + time, TIMESTAMP_FORMAT);
     }
 
     /** Get a GWT DateTimeFormat for a particular format string. */
