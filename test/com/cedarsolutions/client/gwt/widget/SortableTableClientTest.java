@@ -247,7 +247,7 @@ public class SortableTableClientTest extends ClientTestCase {
     /** Column that does not exist in the enumeration, null column name. */
     private static class FourColumn extends ColumnWithName<Whatever, String> {
         public FourColumn() {
-            super(null, new TextCell());
+            super((String) null, new TextCell());
         }
 
         @Override
