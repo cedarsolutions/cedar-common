@@ -1,6 +1,7 @@
 Version 3.0.0   unreleased
 
     * Bump to 3.0.0 due to interface change.
+    * Add new method GwtDateUtils.resetTimestamp().
     * Add new ViewDataUtils with utilities related to view data, especially filter criteria.
     * Add specialized typed columns (String, Integer, Date, etc.) to make client code cleaner.
     * Move all table-related widgets into their own-subpackage, because there's a lot of them now.

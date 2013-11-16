@@ -67,6 +67,19 @@ public class GwtDateUtilsClientTest extends ClientTestCase {
         assertEquals(expected, result);
     }
 
+    /** Test resetTimestamp(). */
+    public void testResetTimestamp() {
+        Date input = GwtDateUtils.createDate(2011, 12, 14, 13, 42, 17, 996);
+        Date expected = GwtDateUtils.createDate(2011, 12, 14, 0, 0, 0, 0);
+        Date result = GwtDateUtils.resetTimestamp(input, "00:00:00,000");
+        assertEquals(expected, result);
+
+        input = GwtDateUtils.createDate(2011, 12, 14, 13, 42, 17, 996);
+        expected = GwtDateUtils.createDate(2011, 12, 14, 19, 32, 45, 993);
+        result = GwtDateUtils.resetTimestamp(input, "19:32:45,993");
+        assertEquals(expected, result);
+    }
+
     /** Test getFormat(). */
     public void testGetFormat() {
         DateTimeFormat result = GwtDateUtils.getFormat("yyyy-MM-dd");
