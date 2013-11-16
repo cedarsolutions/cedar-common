@@ -1,3 +1,9 @@
+Version 2.5.0   unreleased
+
+    * Add new ViewDataUtils with utilities related to view data, especially filter criteria.
+    * Add specialized typed columns (String, Integer, Date, etc.) to make client code cleaner.
+    * Add a new interface IHasSelectedRecords, for a cleaner abstraction (no need to expose tables).
+
 Version 2.4.2   27 Oct 2013
 
    * No functional changes, only organizational/build changes.
