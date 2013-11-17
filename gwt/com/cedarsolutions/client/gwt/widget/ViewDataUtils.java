@@ -30,6 +30,7 @@ import com.cedarsolutions.client.gwt.custom.datepicker.DateBox;
 import com.cedarsolutions.util.gwt.GwtDateUtils;
 import com.cedarsolutions.util.gwt.GwtStringUtils;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 
 /**
@@ -132,6 +133,38 @@ public class ViewDataUtils {
     }
 
     /**
+     * Fill an input field based on a criteria list, filling the field with comma-separated values.
+     * @param input     Input to fill in
+     * @param values    List of values (the first one will be used)
+     * @param separator String separator to use between values
+     */
+    public static void fillInputMultiple(TextBox input, List<String> values) {
+        fillInputMultiple(input, values, ", ");
+    }
+
+    /**
+     * Fill an input field based on a criteria list, filling the field with multiple separated values.
+     * @param input     Input to fill in
+     * @param values    List of values (the first one will be used)
+     * @param separator String separator to use between values
+     */
+    public static void fillInputMultiple(TextBox input, List<String> values, String separator) {
+        if (values == null || values.isEmpty()) {
+            input.setValue(null);
+        } else {
+            StringBuilder buffer = new StringBuilder();
+
+            buffer.append(values.get(0));
+            for (int i = 1; i < values.size(); i++) {
+                buffer.append(separator);
+                buffer.append(values.get(i));
+            }
+
+            input.setValue(buffer.toString());
+        }
+    }
+
+    /**
      * Get a list of criteria based on an input field.
      * @param input  Input field to get data from
      * @return A single-item list containing the criteria, or null if criteria is empty.
@@ -142,6 +175,39 @@ public class ViewDataUtils {
         } else {
             List<T> result = new ArrayList<T>();
             result.add(input.getValue());
+            return result;
+        }
+    }
+
+    /**
+     * Get a list of criteria based on an input field, assuming the input contains comma-separated values.
+     * Clearly, this only makes sense if your input data doesn't normally contain comma characters.
+     * @param input  Input field to get data from
+     * @return A single-item list containing the criteria, or null if criteria is empty.
+     */
+    public static List<String> getCriteriaListMultiple(TextBox input) {
+        return getCriteriaListMultiple(input, ", *");
+    }
+
+    /**
+     * Get a list of criteria based on an input field, assuming the input contains a list of separated values.
+     * When you specify your regular expression, don't forget to take into account whitespace.
+     * @param input  Input field to get data from
+     * @param regex  Regex that should be used to split the the values into a list
+     * @return A single-item list containing the criteria, or null if criteria is empty.
+     */
+    public static List<String> getCriteriaListMultiple(ValueBoxBase<String> input, String regex) {
+        if (input.getValue() == null || GwtStringUtils.isEmpty(input.getText())) {
+            return null;
+        } else {
+            List<String> result = new ArrayList<String>();
+
+            for (String value : input.getValue().split(regex)) {
+                if (!GwtStringUtils.isEmpty(value)) {
+                    result.add(value);
+                }
+            }
+
             return result;
         }
     }

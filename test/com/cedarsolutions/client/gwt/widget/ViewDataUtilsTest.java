@@ -34,6 +34,7 @@ import org.junit.Test;
 
 import com.cedarsolutions.junit.gwt.StubbedClientTestCase;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 
 /**
@@ -142,6 +143,32 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
         verify(input).setValue("hello");
     }
 
+    /** Test fillInputMultiple() for ValueBoxBase, list (null). */
+    @Test public void testFillInputMultipleValueBoxListNull() {
+        TextBox input = mock(TextBox.class);
+        List<String> list = null;
+        ViewDataUtils.fillInputMultiple(input, list);
+        verify(input).setValue(null);
+    }
+
+    /** Test fillInputMultiple() for ValueBoxBase, list (empty). */
+    @Test public void testFillInputMultipleValueBoxListEmpty() {
+        TextBox input = mock(TextBox.class);
+        List<String> list = new ArrayList<String>();
+        ViewDataUtils.fillInputMultiple(input, list);
+        verify(input).setValue(null);
+    }
+
+    /** Test fillInputMultiple() for ValueBoxBase, list (not empty). */
+    @Test public void testFillInputMultipleValueBoxListNotEmpty() {
+        TextBox input = mock(TextBox.class);
+        List<String> list = new ArrayList<String>();
+        list.add("hello");
+        list.add("goodbye");
+        ViewDataUtils.fillInputMultiple(input, list);
+        verify(input).setValue("hello, goodbye");
+    }
+
     /** Test getCriteriaList() for ValueBoxBase. */
     @Test public void testGetCriteriaListValueBox() {
         ValueBoxBase<String> input = mock(ValueBoxBase.class);
@@ -171,6 +198,85 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
         when(input.getValue()).thenReturn("hello");
         when(input.getText()).thenReturn("text");
         assertEquals(expected, ViewDataUtils.getCriteriaList(input));
+
+        expected = new ArrayList<String>();
+        expected.add("hello,goodbye,farewell");
+        when(input.getValue()).thenReturn("hello,goodbye,farewell");
+        when(input.getText()).thenReturn("text");
+        assertEquals(expected, ViewDataUtils.getCriteriaList(input));
+
+        expected = new ArrayList<String>();
+        expected.add("hello, goodbye, farewell");
+        when(input.getValue()).thenReturn("hello, goodbye, farewell");
+        when(input.getText()).thenReturn("text");
+        assertEquals(expected, ViewDataUtils.getCriteriaList(input));
+
+        expected = new ArrayList<String>();
+        expected.add("hello, goodbye,farewell");
+        when(input.getValue()).thenReturn("hello, goodbye,farewell");
+        when(input.getText()).thenReturn("text");
+        assertEquals(expected, ViewDataUtils.getCriteriaList(input));
+
+        expected = new ArrayList<String>();
+        expected.add(",hello, goodbye,,farewell, ");
+        when(input.getValue()).thenReturn(",hello, goodbye,,farewell, ");
+        when(input.getText()).thenReturn("text");
+        assertEquals(expected, ViewDataUtils.getCriteriaList(input));
+    }
+
+    /** Test getCriteriaListMultiple() for ValueBoxBase. */
+    @Test public void testGetCriteriaListMultipleValueBox() {
+        TextBox input = mock(TextBox.class);
+
+        when(input.getValue()).thenReturn(null);
+        when(input.getText()).thenReturn("");
+        assertEquals(null, ViewDataUtils.getCriteriaListMultiple(input));
+
+        when(input.getValue()).thenReturn(null);
+        when(input.getText()).thenReturn("");
+        assertEquals(null, ViewDataUtils.getCriteriaListMultiple(input));
+
+        when(input.getValue()).thenReturn("");
+        when(input.getText()).thenReturn(null);
+        assertEquals(null, ViewDataUtils.getCriteriaListMultiple(input));
+
+        when(input.getValue()).thenReturn("hello");
+        when(input.getText()).thenReturn(null);
+        assertEquals(null, ViewDataUtils.getCriteriaListMultiple(input));
+
+        when(input.getValue()).thenReturn("hello");
+        when(input.getText()).thenReturn("");
+        assertEquals(null, ViewDataUtils.getCriteriaListMultiple(input));
+
+        List<String> expected = new ArrayList<String>();
+        expected.add("hello");
+        when(input.getValue()).thenReturn("hello");
+        when(input.getText()).thenReturn("text");
+        assertEquals(expected, ViewDataUtils.getCriteriaListMultiple(input));
+
+        expected = new ArrayList<String>();
+        expected.add("hello");
+        expected.add("goodbye");
+        expected.add("farewell");
+        when(input.getValue()).thenReturn("hello,goodbye,farewell");
+        when(input.getText()).thenReturn("text");
+        assertEquals(expected, ViewDataUtils.getCriteriaListMultiple(input));
+
+        expected = new ArrayList<String>();
+        expected.add("hello");
+        expected.add("goodbye");
+        expected.add("farewell");
+        when(input.getValue()).thenReturn("hello, goodbye, farewell");
+        when(input.getText()).thenReturn("text");
+        assertEquals(expected, ViewDataUtils.getCriteriaListMultiple(input));
+
+        expected = new ArrayList<String>();
+        expected.add("hello");
+        expected.add("goodbye");
+        expected.add("farewell");
+        when(input.getValue()).thenReturn(",hello, goodbye,,farewell, ");
+        when(input.getText()).thenReturn("text");
+        assertEquals(expected, ViewDataUtils.getCriteriaListMultiple(input));
     }
 
     /** Test getCriteria() for ValueBoxBase. */
