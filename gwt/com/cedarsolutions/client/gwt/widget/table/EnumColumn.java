@@ -26,10 +26,11 @@ package com.cedarsolutions.client.gwt.widget.table;
 /**
  * A ColumnWithName that displays an enum in a "typical" way.
  * @param <T> the row type
+ * @param <E> the type of the enum
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 @SuppressWarnings("rawtypes")
-public abstract class EnumColumn<T> extends TypedColumn<T, Enum> {
+public abstract class EnumColumn<T, E extends Enum<E>> extends TypedColumn<T, Enum<E>> {
 
     /** Create a column with no name. */
     public EnumColumn() {

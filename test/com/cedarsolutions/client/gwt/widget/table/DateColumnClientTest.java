@@ -22,91 +22,107 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.widget.table;
 
+import java.util.Date;
+
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
 import com.cedarsolutions.client.gwt.widget.table.ColumnWithName.Sortable;
-import com.google.gwt.cell.client.Cell;
-import com.google.gwt.cell.client.TextCell;
+import com.cedarsolutions.util.gwt.GwtDateUtils;
 
 /**
- * Client-side unit tests for ColumnWithName.
+ * Client-side unit tests for DateColumn.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public class ColumnWithNameClientTest extends ClientTestCase {
+public class DateColumnClientTest extends ClientTestCase {
 
     /** Test constructor and getName() method. */
-    @SuppressWarnings("rawtypes")
     public void testConstructor() {
-        Cell cell = new TextCell();
-
-        ColumnWithName column = new TestColumn(cell);
+        DateColumn<Row> column  = new TestColumn();
         assertNotNull(column);
         assertEquals(null, column.getName());
-        assertSame(cell, column.getCell());
         assertFalse(column.isSortable());
 
-        column = new TestColumn("test", cell);
+        column  = new TestColumn("test");
         assertNotNull(column);
         assertEquals("test", column.getName());
-        assertSame(cell, column.getCell());
         assertFalse(column.isSortable());
 
-        column = new TestColumn(TestEnum.ONE, cell);
+        column = new TestColumn(TestEnum.ONE);
         assertNotNull(column);
         assertEquals("ONE", column.getName());
-        assertSame(cell, column.getCell());
         assertFalse(column.isSortable());
 
-        column = new TestColumn("test", cell, Sortable.NOT_SORTABLE);
+        column = new TestColumn("test", Sortable.NOT_SORTABLE);
         assertNotNull(column);
         assertEquals("test", column.getName());
-        assertSame(cell, column.getCell());
         assertFalse(column.isSortable());
 
-        column = new TestColumn(TestEnum.ONE, cell, Sortable.NOT_SORTABLE);
+        column = new TestColumn(TestEnum.ONE, Sortable.NOT_SORTABLE);
         assertNotNull(column);
         assertEquals("ONE", column.getName());
-        assertSame(cell, column.getCell());
         assertFalse(column.isSortable());
 
-        column = new TestColumn("test", cell, Sortable.SORTABLE);
+        column = new TestColumn("test", Sortable.SORTABLE);
         assertNotNull(column);
         assertEquals("test", column.getName());
-        assertSame(cell, column.getCell());
         assertTrue(column.isSortable());
 
-        column = new TestColumn(TestEnum.ONE, cell, Sortable.SORTABLE);
+        column = new TestColumn(TestEnum.ONE, Sortable.SORTABLE);
         assertNotNull(column);
         assertEquals("ONE", column.getName());
-        assertSame(cell, column.getCell());
         assertTrue(column.isSortable());
     }
 
+    /** Test formatField(). */
+    public void testFormatField() {
+        Date field;
+        Row row = new Row();
+        DateColumn<Row> column  = new TestColumn();
+
+        // note: no need to test null because it never gets called with null
+
+        row.setValue(GwtDateUtils.createDate(2013, 11, 15, 18, 32, 13, 26));
+        field = column.getField(row);
+        assertEquals("2013-11-15", column.formatField(field));
+    }
+
     /** Test column to work with. */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    private static class TestColumn extends ColumnWithName<String, String> {
-        public TestColumn(Cell cell) {
-            super(cell);
+    private static class TestColumn extends DateColumn<Row> {
+        public TestColumn() {
+            super();
         }
 
-        public TestColumn(Enum name, Cell cell) {
-            super(name, cell);
+        public TestColumn(String name) {
+            super(name);
         }
 
-        public TestColumn(String name, Cell cell) {
-            super(name, cell);
+        public TestColumn(TestEnum name) {
+            super(name);
         }
 
-        public TestColumn(Enum name, Cell cell, Sortable sortable) {
-            super(name, cell, sortable);
+        public TestColumn(String name, Sortable sortable) {
+            super(name, sortable);
         }
 
-        public TestColumn(String name, Cell cell, Sortable sortable) {
-            super(name, cell, sortable);
+        public TestColumn(TestEnum name, Sortable sortable) {
+            super(name, sortable);
         }
 
         @Override
-        public String getValue(String object) {
-            return object;
+        protected Date getField(Row item) {
+            return item.getValue();
+        }
+    }
+
+    /** A sample row to work with. */
+    private static class Row {
+        private Date value;
+
+        public Date getValue() {
+            return this.value;
+        }
+
+        public void setValue(Date value) {
+            this.value = value;
         }
     }
 
