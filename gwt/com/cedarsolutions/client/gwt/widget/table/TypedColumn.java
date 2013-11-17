@@ -43,15 +43,15 @@ public abstract class TypedColumn<T, F> extends ColumnWithTooltip<T> {
         this(name, NOT_SORTABLE);
     }
 
+    /** Create a column with a name. */
+    public TypedColumn(String name) {
+        this(name, NOT_SORTABLE);
+    }
+
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
     public TypedColumn(Enum name, Sortable sortable) {
         super(name, sortable);
-    }
-
-    /** Create a column with a name. */
-    public TypedColumn(String name) {
-        this(name, NOT_SORTABLE);
     }
 
     /** Create a column with a name. */
@@ -77,12 +77,21 @@ public abstract class TypedColumn<T, F> extends ColumnWithTooltip<T> {
     /** Get the tooltip value to be displayed. */
     @Override
     public String getTooltip(T item) {
-        return null; // no tooltip by default
+        if (item == null) {
+            return this.getDefaultTooltip();
+        } else {
+            return this.getFieldTooltip(item);  // it's ok to return null
+        }
     }
 
-    /** Get the default string value for the cell, if nothing is set. */
+    /** Get the default string value for the cell, if the item is null. */
     protected String getDefaultValue() {
         return "";
+    }
+
+    /** Get the default tooltip value for the cell, if the item is null. */
+    protected String getDefaultTooltip() {
+        return null;
     }
 
     /** Format a non-null field value properly. */
@@ -95,5 +104,16 @@ public abstract class TypedColumn<T, F> extends ColumnWithTooltip<T> {
      * @return The correct field value from the item.
      */
     protected abstract F getField(T item);
+
+    /**
+     * Get the field tooltip to display.
+     * You can assume the item is non-null, and you can safely return null.
+     * Unless you override it, this implementation returns the default tooltip.
+     * @param item  Item to get the value from
+     * @return The correct tooltip value for the field.
+     */
+    protected String getFieldTooltip(T item) {
+        return this.getDefaultTooltip();
+    }
 
 }

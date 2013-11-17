@@ -57,15 +57,15 @@ public abstract class ColumnWithTooltip<T> extends ColumnWithName<T, SafeHtml> {
         this(name, NOT_SORTABLE);
     }
 
+    /** Create a column with a name. */
+    public ColumnWithTooltip(String name) {
+        this(name, NOT_SORTABLE);
+    }
+
     /** Create a column with a name taken from an enum. */
     @SuppressWarnings("rawtypes")
     public ColumnWithTooltip(Enum name, Sortable sortable) {
         super(name, new SafeHtmlCell(), sortable);
-    }
-
-    /** Create a column with a name. */
-    public ColumnWithTooltip(String name) {
-        this(name, NOT_SORTABLE);
     }
 
     /** Create a column with a name. */
@@ -77,7 +77,7 @@ public abstract class ColumnWithTooltip<T> extends ColumnWithName<T, SafeHtml> {
     @Override
     public SafeHtml getValue(T item) {
         String value = getStringValue(item);
-        String tooltip = item == null ? null : getTooltip(item);
+        String tooltip = getTooltip(item);
         String contents = new SafeHtmlBuilder().appendEscaped(value).toSafeHtml().asString();
         if (tooltip != null) {
             String title = new SafeHtmlBuilder().appendEscaped(tooltip).toSafeHtml().asString();
@@ -90,10 +90,7 @@ public abstract class ColumnWithTooltip<T> extends ColumnWithName<T, SafeHtml> {
     /** Get the string value to be displayed. */
     public abstract String getStringValue(T item);
 
-    /**
-     * Get the tooltip value to be displayed.
-     * You can assume the item is non-null, and you can safely return null.
-     */
+    /** Get the tooltip value to be displayed. */
     public abstract String getTooltip(T item);
 
 }
