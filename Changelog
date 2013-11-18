@@ -1,4 +1,4 @@
-Version 3.1.0   unreleased
+Version 3.1.0   18 Nov 2013
 
     * Add ViewDataUtils.fillLabel().
     * Enhance ViewDataUtils to accept comma-deliminated lists in string fields.
