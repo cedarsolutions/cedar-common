@@ -62,6 +62,19 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
         view.setContext(this.getTabPanel(), tabIndex);
     }
 
+    /**
+     * Add a new tab to the tab panel.
+     * The tab will be placed at the desired index, or at the end of the list if that's not possible.
+     * @param view     View to use as tab contents
+     * @param viewName Name of the view, to be used in a legible HTML id
+     * @param title    Title of the tab
+     * @param tabIndex Index at which tab should be placed, if possible
+     */
+    protected void addTab(IModuleTabView view, String viewName, String title, int tabIndex) {
+        int actual = this.getTabPanel().add(view.getViewWidget(), viewName, title, tabIndex);
+        view.setContext(this.getTabPanel(), actual);
+    }
+
     /** Configure the tab panel so it takes up the full screen, using default scaling. */
     protected void configureFullScreen() {
         this.configureFullScreen(WIDTH_SCALING, HEIGHT_SCALING);
@@ -112,24 +125,28 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
 
     /**
      * Replace the first tab on the screen with the passed-in view.
-     *
-     * <p>
-     * This is intended for use with views that have a single tab and swap
-     * out the view that is actually being displayed as part of that tab.
-     * If you have multiple tabs and you want to select one of them, use
-     * selectTabForView().
-     * </p>
-     *
      * @param view     View to use as tab contents
      * @param viewName Name of the view, to be used in a legible HTML id
      * @param title    Title of the tab
      */
     protected void replaceFirstTabWithView(IModuleTabView view, String viewName, String title) {
-        if (this.getTabPanel().getWidgetCount() >= 1) {
-            this.getTabPanel().remove(0);
+        replaceTabWithView(view, viewName, title, 0);
+    }
+
+    /**
+     * Replace a tab on the screen with the passed-in view, by index.
+     * @param view     View to use as tab contents
+     * @param viewName Name of the view, to be used in a legible HTML id
+     * @param title    Title of the tab
+     * @param tabIndex Index of the tab to replace.
+     */
+    protected void replaceTabWithView(IModuleTabView view, String viewName, String title, int tabIndex) {
+        this.addTab(view, viewName, title, tabIndex);
+
+        if (this.getTabPanel().getWidgetCount() > tabIndex) {
+            this.getTabPanel().remove(tabIndex);
         }
 
-        this.addTab(view, viewName, title);
         view.selectTab();  // simulates the act of the user clicking on the tab
     }
 

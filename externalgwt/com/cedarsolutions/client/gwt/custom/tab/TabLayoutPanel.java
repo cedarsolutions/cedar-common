@@ -376,16 +376,32 @@ public class TabLayoutPanel extends ResizeComposite implements HasWidgets,
    */
   // Added for Cedar Common
   public void add(IsWidget w, String viewName, String text) {
-      Widget contents = new Label(text);
-      Tab tab = new Tab(contents);
-      insert(asWidgetOrNull(w), tab, getWidgetCount());
-      if (viewName != null) {
-          if (this.getElementId() != null) {
-              String elementId = this.getElementId() + "_" + viewName;
-              tab.setElementId(elementId);
-          }
-      }
+      add(w, viewName, text, getWidgetCount() - 1);
   }
+
+  /**
+   * Convenience overload to allow {@link IsWidget} to be used directly with a view name and index.
+   * The tab will be inserted at the desired index, or at the end of the list if that's not possible
+   * @return the actual index the tab was inserted at
+   */
+ //Added for Cedar Common
+ public int add(IsWidget w, String viewName, String text, int index) {
+     if (index > getWidgetCount() - 1) {
+         index = getWidgetCount() - 1;  // if we can't put it where they request, then put it at the end
+     }
+
+     Widget contents = new Label(text);
+     Tab tab = new Tab(contents);
+     insert(asWidgetOrNull(w), tab, index + 1);
+     if (viewName != null) {
+         if (this.getElementId() != null) {
+             String elementId = this.getElementId() + "_" + viewName;
+             tab.setElementId(elementId);
+         }
+     }
+
+     return index;
+ }
 
   /**
    * Convenience overload to allow {@link IsWidget} to be used directly.
