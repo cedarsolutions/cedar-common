@@ -30,6 +30,7 @@ import com.cedarsolutions.client.gwt.custom.datepicker.DateBox;
 import com.cedarsolutions.util.gwt.GwtDateUtils;
 import com.cedarsolutions.util.gwt.GwtStringUtils;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.ValueBoxBase;
 
@@ -64,6 +65,19 @@ public class ViewDataUtils {
         DateBox dateBox = new DateBox();
         dateBox.setFormat(new DateBox.DefaultFormat(GwtDateUtils.getTimestampFormat()));
         return dateBox;
+    }
+
+    /**
+     * Fill a label with a value.
+     * @param label  Label to fill in
+     * @param value  Value to fill in
+     */
+    public static <T> void fillLabel(Label label, T value) {
+        if (value == null) {
+            label.setText("");
+        } else {
+            label.setText(String.valueOf(value));
+        }
     }
 
     /**
