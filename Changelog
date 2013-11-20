@@ -2,6 +2,7 @@ Version 3.1.1   unreleased
 
     * Enhance AbstractDropdownList so it's easy to set the tooltip on dropdowns.
     * Enhance DataTable to support both "standard" and "disabled" CSS styles.
+    * Add new classes SimpleChangeActionHandler, SimpleRowClickActionHandler and SimpleRowClickViewEventHandler.
 
 Version 3.1.0   18 Nov 2013
 
