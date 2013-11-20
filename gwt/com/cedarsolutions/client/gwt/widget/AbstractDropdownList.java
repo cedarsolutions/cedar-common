@@ -26,6 +26,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cedarsolutions.util.gwt.GwtStringUtils;
+import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.OptionElement;
+import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.user.client.ui.ListBox;
 
 /**
@@ -151,6 +154,22 @@ public abstract class AbstractDropdownList<T> extends ListBox {
         } else {
             String selected = this.getValue(this.getSelectedIndex());
             return keyToValueMap.get(selected);
+        }
+    }
+
+    /**
+     * Sets the title associated with this object.
+     * The title is the 'tool-tip' displayed to users when they hover over the object.
+     * @param title   Title to set
+     * @see <a href="http://stackoverflow.com/questions/12494815/gwt-listbox-onmouseover-tooltip">Stack Overflow</a>
+     */
+    @Override
+    public void setTitle(String title) {
+        super.setTitle(title);
+        SelectElement selectElement = SelectElement.as(this.getElement());
+        NodeList<OptionElement> options = selectElement.getOptions();
+        for (int i = 0; i < options.getLength(); i++) {
+            options.getItem(i).setTitle(title);
         }
     }
 
