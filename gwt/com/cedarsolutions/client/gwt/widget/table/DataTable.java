@@ -69,19 +69,34 @@ public class DataTable<T> extends CellTable<T> {
 
     /** Create a DataTable. */
     public DataTable(int pageSize, String width) {
-        super(pageSize, getStyle());
+        this(getStandardResources(), pageSize, width);
+    }
+
+    /** Create a DataTable. */
+    public DataTable(Resources resources, int pageSize, String width) {
+        super(pageSize, resources);
         this.setWidth(width, true);
     }
 
     /** Create a DataTable. */
     public DataTable(int pageSize, String width, ProvidesKey<T> keyProvider) {
-        super(pageSize, getStyle(), keyProvider);
+        this(getStandardResources(), pageSize, width, keyProvider);
+    }
+
+    /** Create a DataTable. */
+    public DataTable(Resources resources, int pageSize, String width, ProvidesKey<T> keyProvider) {
+        super(pageSize, resources, keyProvider);
         this.setWidth(width, true);
     }
 
     /** Create a DataTable. */
     public DataTable(int pageSize, String width, ProvidesKey<T> keyProvider, Widget loadingIndicator) {
-        super(pageSize, getStyle(), keyProvider, loadingIndicator);
+        this(getStandardResources(), pageSize, width, keyProvider, loadingIndicator);
+    }
+
+    /** Create a DataTable. */
+    public DataTable(Resources resources, int pageSize, String width, ProvidesKey<T> keyProvider, Widget loadingIndicator) {
+        super(pageSize, resources, keyProvider, loadingIndicator);
         this.setWidth(width, true);
     }
 
@@ -90,15 +105,28 @@ public class DataTable<T> extends CellTable<T> {
         return new DataTablePager(this);
     }
 
-    /** Get the customized style for this widget. */
-    protected static DataTableStyle getStyle() {
-        return GWT.create(DataTableStyle.class);
+    /** Get the standard resources for this widget. */
+    public static Resources getStandardResources() {
+        return GWT.create(StandardResources.class);
+    }
+
+    /** Get the disabled resources for this widget. */
+    public static Resources getDisabledResources() {
+        return GWT.create(DisabledResources.class);
     }
 
     /** Set a message to be displayed if there are no rows. */
     public void setNoRowsMessage(String noRowsMessage) {
+        setNoRowsMessage(noRowsMessage, null);
+    }
+
+    /** Set a message to be displayed if there are no rows. */
+    public void setNoRowsMessage(String noRowsMessage, String styleName) {
         this.noRowsMessage = noRowsMessage;
         Label label = new Label(noRowsMessage);
+        if (styleName != null) {
+            label.setStyleName(styleName);
+        }
         this.setEmptyTableWidget(label);
     }
 
@@ -247,11 +275,48 @@ public class DataTable<T> extends CellTable<T> {
         }
     }
 
-    /** Resources used for CellTable style. */
-    public interface DataTableStyle extends CellTable.Resources {
+    /**
+     * Resources used to render the standard DataTable.
+     * @see <a href="https://code.google.com/p/google-web-toolkit/issues/detail?id=6144">Google Code</a>
+     */
+    public interface StandardResources extends CellTable.Resources {
+
+        /** Standard style. */
+        public interface StandardStyle extends CellTable.Style { }
+
+        /** Get the standard style from DataTable.css. */
         @Override
         @Source({ CellTable.Style.DEFAULT_CSS, "DataTable.css" })
-        CellTable.Style cellTableStyle();
+        StandardStyle cellTableStyle();
+
+    }
+
+    /**
+     * Resources used to render the disabled DataTable.
+     *
+     * <p>
+     * The disabled style "grays-out" the UI so that the table looks
+     * disabled, somewhat consistent with what happens to dropdowns,
+     * buttons, etc.  Unfortunately, as far as I can tell, it's not
+     * possible to change the style on a table once it's been set.
+     * So, the only way I've been able to work as of this writing is
+     * to create two tables in parallel and flip between them (i.e.
+     * hide one HTML panel and show another).
+     * </p>
+     *
+     * @see <a href="https://code.google.com/p/google-web-toolkit/issues/detail?id=6144">Google Code</a>
+     * @see <a href="http://stackoverflow.com/questions/20086134/change-the-style-of-a-gwt-celltable-dynamically-to-visually-mark-it-as-disabled">StackOverflow</a>
+     */
+    public interface DisabledResources extends CellTable.Resources {
+
+        /** Disabled style. */
+        public interface DisabledStyle extends CellTable.Style { }
+
+        /** Get the disabled style from DisabledDataTable.css. */
+        @Override
+        @Source({ CellTable.Style.DEFAULT_CSS, "DisabledDataTable.css" })
+        DisabledStyle cellTableStyle();
+
     }
 
     /** Selection column, which holds the selection checkbox. */

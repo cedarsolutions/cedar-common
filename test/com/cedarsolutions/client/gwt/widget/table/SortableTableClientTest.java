@@ -25,9 +25,10 @@ package com.cedarsolutions.client.gwt.widget.table;
 import java.io.Serializable;
 
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
-import com.cedarsolutions.client.gwt.widget.table.DataTable.DataTableStyle;
+import com.cedarsolutions.client.gwt.widget.table.DataTable.DisabledResources;
 import com.cedarsolutions.client.gwt.widget.table.DataTable.SelectionColumn;
 import com.cedarsolutions.client.gwt.widget.table.DataTable.SelectionHeader;
+import com.cedarsolutions.client.gwt.widget.table.DataTable.StandardResources;
 import com.cedarsolutions.dao.domain.AbstractSearchCriteriaWithSort;
 import com.cedarsolutions.dao.domain.ISearchCriteriaWithSort;
 import com.cedarsolutions.dao.domain.SortOrder;
@@ -78,12 +79,20 @@ public class SortableTableClientTest extends ClientTestCase {
         assertSame(table, pager.getDisplay());
     }
 
-    /** Test getStyle(). */
-    public void testGetStyle() {
+    /** Test getStandardResources(). */
+    public void testGetStandardResources() {
         // Just confirm that it doesn't blow up; we can't really inspect the result
-        CellTable.Resources style = SortableTable.getStyle();
+        CellTable.Resources style = DataTable.getStandardResources();
         assertNotNull(style);
-        assertTrue(style instanceof DataTableStyle);
+        assertTrue(style instanceof StandardResources);
+    }
+
+    /** Test getDisabledResources(). */
+    public void testGetDisabledResources() {
+        // Just confirm that it doesn't blow up; we can't really inspect the result
+        CellTable.Resources style = DataTable.getDisabledResources();
+        assertNotNull(style);
+        assertTrue(style instanceof DisabledResources);
     }
 
     /** Spot-check addColumn() and addSelectionColumn(). */
