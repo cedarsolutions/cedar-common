@@ -51,13 +51,28 @@ public class SortableTable<T, S> extends DataTable<T> {
     }
 
     /** Create a SortableTable. */
+    public SortableTable(Resources resources, int pageSize, String width) {
+        super(resources, pageSize, width);
+    }
+
+    /** Create a SortableTable. */
     public SortableTable(int pageSize, String width, ProvidesKey<T> keyProvider) {
         super(pageSize, width, keyProvider);
     }
 
     /** Create a SortableTable. */
+    public SortableTable(Resources resources, int pageSize, String width, ProvidesKey<T> keyProvider) {
+        super(resources, pageSize, width, keyProvider);
+    }
+
+    /** Create a SortableTable. */
     public SortableTable(int pageSize, String width, ProvidesKey<T> keyProvider, Widget loadingIndicator) {
         super(pageSize, width, keyProvider, loadingIndicator);
+    }
+
+    /** Create a SortableTable. */
+    public SortableTable(Resources resources, int pageSize, String width, ProvidesKey<T> keyProvider, Widget loadingIndicator) {
+        super(resources, pageSize, width, keyProvider, loadingIndicator);
     }
 
     /** Track the header and footer applied to a column. */

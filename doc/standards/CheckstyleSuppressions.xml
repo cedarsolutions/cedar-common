@@ -4,6 +4,7 @@
 <suppressions>
 
     <suppress checks="ParameterNumber" files="DateUtilsTest.java"/>
+    <suppress checks="LineLength" files="DataTable.java" />
     <suppress checks="LineLength" files="GaeAuthenticationFilterTest.java" />
     <suppress checks="MethodName" files="GwtLocalizationUtilsTest.java"/>
 
