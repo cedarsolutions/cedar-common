@@ -1,4 +1,4 @@
-Version 3.1.1   unreleased
+Version 3.2.0   20 Nov 2013
 
     * Enhance AbstractDropdownList so it's easy to set the tooltip on dropdowns.
     * Enhance DataTable to support both "standard" and "disabled" CSS styles.
