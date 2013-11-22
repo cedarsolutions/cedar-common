@@ -295,13 +295,20 @@ public class DataTable<T> extends CellTable<T> {
      * Resources used to render the disabled DataTable.
      *
      * <p>
-     * The disabled style "grays-out" the UI so that the table looks
-     * disabled, somewhat consistent with what happens to dropdowns,
-     * buttons, etc.  Unfortunately, as far as I can tell, it's not
-     * possible to change the style on a table once it's been set.
-     * So, the only way I've been able to work as of this writing is
-     * to create two tables in parallel and flip between them (i.e.
-     * hide one HTML panel and show another).
+     * The disabled style "grays-out" the UI so that the table looks disabled,
+     * somewhat consistent with what happens to dropdowns, buttons, etc.
+     * Unfortunately, as far as I can tell, it's not possible to change the
+     * style on a table once it's been set.  So, the only way I've been able to
+     * work as of this writing is to create two tables in parallel and flip
+     * between them (i.e.  hide one HTML panel and show another).
+     * </p>
+     *
+     * <p>
+     * On StackOverflow, I got several suggestions for workarounds, but both
+     * require customizing the rendering code for the table, and for the time
+     * being I'm not interested in dealing with that.  The solutions work, I'm
+     * just not convinced that tinkering in the table implementation is any
+     * less clunky or intrusive than maintaining two tables.
      * </p>
      *
      * @see <a href="https://code.google.com/p/google-web-toolkit/issues/detail?id=6144">Google Code</a>
