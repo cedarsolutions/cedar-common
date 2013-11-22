@@ -32,8 +32,9 @@ import com.cedarsolutions.junit.util.TestUtils;
  *
  * <p>
  * This test case is intended to be used when testing presenters, event handlers
- * and the like.  It doesn't really work for testing views or widgets, because
- * many of the required classes can't be mocked successfully.
+ * and the like.  It works for views and widgets, but not for all tests, because
+ * many of the required classes can't be mocked successfully.  I usually end up
+ * with a stubbed client test and a real GWT client test for each view.
  * </p>
  *
  * <p>
