@@ -20,7 +20,7 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.event;
+package com.cedarsolutions.client.gwt.handler;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
@@ -33,10 +33,10 @@ import com.cedarsolutions.junit.gwt.StubbedClientTestCase;
 import com.cedarsolutions.web.metadata.NativeEventType;
 
 /**
- * Unit tests for SimpleRowClickActionHandler.
+ * Unit tests for AbstractRowClickActionHandler.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public class SimpleChangeActionHandlerTest extends StubbedClientTestCase {
+public class AbstractChangeActionHandlerTest extends StubbedClientTestCase {
 
     /** Test SimpleClickHandler when there is not a selection column. */
     @Test public void testWithoutSelectionColumn() {
@@ -65,7 +65,7 @@ public class SimpleChangeActionHandlerTest extends StubbedClientTestCase {
     }
 
     /** A click handler with a selection column (zero, like most of our tables). */
-    private static class TestHandler extends SimpleChangeActionHandler<IParent> {
+    private static class TestHandler extends AbstractChangeActionHandler<IParent> {
         public TestHandler(IParent parent) {
             super(parent);
         }

@@ -20,39 +20,35 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.event;
+package com.cedarsolutions.client.gwt.handler;
 
-import com.cedarsolutions.client.gwt.handler.AbstractEventHandler;
-import com.cedarsolutions.web.metadata.NativeEventType;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
+import com.cedarsolutions.client.gwt.event.UnifiedEvent;
+import com.cedarsolutions.client.gwt.event.ViewEventHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 /**
- * A simple handler that accepts change events, like for dropdowns.
+ * Abstract event handler that delegates click events to a view event handler.
  * @param <P> Parent presenter or view associated with handler
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class SimpleChangeActionHandler<P> extends AbstractEventHandler<P> implements ChangeHandler {
+public abstract class AbstractViewEventClickHandler<P> extends AbstractEventHandler<P> implements ClickHandler {
 
-    /** Create a change handler in terms of a parent. */
-    public SimpleChangeActionHandler(P parent) {
+    /** Constructor. */
+    protected AbstractViewEventClickHandler(P parent) {
         super(parent);
     }
 
-    /** Handle the event. */
-    protected abstract void handleEvent();
-
-    /** Handle the on-change trigger. */
+    /** Handle a click event. */
     @Override
-    public void onChange(ChangeEvent event) {
-        this.handleChangeEvent(event.getNativeEvent().getType());
-    }
-
-    /** Handle a change event. */
-    protected void handleChangeEvent(String event) {
-        if (NativeEventType.CHANGE.equals(NativeEventType.convert(event))) {
-            this.handleEvent();
+    public void onClick(ClickEvent event) {
+        if (this.getViewEventHandler() != null) {
+            UnifiedEvent click = new UnifiedEvent(event);
+            this.getViewEventHandler().handleEvent(click);
         }
     }
+
+    /** Get the view event handler for the event. */
+    public abstract ViewEventHandler getViewEventHandler();
 
 }

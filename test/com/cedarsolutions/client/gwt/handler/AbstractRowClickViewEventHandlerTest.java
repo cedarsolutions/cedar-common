@@ -20,141 +20,166 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.client.gwt.event;
+package com.cedarsolutions.client.gwt.handler;
 
+import static com.cedarsolutions.client.gwt.event.UnifiedEventType.CLICK_EVENT;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 
+import com.cedarsolutions.client.gwt.event.UnifiedEventWithContext;
+import com.cedarsolutions.client.gwt.event.ViewEventHandlerWithContext;
 import com.cedarsolutions.junit.gwt.StubbedClientTestCase;
 import com.cedarsolutions.web.metadata.NativeEventType;
 
 /**
- * Unit tests for SimpleRowClickActionHandler.
+ * Unit tests for AbstractRowClickViewEventHandler.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public class SimpleRowClickActionHandlerTest extends StubbedClientTestCase {
+public class AbstractRowClickViewEventHandlerTest extends StubbedClientTestCase {
 
-    /** Test SimpleRowClickActionHandler when there's a selection column. */
+    /** Test SimpleRowClickViewEventHandler when there's a selection column. */
+    @SuppressWarnings("unchecked")
     @Test public void testWithSelectionColumn() {
         // Unfortunately, it's not possible to mock NativeEvent, so
         // we just test the handleSelectedRow() method instead of the
         // onCellPreview() method.  Better than nothing.
 
+        ViewEventHandlerWithContext<String> parentHandler = mock(ViewEventHandlerWithContext.class);
         IParent parent = mock(IParent.class);
+        when(parent.getHandler()).thenReturn(parentHandler);
 
         WithSelectionColumn handler = new WithSelectionColumn(parent);
         assertSame(parent, handler.getParent());
 
-        InOrder order = Mockito.inOrder(parent);
+        InOrder order = Mockito.inOrder(parent.getHandler());
+
+        UnifiedEventWithContext<String> emptyRow = new UnifiedEventWithContext<String>(CLICK_EVENT, "");
+        UnifiedEventWithContext<String> helloRow = new UnifiedEventWithContext<String>(CLICK_EVENT, "hello");
 
         handler.handleSelectedRow(null, 0, null);       // null event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 0, null);    // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 5, null);    // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(null, 0, "");         // null event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 0, "");      // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 5, "");      // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(null, 0, "hello");    // null event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 0, "hello"); // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 5, "hello"); // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 0, null);     // null rows are ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 5, null);     // null rows are ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 0, "");       // selection column is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 5, "");       // click on something other than selection column is handled
-        order.verify(parent).setValue("");
+        order.verify(parent.getHandler()).handleEvent(emptyRow);
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 0, "hello");  // selection column is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 5, "hello");  // click on something other than selection column is handled
-        order.verify(parent).setValue("hello");
+        order.verify(parent.getHandler()).handleEvent(helloRow);
     }
 
-    /** Test SimpleRowClickActionHandler when there is not a selection column. */
+    /** Test SimpleRowClickViewEventHandler when there is not a selection column. */
+    @SuppressWarnings("unchecked")
     @Test public void testWithoutSelectionColumn() {
         // Unfortunately, it's not possible to mock NativeEvent, so
         // we just test the handleSelectedRow() method instead of the
         // onCellPreview() method.  Better than nothing.
 
+        ViewEventHandlerWithContext<String> parentHandler = mock(ViewEventHandlerWithContext.class);
         IParent parent = mock(IParent.class);
+        when(parent.getHandler()).thenReturn(parentHandler);
 
         WithoutSelectionColumn handler = new WithoutSelectionColumn(parent);
         assertSame(parent, handler.getParent());
 
-        InOrder order = Mockito.inOrder(parent);
+        InOrder order = Mockito.inOrder(parent.getHandler());
+
+        UnifiedEventWithContext<String> emptyRow = new UnifiedEventWithContext<String>(CLICK_EVENT, "");
+        UnifiedEventWithContext<String> helloRow = new UnifiedEventWithContext<String>(CLICK_EVENT, "hello");
 
         handler.handleSelectedRow(null, 0, null);       // null event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 0, null);    // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 5, null);    // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(null, 0, "");         // null event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 0, "");      // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow("blech", 5, "");      // non-CLICK event is ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
+
+        handler.handleSelectedRow(null, 0, "hello");    // null event is ignored
+        verifyNoMoreInteractions(parent.getHandler());
+
+        handler.handleSelectedRow("blech", 0, "hello"); // non-CLICK event is ignored
+        verifyNoMoreInteractions(parent.getHandler());
+
+        handler.handleSelectedRow("blech", 5, "hello"); // non-CLICK event is ignored
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 0, null);     // null rows are ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 5, null);     // null rows are ignored
-        verifyNoMoreInteractions(parent);
+        verifyNoMoreInteractions(parent.getHandler());
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 0, "");       // all columns are handled
-        order.verify(parent).setValue("");
+        order.verify(parent.getHandler()).handleEvent(emptyRow);
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 5, "");       // all columns are handled
-        order.verify(parent).setValue("");
+        order.verify(parent.getHandler()).handleEvent(emptyRow);
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 0, "hello");  // all columns are handled
-        order.verify(parent).setValue("hello");
+        order.verify(parent.getHandler()).handleEvent(helloRow);
 
         handler.handleSelectedRow(NativeEventType.CLICK.getValue(), 5, "hello");  // all columns are handled
-        order.verify(parent).setValue("hello");
+        order.verify(parent.getHandler()).handleEvent(helloRow);
     }
 
     /** A simple parent interface for testing. */
     private interface IParent {
-        void setValue(String value);
+        ViewEventHandlerWithContext<String> getHandler();
     }
 
     /** A click handler with a selection column (zero, like most of our tables). */
-    private static class WithSelectionColumn extends SimpleRowClickActionHandler<IParent, String> {
+    private static class WithSelectionColumn extends AbstractRowClickViewEventHandler<IParent, String> {
         public WithSelectionColumn(IParent parent) {
             super(parent);
         }
@@ -165,13 +190,13 @@ public class SimpleRowClickActionHandlerTest extends StubbedClientTestCase {
         }
 
         @Override
-        protected void handleRow(String value) {
-            this.getParent().setValue(value);
+        protected ViewEventHandlerWithContext<String> getViewEventHandler() {
+            return this.getParent().getHandler();
         }
     }
 
     /** A click handler with no selection column. */
-    private static class WithoutSelectionColumn extends SimpleRowClickActionHandler<IParent, String> {
+    private static class WithoutSelectionColumn extends AbstractRowClickViewEventHandler<IParent, String> {
         public WithoutSelectionColumn(IParent parent) {
             super(parent);
         }
@@ -182,8 +207,8 @@ public class SimpleRowClickActionHandlerTest extends StubbedClientTestCase {
         }
 
         @Override
-        protected void handleRow(String value) {
-            this.getParent().setValue(value);
+        protected ViewEventHandlerWithContext<String> getViewEventHandler() {
+            return this.getParent().getHandler();
         }
     }
 }
