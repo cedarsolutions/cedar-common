@@ -22,18 +22,36 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.handler;
 
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.cedarsolutions.web.metadata.NativeEventType;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 
 /**
- * Abstract click handler with an associated parent.
+ * A simple handler that accepts change events, like for dropdowns.
  * @param <P> Parent presenter or view associated with handler
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class AbstractClickHandler<P> extends AbstractEventHandler<P> implements ClickHandler {
+public abstract class AbstractChangeActionHandler<P> extends AbstractEventHandler<P> implements ChangeHandler {
 
-    /** Constructor. */
-    protected AbstractClickHandler(P parent) {
+    /** Create a change handler in terms of a parent. */
+    public AbstractChangeActionHandler(P parent) {
         super(parent);
+    }
+
+    /** Handle the event. */
+    protected abstract void handleEvent();
+
+    /** Handle the on-change trigger. */
+    @Override
+    public void onChange(ChangeEvent event) {
+        this.handleChangeEvent(event.getNativeEvent().getType());
+    }
+
+    /** Handle a change event. */
+    protected void handleChangeEvent(String event) {
+        if (NativeEventType.CHANGE.equals(NativeEventType.convert(event))) {
+            this.handleEvent();
+        }
     }
 
 }

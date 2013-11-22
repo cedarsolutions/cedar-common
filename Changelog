@@ -1,3 +1,9 @@
+Version 3.3.0   unreleased
+
+    * Renamed AbstractClickHandler to AbstractViewEventClickHandler for consistency.
+    * Renamed the the new Simple handlers to Abstract and move to the correct gwt.handler package.
+    * Add a new AbstractClickHandler that's not a ViewEventHandler.
+
 Version 3.2.0   20 Nov 2013
 
     * Enhance AbstractDropdownList so it's easy to set the tooltip on dropdowns.
