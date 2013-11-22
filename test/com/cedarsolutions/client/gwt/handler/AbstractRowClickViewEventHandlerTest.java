@@ -43,7 +43,7 @@ import com.cedarsolutions.web.metadata.NativeEventType;
  */
 public class AbstractRowClickViewEventHandlerTest extends StubbedClientTestCase {
 
-    /** Test SimpleRowClickViewEventHandler when there's a selection column. */
+    /** Test AbstractRowClickViewEventHandler when there's a selection column. */
     @SuppressWarnings("unchecked")
     @Test public void testWithSelectionColumn() {
         // Unfortunately, it's not possible to mock NativeEvent, so
@@ -108,7 +108,7 @@ public class AbstractRowClickViewEventHandlerTest extends StubbedClientTestCase 
         order.verify(parent.getHandler()).handleEvent(helloRow);
     }
 
-    /** Test SimpleRowClickViewEventHandler when there is not a selection column. */
+    /** Test AbstractRowClickViewEventHandler when there is not a selection column. */
     @SuppressWarnings("unchecked")
     @Test public void testWithoutSelectionColumn() {
         // Unfortunately, it's not possible to mock NativeEvent, so

@@ -39,7 +39,7 @@ import com.cedarsolutions.web.metadata.NativeEventType;
  */
 public class AbstractRowClickActionHandlerTest extends StubbedClientTestCase {
 
-    /** Test SimpleRowClickActionHandler when there's a selection column. */
+    /** Test AbstractRowClickActionHandler when there's a selection column. */
     @Test public void testWithSelectionColumn() {
         // Unfortunately, it's not possible to mock NativeEvent, so
         // we just test the handleSelectedRow() method instead of the
@@ -98,7 +98,7 @@ public class AbstractRowClickActionHandlerTest extends StubbedClientTestCase {
         order.verify(parent).setValue("hello");
     }
 
-    /** Test SimpleRowClickActionHandler when there is not a selection column. */
+    /** Test AbstractRowClickActionHandler when there is not a selection column. */
     @Test public void testWithoutSelectionColumn() {
         // Unfortunately, it's not possible to mock NativeEvent, so
         // we just test the handleSelectedRow() method instead of the

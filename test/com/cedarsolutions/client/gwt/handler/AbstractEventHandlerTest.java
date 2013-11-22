@@ -22,30 +22,32 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.handler;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.cedarsolutions.junit.gwt.StubbedClientTestCase;
 
 /**
- * Abstract event handler with an associated parent.
- * @param <P> Parent presenter or view associated with handler
+ * Unit tests for AbstractEventHandler.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class AbstractEventHandler<P> {
+public class AbstractEventHandlerTest extends StubbedClientTestCase {
 
-    /** Parent presenter or view associated with handler. */
-    private P parent;
+    /** Test AbstractEventHandler. */
+    @Test public void testAbstractEventHandler() {
+        AbstractEventHandler<String> handler = new EventHandler("parent");
+        assertEquals("parent", handler.getParent());
 
-    /** Constructor. */
-    protected AbstractEventHandler(P parent) {
-        this.parent = parent;
+        handler.setParent("whatever");
+        assertEquals("whatever", handler.getParent());
     }
 
-    /** Parent presenter or view associated with handler. */
-    public P getParent() {
-        return this.parent;
-    }
-
-    /** Parent presenter or view associated with handler. */
-    public void setParent(P parent) {
-        this.parent = parent;
+    /** Concrete class for testing. */
+    private static class EventHandler extends AbstractEventHandler<String> {
+        protected EventHandler(String parent) {
+            super(parent);
+        }
     }
 
 }
