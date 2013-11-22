@@ -1,9 +1,10 @@
 Version 3.3.0   unreleased
 
+	* Update class comments on StubbedClientTest case to reflect current usage.
     * Renamed AbstractClickHandler to AbstractViewEventClickHandler for consistency.
-    * Renamed the the new Simple handlers to Abstract and move to the correct gwt.handler package.
+    * Renamed the the new Simple handlers to Abstract and move to the correct .gwt.handler package.
     * Add a new AbstractClickHandler that's not a ViewEventHandler.
-    * Update class comments on StubbedClientTest case to reflect current usage.
+    * Add tests for code in .client.gwt.handler so that tests in client projects can be simpler.
 
 Version 3.2.0   20 Nov 2013
 

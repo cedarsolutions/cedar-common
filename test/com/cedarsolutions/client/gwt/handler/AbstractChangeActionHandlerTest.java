@@ -38,7 +38,7 @@ import com.cedarsolutions.web.metadata.NativeEventType;
  */
 public class AbstractChangeActionHandlerTest extends StubbedClientTestCase {
 
-    /** Test SimpleClickHandler when there is not a selection column. */
+    /** Test AbstractClickHandler when there is not a selection column. */
     @Test public void testWithoutSelectionColumn() {
         // Unfortunately, it's not possible to mock NativeEvent, so
         // we just test the handleSelectedRow() method instead of the
