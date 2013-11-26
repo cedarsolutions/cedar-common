@@ -340,4 +340,64 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
         assertEquals("hello", ViewDataUtils.getCriteria(input));
     }
 
+    /** Test formatString(). */
+    @Test public void testFormatString() {
+        assertEquals("", ViewDataUtils.formatString(null));
+        assertEquals("", ViewDataUtils.formatString(""));
+        assertEquals("hello", ViewDataUtils.formatString("hello"));
+        assertEquals("hello", ViewDataUtils.formatString(" hello "));
+
+        assertEquals("", ViewDataUtils.formatString(null, 5));
+        assertEquals("", ViewDataUtils.formatString("", 5));
+        assertEquals("hello", ViewDataUtils.formatString("hello", 5));
+        assertEquals("hello", ViewDataUtils.formatString(" hello ", 5));
+        assertEquals("he...", ViewDataUtils.formatString("hello there", 5));
+    }
+
+    /** Test formatInteger(). */
+    @Test public void testFormatInteger() {
+        assertEquals("", ViewDataUtils.formatInteger(null));
+        assertEquals("932", ViewDataUtils.formatInteger(932));
+        assertEquals("932", ViewDataUtils.formatInteger(932, 5));
+        assertEquals("93...", ViewDataUtils.formatInteger(93243141, 5));
+    }
+
+    /** Test formatLong(). */
+    @Test public void testFormatLong() {
+        assertEquals("", ViewDataUtils.formatLong(null));
+        assertEquals("932", ViewDataUtils.formatLong(932L));
+        assertEquals("932", ViewDataUtils.formatLong(932L, 5));
+        assertEquals("93...", ViewDataUtils.formatLong(93243141L, 5));
+    }
+
+    /** Test formatEnum(). */
+    @Test public void testFormatEnum() {
+        assertEquals("", ViewDataUtils.formatEnum(null));
+        assertEquals("ONE", ViewDataUtils.formatEnum(TestEnum.ONE));
+        assertEquals("TWOTHREEFOURFIVE", ViewDataUtils.formatEnum(TestEnum.TWOTHREEFOURFIVE));
+        assertEquals("ONE", ViewDataUtils.formatEnum(TestEnum.ONE, 5));
+        assertEquals("TW...", ViewDataUtils.formatEnum(TestEnum.TWOTHREEFOURFIVE, 5));
+    }
+
+    /** Test formatBoolean(). */
+    @Test public void testFormatBoolean() {
+        assertEquals("", ViewDataUtils.formatBoolean(null, "a", "b"));
+        assertEquals("a", ViewDataUtils.formatBoolean(true, "a", "b"));
+        assertEquals("b", ViewDataUtils.formatBoolean(false, "a", "b"));
+
+        assertEquals("", ViewDataUtils.formatBoolean(null, "a", "b", 5));
+        assertEquals("a", ViewDataUtils.formatBoolean(true, "a", "b", 5));
+        assertEquals("b", ViewDataUtils.formatBoolean(false, "a", "b", 5));
+
+        assertEquals("", ViewDataUtils.formatBoolean(null, "aaaaaaa", "bbbbbbb", 5));
+        assertEquals("aa...", ViewDataUtils.formatBoolean(true, "aaaaaaa", "bbbbbbb", 5));
+        assertEquals("bb...", ViewDataUtils.formatBoolean(false, "aaaaaaa", "bbbbbbb", 5));
+    }
+
+    /** A test enum. */
+    private enum TestEnum {
+        ONE,
+        TWOTHREEFOURFIVE,
+    }
+
 }
