@@ -22,6 +22,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.widget;
 
+import static com.cedarsolutions.util.gwt.GwtStringUtils.substring;
+import static com.cedarsolutions.util.gwt.GwtStringUtils.trim;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -311,6 +314,72 @@ public class ViewDataUtils {
      */
     public static Date getEndDateCriteria(DateBox input) {
         return getDateCriteria(input, END_TIMESTAMP);
+    }
+
+    /** Format an integer, with a maximum width. */
+    public static String formatInteger(Integer value, int width) {
+        return formatString(value == null ? "" : String.valueOf(value), width);
+    }
+
+    /** Format an integer. */
+    public static String formatInteger(Integer value) {
+        return formatString(value == null ? "" : String.valueOf(value));
+    }
+
+    /** Format a long value, with a maximum width. */
+    public static String formatLong(Long value, int width) {
+        return formatString(value == null ? "" : String.valueOf(value), width);
+    }
+
+    /** Format a long value. */
+    public static String formatLong(Long value) {
+        return formatString(value == null ? "" : String.valueOf(value));
+    }
+
+    /** Format an enum value, with a maxium width. */
+    public static String formatEnum(Enum<?> value,  int width) {
+        return formatString(value == null ? "" : value.name(), width);
+    }
+
+    /** Format an enum value. */
+    public static String formatEnum(Enum<?> value) {
+        return formatString(value == null ? "" : value.name());
+    }
+
+    /** Format a boolean value, with a maxium width. */
+    public static String formatBoolean(Boolean value, String trueValue, String falseValue, int width) {
+        if (value == null) {
+            return "";
+        } else {
+            return formatString(value.booleanValue() ? trueValue : falseValue, width);
+        }
+    }
+
+    /** Format a boolean value. */
+    public static String formatBoolean(Boolean value, String trueValue, String falseValue) {
+        if (value == null) {
+            return "";
+        } else {
+            return formatString(value.booleanValue() ? trueValue : falseValue);
+        }
+    }
+
+    /** Format a string value, with a maximum width. */
+    public static String formatString(String value, int width) {
+        if (value == null || width == 0) {
+            return "";
+        } else {
+            if (trim(value).length() <= width) {
+                return trim(value);
+            } else {
+                return substring(trim(value), 0, width - 3) + "...";
+            }
+        }
+    }
+
+    /** Format a string value. */
+    public static String formatString(String value) {
+        return value == null ? "" : trim(value);
     }
 
 }
