@@ -6,6 +6,7 @@ Version 3.3.0   unreleased
     * Add a new AbstractClickHandler that's not a ViewEventHandler.
     * Add tests for code in .client.gwt.handler so that tests in client projects can be simpler.
     * Add new format methods to ViewDataUtils, for consistent formatting in display labels.
+    * Fix BackendDataSource so that it clears any selections when refreshing a table.
 
 Version 3.2.0   20 Nov 2013
 
