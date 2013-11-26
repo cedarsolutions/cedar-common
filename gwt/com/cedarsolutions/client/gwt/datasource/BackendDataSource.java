@@ -154,8 +154,15 @@ public abstract class BackendDataSource<T, C> {
         this.pagination = results.getPagination();
         int rowCount = this.pagination.getTotalRows();
         boolean isExact = this.pagination.isTotalFinalized();
+
         this.getDisplay().setRowData(start, results);
         this.getDisplay().setRowCount(rowCount, isExact);  // do this AFTER setting row data, otherwise oddities result
+
+        if (this.getDisplay().getSelectionModel() != null) {
+            for (T item : this.getDisplay().getVisibleItems()) {
+                this.getDisplay().getSelectionModel().setSelected(item, false);  // clear any selected rows
+            }
+        }
     }
 
 }

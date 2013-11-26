@@ -35,6 +35,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.mockito.InOrder;
 
@@ -42,6 +45,7 @@ import com.cedarsolutions.dao.domain.PaginatedResults;
 import com.cedarsolutions.dao.domain.Pagination;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.Range;
+import com.google.gwt.view.client.SelectionModel;
 
 /**
  * Unit tests for BackendDataSource.
@@ -139,9 +143,9 @@ public class BackendDataSourceTest {
         assertEquals(dataSource.getPagination().page(6), dataSource.retrievePagination);
     }
 
-    /** Test applyResults(). */
+    /** Test applyResults(), with no selection model. */
     @SuppressWarnings("unchecked")
-    @Test public void testApplyResults() {
+    @Test public void testApplyResultsNoSelectionModel() {
         Pagination pagination = mock(Pagination.class);
         when(pagination.getTotalRows()).thenReturn(57);
         when(pagination.isTotalFinalized()).thenReturn(false);
@@ -156,11 +160,72 @@ public class BackendDataSourceTest {
         dataSource.markRetrieveStart();
         assertTrue(dataSource.isRetrieveActive());
 
+        when(renderer.getDisplay().getSelectionModel()).thenReturn(null);
         dataSource.applyResults(43, results);
         assertFalse(dataSource.isRetrieveActive());
         InOrder order = inOrder(dataSource.getDisplay());
         order.verify(dataSource.getDisplay()).setRowData(43, results);
         order.verify(dataSource.getDisplay()).setRowCount(57, false);
+    }
+
+    /** Test applyResults(), with a selection model, no visible items. */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test public void testApplyResultsWithSelectionModel() {
+        Pagination pagination = mock(Pagination.class);
+        when(pagination.getTotalRows()).thenReturn(57);
+        when(pagination.isTotalFinalized()).thenReturn(false);
+
+        PaginatedResults<String> results = (PaginatedResults<String>) mock(PaginatedResults.class);
+        when(results.getPagination()).thenReturn(pagination);
+
+        IBackendDataRenderer<String, String> renderer = createRenderer();
+        BackendDataSource<String, String> dataSource = new DataSource(renderer);
+        assertFalse(dataSource.isRetrieveActive());
+
+        dataSource.markRetrieveStart();
+        assertTrue(dataSource.isRetrieveActive());
+
+        List<String> visibleItems = new ArrayList<String>();
+        SelectionModel selectionModel = mock(SelectionModel.class);
+        when(renderer.getDisplay().getSelectionModel()).thenReturn(selectionModel);
+        when(renderer.getDisplay().getVisibleItems()).thenReturn(visibleItems);
+        dataSource.applyResults(43, results);
+        assertFalse(dataSource.isRetrieveActive());
+        InOrder order = inOrder(dataSource.getDisplay());
+        order.verify(dataSource.getDisplay()).setRowData(43, results);
+        order.verify(dataSource.getDisplay()).setRowCount(57, false);
+        verifyNoMoreInteractions(selectionModel);
+    }
+
+    /** Test applyResults(), with a selection model, with visible items. */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test public void testApplyResultsWithVisibleItems() {
+        Pagination pagination = mock(Pagination.class);
+        when(pagination.getTotalRows()).thenReturn(57);
+        when(pagination.isTotalFinalized()).thenReturn(false);
+
+        PaginatedResults<String> results = (PaginatedResults<String>) mock(PaginatedResults.class);
+        when(results.getPagination()).thenReturn(pagination);
+
+        IBackendDataRenderer<String, String> renderer = createRenderer();
+        BackendDataSource<String, String> dataSource = new DataSource(renderer);
+        assertFalse(dataSource.isRetrieveActive());
+
+        dataSource.markRetrieveStart();
+        assertTrue(dataSource.isRetrieveActive());
+
+        List<String> visibleItems = new ArrayList<String>();
+        visibleItems.add("whatever");
+
+        SelectionModel selectionModel = mock(SelectionModel.class);
+        when(renderer.getDisplay().getSelectionModel()).thenReturn(selectionModel);
+        when(renderer.getDisplay().getVisibleItems()).thenReturn(visibleItems);
+        dataSource.applyResults(43, results);
+        assertFalse(dataSource.isRetrieveActive());
+        InOrder order = inOrder(dataSource.getDisplay(), selectionModel);
+        order.verify(dataSource.getDisplay()).setRowData(43, results);
+        order.verify(dataSource.getDisplay()).setRowCount(57, false);
+        order.verify(selectionModel).setSelected("whatever", false);
     }
 
     /** Create a mock renderer for testing. */
