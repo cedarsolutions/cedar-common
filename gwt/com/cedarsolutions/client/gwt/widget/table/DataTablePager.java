@@ -114,7 +114,8 @@ public class DataTablePager extends SimplePager {
         // Override to display "0 of 0" when there are no records (otherwise
         // you get "1-1 of 0") and "1 of 1" when there is only one record
         // (otherwise you get "1-1 of 1"). Not internationalised (but
-        // neither is SimplePager)
+        // neither is SimplePager).  There's also a special case if the
+        // final page is empty: we get "> 10 of 10" instead of "11 of 10".
         NumberFormat formatter = NumberFormat.getFormat("#,###");
         HasRows display = getDisplay();
         Range range = display.getVisibleRange();
@@ -127,7 +128,12 @@ public class DataTablePager extends SimplePager {
         if (dataSize == 0) {
             return "0 of 0";
         } else if (pageStart == endIndex) {
-            return formatter.format(pageStart) + " of " + formatter.format(dataSize);
+            if (pageStart > dataSize) {
+                // This is better than "11 of 10" if the final page is empty
+                return "> " + formatter.format(dataSize) + " of " + formatter.format(dataSize);
+            } else {
+                return formatter.format(pageStart) + " of " + formatter.format(dataSize);
+            }
         } else {
             return formatter.format(pageStart) + "-" + formatter.format(endIndex) + (exact ? " of " : " of over ") + formatter.format(dataSize);
         }
