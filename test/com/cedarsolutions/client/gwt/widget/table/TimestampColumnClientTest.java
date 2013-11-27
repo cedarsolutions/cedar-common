@@ -40,6 +40,10 @@ public class TimestampColumnClientTest extends ClientTestCase {
         assertNotNull(column);
         assertEquals(null, column.getName());
         assertFalse(column.isSortable());
+        assertTrue(column.getIncludeZone());
+
+        column.setIncludeZone(false);
+        assertFalse(column.getIncludeZone());
 
         column  = new TestColumn("test");
         assertNotNull(column);
@@ -80,9 +84,17 @@ public class TimestampColumnClientTest extends ClientTestCase {
 
         // note: no need to test null because it never gets called with null
 
+        column  = new TestColumn();
+        column.setIncludeZone(false);
         row.setValue(GwtDateUtils.createDate(2013, 11, 15, 18, 32, 13, 26));
         field = column.getField(row);
         assertEquals("2013-11-15T18:32:13,026", column.formatField(field));
+
+        column  = new TestColumn();
+        column.setIncludeZone(true);
+        row.setValue(GwtDateUtils.createDate(2013, 11, 15, 18, 32, 13, 26));
+        field = column.getField(row);
+        assertTrue(column.formatField(field).startsWith("2013-11-15T18:32:13,026"));
     }
 
     /** Test column to work with. */
