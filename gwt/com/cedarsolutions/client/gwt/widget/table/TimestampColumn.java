@@ -33,6 +33,9 @@ import com.cedarsolutions.util.gwt.GwtDateUtils;
  */
 public abstract class TimestampColumn<T> extends TypedColumn<T, Date> {
 
+    /** Whether to include the time zone in the output. */
+    private boolean includeZone = true;
+
     /** Create a column with no name. */
     public TimestampColumn() {
         super();
@@ -63,7 +66,21 @@ public abstract class TimestampColumn<T> extends TypedColumn<T, Date> {
     /** Format a non-null field value properly. */
     @Override
     protected String formatField(Date field) {
-        return GwtDateUtils.formatTimestamp(field);
+        if (this.getIncludeZone()) {
+            return GwtDateUtils.formatTimestampWithZone(field);
+        } else {
+            return GwtDateUtils.formatTimestamp(field);
+        }
+    }
+
+    /** Whether to include the time zone in the output. */
+    public boolean getIncludeZone() {
+        return this.includeZone;
+    }
+
+    /** Whether to include the time zone in the output. */
+    public void setIncludeZone(boolean includeZone) {
+        this.includeZone = includeZone;
     }
 
 }

@@ -8,6 +8,7 @@ Version 3.3.0   unreleased
     * Add new format methods to ViewDataUtils, for consistent formatting in display labels.
     * Fix BackendDataSource so that it clears any selections when refreshing a table.
     * Tweak DataTablePager to show a more sensible count ("> 10 of 10") if the final page is empty.
+    * Add timezone output formats in GwtDateUtils and enhance TimeColumn and TimestampColumn to use it.
 
 Version 3.2.0   20 Nov 2013
 

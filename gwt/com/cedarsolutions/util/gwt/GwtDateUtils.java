@@ -47,8 +47,14 @@ public class GwtDateUtils {
     /** Format used for date/time. */
     public static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
+    /** Format used for date/time. */
+    public static final String TIME_WITH_ZONE_FORMAT = "yyyy-MM-dd'T'HH:mm ZZZ";
+
     /** Format used for timestamp. */
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss,SSS";
+
+    /** Format used for timestamp. */
+    public static final String TIMESTAMP_WITH_ZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss,SSS ZZZ";
 
     /** Number of seconds per minute. */
     public static final long SECONDS_PER_MINUTE = 60;
@@ -125,9 +131,19 @@ public class GwtDateUtils {
         return getFormat(TIME_FORMAT);
     }
 
+    /** Get the standard time format, including time zone. */
+    public static DateTimeFormat getTimeWithZoneFormat() {
+        return getFormat(TIME_WITH_ZONE_FORMAT);
+    }
+
     /** Get the standard timestamp format. */
     public static DateTimeFormat getTimestampFormat() {
         return getFormat(TIMESTAMP_FORMAT);
+    }
+
+    /** Get the standard timestamp format, including time zone. */
+    public static DateTimeFormat getTimestampWithZoneFormat() {
+        return getFormat(TIMESTAMP_WITH_ZONE_FORMAT);
     }
 
     /**
@@ -149,12 +165,30 @@ public class GwtDateUtils {
     }
 
     /**
+     * Format a date/time using the standard format that includes time zone (YYYY-MM-DDTHH:MM ZZZ).
+     * @param date  Java date to format
+     * @return String generated based on input date, or null if passed-in date is null.
+     */
+    public static String formatTimeWithZone(Date date) {
+        return formatDate(date, getTimeWithZoneFormat());
+    }
+
+    /**
      * Format a timestamp using the standard format (YYYY-MM-DDTHH:MM:SS,SSS).
      * @param date  Java date to format
      * @return String generated based on input date, or null if passed-in date is null.
      */
     public static String formatTimestamp(Date date) {
         return formatDate(date, getTimestampFormat());
+    }
+
+    /**
+     * Format a timestamp using the standard format that includes time zone (YYYY-MM-DDTHH:MM:SS,SSS ZZZ).
+     * @param date  Java date to format
+     * @return String generated based on input date, or null if passed-in date is null.
+     */
+    public static String formatTimestampWithZone(Date date) {
+        return formatDate(date, getTimestampWithZoneFormat());
     }
 
     /**
