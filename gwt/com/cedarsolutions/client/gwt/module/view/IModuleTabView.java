@@ -38,6 +38,12 @@ public interface IModuleTabView extends IModulePageView {
      */
     void setContext(TabLayoutPanel parentPanel, int tabIndex);
 
+    /** Disable the tab, so it no longer handles selection events. */
+    void disableTab();
+
+    /** Enable the tab, so it begins to handle selection events. */
+    void enableTab();
+
     /** Get the parent TabLayoutPanel. */
     TabLayoutPanel getParentPanel();
 

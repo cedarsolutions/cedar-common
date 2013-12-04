@@ -88,6 +88,15 @@ public class ModuleTabViewClientTest extends ClientTestCase {
         assertEquals(1, selectedHandler.calls);
         assertEquals(UnifiedEventType.SELECTED_EVENT, selectedHandler.lastType);
 
+        handler.disable();
+        handler.onBeforeSelection(1);
+        assertTrue(view.isInitialized());
+        assertEquals(1, initHandler.calls);
+        assertEquals(UnifiedEventType.INIT_EVENT, initHandler.lastType);
+        assertEquals(1, selectedHandler.calls);
+        assertEquals(UnifiedEventType.SELECTED_EVENT, selectedHandler.lastType);
+
+        handler.enable();
         handler.onBeforeSelection(1);
         assertTrue(view.isInitialized());
         assertEquals(1, initHandler.calls);

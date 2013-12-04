@@ -1,3 +1,7 @@
+Version 3.3.1   unreleased
+
+    * Make changes to ModuleTabPanelView, ModuleTabView and TabLayoutPanel so replacing tabs works better.
+
 Version 3.3.0   27 Nov 2013
 
     * Update class comments on StubbedClientTest case to reflect current usage.

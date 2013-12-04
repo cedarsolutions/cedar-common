@@ -51,6 +51,9 @@ public abstract class ModuleTabView extends ModulePageView implements IModuleTab
     /** Event handler for the selected event (if any). */
     private ViewEventHandler selectedEventHandler;
 
+    /** Save off the "before selection" handler, so we can manipulate it. */
+    private SelectionHandler beforeSelectionHandler;
+
     /**
      * Set the context that this tab exists in.
      * @param parentPanel Parent tab layout panel
@@ -60,7 +63,20 @@ public abstract class ModuleTabView extends ModulePageView implements IModuleTab
     public void setContext(TabLayoutPanel parentPanel, int tabIndex) {
         this.parentPanel = parentPanel;
         this.tabIndex = tabIndex;
-        this.parentPanel.addBeforeSelectionHandler(new SelectionHandler(this));
+        this.beforeSelectionHandler = new SelectionHandler(this);
+        this.parentPanel.addBeforeSelectionHandler(this.beforeSelectionHandler);
+    }
+
+    /** Disable the tab, so it no longer handles selection events. */
+    @Override
+    public void disableTab() {
+        this.beforeSelectionHandler.disable();
+    }
+
+    /** Enable the tab, so it begins to handle selection events. */
+    @Override
+    public void enableTab() {
+        this.beforeSelectionHandler.enable();
     }
 
     /** Get the parent TabLayoutPanel. */
@@ -143,10 +159,20 @@ public abstract class ModuleTabView extends ModulePageView implements IModuleTab
 
     /** Initialization handler. */
     protected static class SelectionHandler implements BeforeSelectionHandler<Integer> {
+        private boolean enabled;
         private IModuleTabView view;
 
         public SelectionHandler(IModuleTabView view) {
+            this.enabled = true;
             this.view = view;
+        }
+
+        public void enable() {
+            this.enabled = true;
+        }
+
+        public void disable() {
+            this.enabled = false;
         }
 
         @Override
@@ -155,10 +181,15 @@ public abstract class ModuleTabView extends ModulePageView implements IModuleTab
         }
 
         protected void onBeforeSelection(int tabIndex) {
-            if (tabIndex == this.view.getTabIndex()) {
-                this.view.selectTab();
+            if (this.enabled) {
+                if (tabIndex == this.view.getTabIndex()) {
+                    this.view.selectTab();
+                }
             }
         }
 
+        protected boolean isEnabled() {
+            return this.enabled;
+        }
     }
 }
