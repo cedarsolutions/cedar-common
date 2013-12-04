@@ -736,6 +736,30 @@ public boolean remove(int index) {
     return true;
   }
 
+/** 
+ * Remove the tab at the indicated index, without selecting any tab as a result.
+ * This is intended for use when replacing the view that is rendering a tab.
+ * The caller MUST re-select a valid tab after calling this method. 
+ */
+// Added for Cedar Common
+public boolean removeWithoutSelecting(int index) {
+    if ((index < 0) || (index >= getWidgetCount())) {
+      return false;
+    }
+
+    Widget child = getWidget(index);
+    tabBar.remove(index);
+    deckPanel.removeProtected(child);
+    child.removeStyleName(CONTENT_STYLE);
+
+    Tab tab = tabs.remove(index);
+    tab.getWidget().removeFromParent();
+    
+    selectedIndex = -1;  // otherwise, this tab still looks selected, and attempt to re-select it are ignored
+
+    return true;
+  }
+
   @Override
 public boolean remove(Widget w) {
     int index = getWidgetIndex(w);

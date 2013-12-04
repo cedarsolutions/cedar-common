@@ -63,7 +63,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
     }
 
     /**
-     * Add a new tab to the tab panel.
+     * Add a new tab to the tab panel, automatically marking it as enabled.
      * The tab will be placed at the desired index, or at the end of the list if that's not possible.
      * @param view     View to use as tab contents
      * @param viewName Name of the view, to be used in a legible HTML id
@@ -73,6 +73,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
     protected void addTab(IModuleTabView view, String viewName, String title, int tabIndex) {
         int actual = this.getTabPanel().add(view.getViewWidget(), viewName, title, tabIndex);
         view.setContext(this.getTabPanel(), actual);
+        view.enableTab();
     }
 
     /** Configure the tab panel so it takes up the full screen, using default scaling. */
@@ -144,10 +145,12 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
         this.addTab(view, viewName, title, tabIndex);
 
         if (this.getTabPanel().getWidgetCount() > tabIndex) {
-            this.getTabPanel().remove(tabIndex);
+            IModuleTabView old = (IModuleTabView) this.getTabPanel().getWidget(tabIndex);
+            old.disableTab();  // disable the tab so it no longer handles selection events
+            this.getTabPanel().removeWithoutSelecting(tabIndex);
         }
 
-        view.selectTab();  // simulates the act of the user clicking on the tab
+        this.getTabPanel().selectTab(tabIndex);  // simulates the act of the user clicking on the tab
     }
 
     /** Window resize handler, which resizes a tab panel to full-screen. */
