@@ -142,15 +142,28 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
      * @param tabIndex Index of the tab to replace.
      */
     protected void replaceTabWithView(IModuleTabView view, String viewName, String title, int tabIndex) {
-        this.addTab(view, viewName, title, tabIndex);
-
+        // Check whether there's already a tab at this index
+        IModuleTabView oldTab = null;
         if (this.getTabPanel().getWidgetCount() > tabIndex) {
-            IModuleTabView old = (IModuleTabView) this.getTabPanel().getWidget(tabIndex);
-            old.disableTab();  // disable the tab so it no longer handles selection events
-            this.getTabPanel().removeWithoutSelecting(tabIndex);
+            oldTab = (IModuleTabView) this.getTabPanel().getWidget(tabIndex);
         }
 
-        this.getTabPanel().selectTab(tabIndex);  // simulates the act of the user clicking on the tab
+        if (oldTab == null) {
+            // If there's no old tab, just add the new one at the specified index
+            this.addTab(view, viewName, title, tabIndex);
+            this.getTabPanel().selectTab(tabIndex);
+        } else {
+            if (oldTab == view) {
+                // If the old tab is exactly the same as the new one, just select it
+                this.getTabPanel().selectTab(tabIndex);
+            } else {
+                // Otherwise, replace the old tab with the new tab
+                oldTab.disableTab();
+                this.addTab(view, viewName, title, tabIndex);
+                this.getTabPanel().removeWithoutSelecting(tabIndex);
+                this.getTabPanel().selectTab(tabIndex);
+            }
+        }
     }
 
     /** Window resize handler, which resizes a tab panel to full-screen. */
