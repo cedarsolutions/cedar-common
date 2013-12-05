@@ -2,6 +2,7 @@ Version 3.3.1   unreleased
 
     * Make changes to ModuleTabPanelView, ModuleTabView and TabLayoutPanel so replacing tabs works better.
     * Add new external GWT class CheckboxCell that can be disabled.
+    * Add new external GWT class SwitchableSelectionModel that can change from single to multiple selections.
 
 Version 3.3.0   27 Nov 2013
 
