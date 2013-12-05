@@ -27,9 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cedarsolutions.client.gwt.custom.table.CheckboxCell;
+import com.cedarsolutions.client.gwt.custom.table.SwitchableSelectionModel;
+import com.cedarsolutions.client.gwt.custom.table.SwitchableSelectionModel.SelectionType;
 import com.cedarsolutions.web.metadata.NativeEventType;
 import com.google.gwt.cell.client.Cell.Context;
-import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
@@ -41,9 +43,7 @@ import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.DefaultSelectionEventManager;
-import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionModel;
 
 /**
  * Standardizes CellTable behavior.
@@ -189,15 +189,33 @@ public class DataTable<T> extends CellTable<T> {
 
     /** Whether a selection column is configured. */
     public boolean hasSelectionColumn() {
-        return this.selectionColumn != null;
+        return this.selectionHeader != null && this.selectionColumn != null;
+    }
+
+    /** Set the selection type on the selection column. */
+    public void setSelectionType(SelectionType selectionType) {
+        if (this.hasSelectionColumn()) {
+            this.selectionHeader.setSelectionType(selectionType);
+            this.selectionColumn.setSelectionType(selectionType);
+        }
+    }
+
+    /** Get the selection type on the selection column. */
+    public SelectionType getSelectionType() {
+        return this.hasSelectionColumn() ? this.selectionHeader.getSelectionType() : null;
+    }
+
+    /** Add a selection column, which uses the MULTI selection type by default. */
+    public void addSelectionColumn(double width, Unit unit, ProvidesKey<T> keyProvider) {
+        this.addSelectionColumn(width, unit, keyProvider, SelectionType.MULTI);
     }
 
     /** Add a section column. */
-    public void addSelectionColumn(double width, Unit unit, ProvidesKey<T> keyProvider) {
-        SelectionModel<T> selectionModel = new MultiSelectionModel<T>(keyProvider);
+    public void addSelectionColumn(double width, Unit unit, ProvidesKey<T> keyProvider, SelectionType selectionType) {
+        SwitchableSelectionModel<T> selectionModel = new SwitchableSelectionModel<T>(keyProvider, selectionType);
         this.setSelectionModel(selectionModel, DefaultSelectionEventManager.<T>createCheckboxManager());
+        this.selectionHeader = new SelectionHeader(this, selectionModel);
         this.selectionColumn = new SelectionColumn(selectionModel);
-        this.selectionHeader = new SelectionHeader(this);
         this.addColumn(this.selectionColumn, this.selectionHeader);
         this.setColumnWidth(this.selectionColumn, width, unit);
     }
@@ -328,9 +346,9 @@ public class DataTable<T> extends CellTable<T> {
 
     /** Selection column, which holds the selection checkbox. */
     public class SelectionColumn extends Column<T, Boolean> {
-        private SelectionModel<T> selectionModel;
+        private SwitchableSelectionModel<T> selectionModel;
 
-        public SelectionColumn(SelectionModel<T> selectionModel) {
+        public SelectionColumn(SwitchableSelectionModel<T> selectionModel) {
             super(new CheckboxCell(true, false));
             this.setSortable(false);
             this.selectionModel = selectionModel;
@@ -340,16 +358,27 @@ public class DataTable<T> extends CellTable<T> {
         public Boolean getValue(T object) {
             return selectionModel.isSelected(object);
         }
+
+        public void setSelectionType(SelectionType selectionType) {
+            this.selectionModel.setSelectionType(selectionType);
+        }
+
+        public SelectionType getSelectionType() {
+            return this.selectionModel.getSelectionType();
+        }
     }
 
     /** Selection header, which holds a select all/select none checkbox. */
     public class SelectionHeader extends Header<Boolean> {
         private boolean selected = false;
         private DataTable<T> table;
+        private SwitchableSelectionModel<T> selectionModel;
 
-        public SelectionHeader(DataTable<T> table) {
+        public SelectionHeader(DataTable<T> table, SwitchableSelectionModel<T> selectionModel) {
             super(new CheckboxCell(true, false));
             this.table = table;
+            this.selectionModel = selectionModel;
+            this.refreshCheckboxState();
         }
 
         @Override
@@ -363,6 +392,20 @@ public class DataTable<T> extends CellTable<T> {
                 this.selected = !this.selected;
                 this.table.selectItems(this.selected);
             }
+        }
+
+        public void setSelectionType(SelectionType selectionType) {
+            this.selectionModel.setSelectionType(selectionType);
+            this.refreshCheckboxState();
+        }
+
+        public SelectionType getSelectionType() {
+            return this.selectionModel.getSelectionType();
+        }
+
+        private void refreshCheckboxState() {
+            CheckboxCell cell = (CheckboxCell) this.getCell();
+            cell.setEnabled(this.selectionModel.getSelectionType() == SelectionType.MULTI);
         }
     }
 
