@@ -97,8 +97,8 @@ subprojects {
     version = config_mavenPublishVersion
     buildDir = { "../build/${project.name}" }
 
-    sourceCompatibility = JavaVersion.VERSION_1_6
-    targetCompatibility = JavaVersion.VERSION_1_6
+    sourceCompatibility = JavaVersion.VERSION_1_6    // because GWT 2.5.1 does not support Java 7
+    targetCompatibility = JavaVersion.VERSION_1_6    // to be as easy-to-use as possible for other projects
 
     repositories {
         mavenLocal()   // Local Maven repository
