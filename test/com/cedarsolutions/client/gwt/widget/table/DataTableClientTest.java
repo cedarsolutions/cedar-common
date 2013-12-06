@@ -24,6 +24,9 @@ package com.cedarsolutions.client.gwt.widget.table;
 
 import java.io.Serializable;
 
+import com.cedarsolutions.client.gwt.custom.table.CheckboxCell;
+import com.cedarsolutions.client.gwt.custom.table.SwitchableSelectionModel;
+import com.cedarsolutions.client.gwt.custom.table.SwitchableSelectionModel.SelectionType;
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
 import com.cedarsolutions.client.gwt.widget.table.DataTable.DisabledResources;
 import com.cedarsolutions.client.gwt.widget.table.DataTable.SelectionColumn;
@@ -37,13 +40,6 @@ import com.google.gwt.view.client.ProvidesKey;
 
 /**
  * Client-side unit tests for DataTable.
- *
- * <p>
- * These are not the most detailed tests that I have ever done.  I
- * am mainly just spot-checking behavior.  I tested this functionality
- * fairly well by hand before pulling out the common classes.
- * </p>
- *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public class DataTableClientTest extends ClientTestCase {
@@ -92,8 +88,9 @@ public class DataTableClientTest extends ClientTestCase {
         assertTrue(style instanceof DisabledResources);
     }
 
-    /** Spot-check addColumn() and addSelectionColumn(). */
-    public void testAddColumn() {
+    /** Spot-check addSelectionColumn() for the default selection type. */
+    @SuppressWarnings("rawtypes")
+    public void testAddSelectionColumnDefault() {
         DataTable<Whatever> table = new DataTable<Whatever>(100, "200px");
         assertFalse(table.hasSelectionColumn());
 
@@ -102,8 +99,51 @@ public class DataTableClientTest extends ClientTestCase {
         assertEquals(1, table.getColumnCount());
         assertTrue(table.getColumn(0) instanceof SelectionColumn);
         assertTrue(table.getColumnHeader(0) instanceof SelectionHeader);
+        assertEquals(SelectionType.MULTI, table.getSelectionType());
+        assertEquals(SelectionType.MULTI, ((SelectionColumn) table.getColumn(0)).getSelectionType());
+        assertEquals(SelectionType.MULTI, ((SelectionHeader) table.getColumnHeader(0)).getSelectionType());
+    }
+
+    /** Spot-check addSelectionColumn() for a MULTI selection type. */
+    @SuppressWarnings("rawtypes")
+    public void testAddSelectionColumnMulti() {
+        DataTable<Whatever> table = new DataTable<Whatever>(100, "200px");
+        assertFalse(table.hasSelectionColumn());
+
+        table.addSelectionColumn(10, Unit.PCT, new KeyProvider(), SelectionType.MULTI);
+        assertTrue(table.hasSelectionColumn());
+        assertEquals(1, table.getColumnCount());
+        assertTrue(table.getColumn(0) instanceof SelectionColumn);
+        assertTrue(table.getColumnHeader(0) instanceof SelectionHeader);
+        assertEquals(SelectionType.MULTI, table.getSelectionType());
+        assertEquals(SelectionType.MULTI, ((SelectionColumn) table.getColumn(0)).getSelectionType());
+        assertEquals(SelectionType.MULTI, ((SelectionHeader) table.getColumnHeader(0)).getSelectionType());
+    }
+
+    /** Spot-check addSelectionColumn() for a SINGLE selection type. */
+    @SuppressWarnings("rawtypes")
+    public void testAddSelectionColumnSingle() {
+        DataTable<Whatever> table = new DataTable<Whatever>(100, "200px");
+        assertFalse(table.hasSelectionColumn());
+
+        table.addSelectionColumn(10, Unit.PCT, new KeyProvider(), SelectionType.SINGLE);
+        assertTrue(table.hasSelectionColumn());
+        assertEquals(1, table.getColumnCount());
+        assertTrue(table.getColumn(0) instanceof SelectionColumn);
+        assertTrue(table.getColumnHeader(0) instanceof SelectionHeader);
+        assertEquals(SelectionType.SINGLE, table.getSelectionType());
+        assertEquals(SelectionType.SINGLE, ((SelectionColumn) table.getColumn(0)).getSelectionType());
+        assertEquals(SelectionType.SINGLE, ((SelectionHeader) table.getColumnHeader(0)).getSelectionType());
+    }
+
+    /** Spot-check addColumn() and addSelectionColumn() together. */
+    public void testAddColumn() {
+        DataTable<Whatever> table = new DataTable<Whatever>(100, "200px");
+        assertFalse(table.hasSelectionColumn());
 
         SomethingColumn column = new SomethingColumn();
+
+        table.addSelectionColumn(10, Unit.PCT, new KeyProvider());
         table.addColumn(column, "header", "footer");
         assertEquals(2, table.getColumnCount());
         assertTrue(table.getColumn(0) instanceof SelectionColumn);
@@ -111,6 +151,28 @@ public class DataTableClientTest extends ClientTestCase {
         assertSame(column, table.getColumn(1));
         assertEquals("header", table.getColumnHeader(1));
         assertEquals("footer", table.getColumnFooter(1));
+    }
+
+    /** Spot-check setSelectionType(). */
+    @SuppressWarnings("rawtypes")
+    public void testSetSelectionType() {
+        DataTable<Whatever> table = new DataTable<Whatever>(100, "200px");
+        assertFalse(table.hasSelectionColumn());
+
+        table.addSelectionColumn(10, Unit.PCT, new KeyProvider(), SelectionType.SINGLE);
+        assertEquals(SelectionType.SINGLE, table.getSelectionType());
+        assertEquals(SelectionType.SINGLE, ((SelectionColumn) table.getColumn(0)).getSelectionType());
+        assertEquals(SelectionType.SINGLE, ((SelectionHeader) table.getColumnHeader(0)).getSelectionType());
+
+        table.setSelectionType(SelectionType.MULTI);
+        assertEquals(SelectionType.MULTI, table.getSelectionType());
+        assertEquals(SelectionType.MULTI, ((SelectionColumn) table.getColumn(0)).getSelectionType());
+        assertEquals(SelectionType.MULTI, ((SelectionHeader) table.getColumnHeader(0)).getSelectionType());
+
+        table.setSelectionType(SelectionType.SINGLE);
+        assertEquals(SelectionType.SINGLE, table.getSelectionType());
+        assertEquals(SelectionType.SINGLE, ((SelectionColumn) table.getColumn(0)).getSelectionType());
+        assertEquals(SelectionType.SINGLE, ((SelectionHeader) table.getColumnHeader(0)).getSelectionType());
     }
 
     /** Spot-check setNoRowsMessage(). */
@@ -137,6 +199,60 @@ public class DataTableClientTest extends ClientTestCase {
         table.selectNone();
         table.selectAll();
         table.selectItems(true);
+    }
+
+    /** Test SelectionColumn. */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void testSelectionColumn() {
+        DataTable<Whatever> table = new DataTable<Whatever>(100, "200px");
+        KeyProvider keyProvider = new KeyProvider();
+        SwitchableSelectionModel<Whatever> selectionModel = new SwitchableSelectionModel<Whatever>(keyProvider, SelectionType.MULTI);
+        Whatever value = new Whatever();
+
+        SelectionColumn column = table.new SelectionColumn(selectionModel);
+        assertTrue(column.getCell() instanceof CheckboxCell);
+        assertFalse(column.isSortable());
+        assertSame(selectionModel, column.selectionModel);
+        assertEquals(SelectionType.MULTI, column.selectionModel.getSelectionType());
+        assertTrue(((CheckboxCell) column.getCell()).isEnabled());
+
+        column.setSelectionType(SelectionType.SINGLE);
+        assertEquals(SelectionType.SINGLE, column.selectionModel.getSelectionType());
+        assertTrue(((CheckboxCell) column.getCell()).isEnabled());
+
+        column.setSelectionType(SelectionType.MULTI);
+        assertEquals(SelectionType.MULTI, column.selectionModel.getSelectionType());
+        assertTrue(((CheckboxCell) column.getCell()).isEnabled());
+
+        column.selectionModel.setSelected(value, true);
+        assertTrue(column.getValue(value));
+
+        column.selectionModel.setSelected(value, false);
+        assertFalse(column.getValue(value));
+    }
+
+    /** Test SelectionHeader. */
+    @SuppressWarnings("rawtypes")
+    public void testSelectionHeader() {
+        DataTable<Whatever> table = new DataTable<Whatever>(100, "200px");
+        KeyProvider keyProvider = new KeyProvider();
+        SwitchableSelectionModel<Whatever> selectionModel = new SwitchableSelectionModel<Whatever>(keyProvider, SelectionType.MULTI);
+
+        SelectionHeader header = table.new SelectionHeader(table, selectionModel);
+        assertTrue(header.getCell() instanceof CheckboxCell);
+        assertSame(table, header.table);
+        assertSame(selectionModel, header.selectionModel);
+        assertEquals(SelectionType.MULTI, header.selectionModel.getSelectionType());
+        assertFalse(header.getValue());
+        assertTrue(((CheckboxCell) header.getCell()).isEnabled());
+
+        header.setSelectionType(SelectionType.SINGLE);
+        assertEquals(SelectionType.SINGLE, header.selectionModel.getSelectionType());
+        assertFalse(((CheckboxCell) header.getCell()).isEnabled());
+
+        header.setSelectionType(SelectionType.MULTI);
+        assertEquals(SelectionType.MULTI, header.selectionModel.getSelectionType());
+        assertTrue(((CheckboxCell) header.getCell()).isEnabled());
     }
 
     /** Class for our data table to hold. */

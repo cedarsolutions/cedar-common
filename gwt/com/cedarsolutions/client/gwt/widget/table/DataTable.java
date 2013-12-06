@@ -346,7 +346,7 @@ public class DataTable<T> extends CellTable<T> {
 
     /** Selection column, which holds the selection checkbox. */
     public class SelectionColumn extends Column<T, Boolean> {
-        private SwitchableSelectionModel<T> selectionModel;
+        protected SwitchableSelectionModel<T> selectionModel;
 
         public SelectionColumn(SwitchableSelectionModel<T> selectionModel) {
             super(new CheckboxCell(true, false));
@@ -370,9 +370,9 @@ public class DataTable<T> extends CellTable<T> {
 
     /** Selection header, which holds a select all/select none checkbox. */
     public class SelectionHeader extends Header<Boolean> {
-        private boolean selected = false;
-        private DataTable<T> table;
-        private SwitchableSelectionModel<T> selectionModel;
+        protected boolean selected = false;
+        protected DataTable<T> table;
+        protected SwitchableSelectionModel<T> selectionModel;
 
         public SelectionHeader(DataTable<T> table, SwitchableSelectionModel<T> selectionModel) {
             super(new CheckboxCell(true, false));
