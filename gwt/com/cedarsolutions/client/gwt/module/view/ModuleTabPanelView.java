@@ -131,7 +131,12 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
      * @param title    Title of the tab
      */
     protected void replaceFirstTabWithView(IModuleTabView view, String viewName, String title) {
-        replaceTabWithView(view, viewName, title, 0);
+        if (this.getTabPanel().getWidgetCount() >= 1) {
+            this.getTabPanel().remove(0);
+        }
+
+        this.addTab(view, viewName, title);
+        view.selectTab();  // simulates the act of the user clicking on the tab
     }
 
     /**

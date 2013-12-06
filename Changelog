@@ -1,3 +1,7 @@
+Version 3.4.1   unreleased
+
+    * Revert ModuleTabPanelView.replaceFirstTabWithView(), which wasn't fully compatible with old version.
+
 Version 3.4.0   06 Dec 2013
 
     * Make changes to ModuleTabPanelView, ModuleTabView and TabLayoutPanel so replacing tabs works better.
