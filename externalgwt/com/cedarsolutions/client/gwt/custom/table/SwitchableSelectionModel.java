@@ -22,6 +22,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.custom.table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -92,18 +93,31 @@ public class SwitchableSelectionModel<T> extends AbstractSelectionModel<T> imple
     @Override
     public void clear() {
         this.selectionChanges.clear();
+        this.unselectAll();
+        this.scheduleSelectionChangeEvent();
+    }
 
+    /** Unselect all items. */
+    private void unselectAll() {
         for (T value : this.selectedSet.values()) {
             this.selectionChanges.put(getKey(value), new SelectionChange<T>(value, false));
         }
-
-        scheduleSelectionChangeEvent();
     }
 
     @Override
     public Set<T> getSelectedSet() {
         this.resolveChanges();
         return new HashSet<T>(this.selectedSet.values());
+    }
+
+    /** Get the the selected object, really only makes sense when SelectionType.SINGLE. */
+    public T getSelectedObject() {
+        this.resolveChanges();
+        if (this.selectedSet.isEmpty()) {
+            return null;
+        } else {
+            return new ArrayList<T>(this.selectedSet.values()).get(0);
+        }
     }
 
     @Override
@@ -118,17 +132,19 @@ public class SwitchableSelectionModel<T> extends AbstractSelectionModel<T> imple
             this.selectionChanges.put(getKey(object), new SelectionChange<T>(object, selected));
             this.scheduleSelectionChangeEvent();
         } else {
-            if (selected) {
-                for (T value : this.selectedSet.values()) {
-                    this.selectionChanges.put(getKey(value), new SelectionChange<T>(value, false));
-                }
-
-                this.selectionChanges.put(getKey(object), new SelectionChange<T>(object, true));
+            if (object == null) {
+                this.unselectAll();
                 this.scheduleSelectionChangeEvent();
             } else {
-                if (isSelected(object)) {
-                    this.selectionChanges.put(getKey(object), new SelectionChange<T>(object, false));
+                if (selected) {
+                    this.unselectAll();
+                    this.selectionChanges.put(getKey(object), new SelectionChange<T>(object, true));
                     this.scheduleSelectionChangeEvent();
+                } else {
+                    if (isSelected(object)) {
+                        this.selectionChanges.put(getKey(object), new SelectionChange<T>(object, false));
+                        this.scheduleSelectionChangeEvent();
+                    }
                 }
             }
         }
