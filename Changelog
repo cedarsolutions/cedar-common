@@ -1,4 +1,4 @@
-Version 3.3.1   unreleased
+Version 3.4.0   06 Dec 2013
 
     * Make changes to ModuleTabPanelView, ModuleTabView and TabLayoutPanel so replacing tabs works better.
     * Add new external GWT class CheckboxCell that can be disabled.
