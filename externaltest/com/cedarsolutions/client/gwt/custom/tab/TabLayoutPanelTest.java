@@ -80,6 +80,7 @@ public class TabLayoutPanelTest extends GWTTestCase {
     }
   }
 
+  // Modified for CedarCommon
   @Override
   public String getModuleName() {
       return "com.cedarsolutions.CedarCommon";
