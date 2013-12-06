@@ -25,7 +25,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 /**
  * Tests for {@link CheckboxCell}.
  */
-// Modified slightly for CedarCommon to test the new disabled functionality
+// Modified slightly for CedarCommon (original was CheckboxCellTest).
+// Added new tests to verify the new disabled functionality.
 public class CheckboxCellClientTest extends EditableCellTestBase<Boolean, Boolean> {
 
   public void testConstructor() {

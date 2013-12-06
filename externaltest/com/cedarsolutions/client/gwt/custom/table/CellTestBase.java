@@ -123,9 +123,10 @@ public abstract class CellTestBase<T> extends GWTTestCase {
    */
   protected static final Object DEFAULT_KEY = new Object();
 
+  // Modified for CedarCommon
   @Override
   public String getModuleName() {
-    return "com.cedarsolutions.client.gwt.custom.CellTest";
+      return "com.cedarsolutions.CedarCommon";
   }
 
   public void testDependsOnSelection() {
