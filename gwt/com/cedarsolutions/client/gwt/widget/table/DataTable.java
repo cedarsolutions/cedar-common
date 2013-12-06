@@ -330,7 +330,7 @@ public class DataTable<T> extends CellTable<T> {
      * </p>
      *
      * @see <a href="https://code.google.com/p/google-web-toolkit/issues/detail?id=6144">Google Code</a>
-     * @see <a href="http://stackoverflow.com/questions/20086134/change-the-style-of-a-gwt-celltable-dynamically-to-visually-mark-it-as-disabled">StackOverflow</a>
+     * @see <a href="http://stackoverflow.com/questions/20086134">StackOverflow</a>
      */
     public interface DisabledResources extends CellTable.Resources {
 
