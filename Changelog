@@ -1,5 +1,6 @@
 Version 3.4.1   unreleased
 
+    * Bump up to AppEngine v1.8.8, since 1.8.4 is getting kind of old.
     * Tweak build.xml to run gradle in a way that's compatible with Java 7.
     * Revert ModuleTabPanelView.replaceFirstTabWithView(), which wasn't fully compatible with old version.
 
