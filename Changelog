@@ -1,5 +1,6 @@
 Version 3.4.1   unreleased
 
+    * Tweak build.xml to run gradle in a way that's compatible with Java 7.
     * Revert ModuleTabPanelView.replaceFirstTabWithView(), which wasn't fully compatible with old version.
 
 Version 3.4.0   06 Dec 2013
