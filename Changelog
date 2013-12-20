@@ -1,6 +1,7 @@
 Version 3.4.2   unreleased
 
     * Upgrade to CedarBuild v0.8.9, to allow configuring memory for tests.
+    * Enhance ServiceException and create ServiceExceptionUtils, to allow for a translatable RootCause.
 
 Version 3.4.1   06 Dec 2013
 
