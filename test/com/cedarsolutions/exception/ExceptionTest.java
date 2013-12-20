@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.cedarsolutions.exception.ServiceException.RootCause;
 import com.cedarsolutions.shared.domain.LocalizableMessage;
 import com.cedarsolutions.shared.domain.ValidationErrors;
 
@@ -468,6 +469,7 @@ public class ExceptionTest {
 
     /** Test ServiceException. */
     @Test public void testServiceException() {
+        RootCause rootCause = new RootCause();
         Throwable cause = new Exception("cause");
         LocalizableMessage message = new LocalizableMessage("whatever");
 
@@ -478,6 +480,7 @@ public class ExceptionTest {
             assertEquals(null, e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), (String) null);
             assertNull(e.getCause());
+            assertNull(e.getRootCause());
         }
 
         try {
@@ -487,6 +490,7 @@ public class ExceptionTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertNull(e.getCause());
+            assertNull(e.getRootCause());
         }
 
         try {
@@ -496,6 +500,7 @@ public class ExceptionTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertNull(e.getCause());
+            assertNull(e.getRootCause());
         }
 
         try {
@@ -505,6 +510,7 @@ public class ExceptionTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertSame(cause, e.getCause());
+            assertNull(e.getRootCause());
         }
 
         try {
@@ -514,6 +520,27 @@ public class ExceptionTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertSame(cause, e.getCause());
+            assertNull(e.getRootCause());
+        }
+
+        try {
+            throw new ServiceException("error", cause, rootCause);
+        } catch (ServiceException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals("error", e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), "error");
+            assertSame(cause, e.getCause());
+            assertSame(rootCause, e.getRootCause());
+        }
+
+        try {
+            throw new ServiceException(message, cause, rootCause);
+        } catch (ServiceException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals(message.getText(), e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), message);
+            assertSame(cause, e.getCause());
+            assertSame(rootCause, e.getRootCause());
         }
     }
 
