@@ -64,10 +64,14 @@ public class XsrfRpcProxyCreator extends ProxyCreator {
     /** Configured type. */
     protected JClassType type;
 
+    /** Number of methods that have been XSRF protected so far. */
+    protected int handled;
+
     /** Instantiates a new proxy creator. */
     public XsrfRpcProxyCreator(JClassType type) {
         super(type);
         this.type = type;
+        this.handled = 0;
     }
 
     /** Return our customized proxy supertype. */
@@ -88,9 +92,10 @@ public class XsrfRpcProxyCreator extends ProxyCreator {
         if (!isMethodXsrfProtected(syncMethod)) {
             super.generateProxyMethod(w, serializableTypeOracle, typeOracle, syncMethod, asyncMethod);
         } else {
-            generateInterfaceRpcMethod(w, asyncMethod);
+            String sequence = String.valueOf(++this.handled);
+            generateInterfaceRpcMethod(w, asyncMethod, sequence);
             generateClientRpcMethod(w, serializableTypeOracle, typeOracle, syncMethod, asyncMethod);
-            generateTokenCallback(w, asyncMethod);
+            generateTokenCallback(w, asyncMethod, sequence);
         }
     }
 
@@ -140,12 +145,17 @@ public class XsrfRpcProxyCreator extends ProxyCreator {
      * The proxy method calls out to the token service before invoking
      * the actual RPC in the callback's onSuccess() method.
      * </p>
+     *
+     * <p>
+     * The sequence parameter is incorporated into the generated callback
+     * name so we don't have problems if a single RPC overloads a method name.
+     * </p>
      */
-    protected void generateInterfaceRpcMethod(SourceWriter w, JMethod asyncMethod) {
+    protected void generateInterfaceRpcMethod(SourceWriter w, JMethod asyncMethod, String sequence) {
         String asyncReturnType = asyncMethod.getReturnType().getErasedType().getQualifiedSourceName();
         String asyncMethodName =  asyncMethod.getName();
         JParameter[] asyncParams = asyncMethod.getParameters();
-        String callbackClassName = "_TokenCallback_" + asyncMethodName;
+        String callbackClassName = "_TokenCallback_" + asyncMethodName + "_" + sequence;
 
         w.println();
         w.print("public ");
@@ -215,13 +225,18 @@ public class XsrfRpcProxyCreator extends ProxyCreator {
      *       }
      *    }
      * </pre>
+     *
+     * <p>
+     * The sequence parameter is incorporated into the generated callback
+     * name so we don't have problems if a single RPC overloads a method name.
+     * </p>
      */
-    protected void generateTokenCallback(SourceWriter w, JMethod asyncMethod) {
+    protected void generateTokenCallback(SourceWriter w, JMethod asyncMethod, String sequence) {
         String asyncMethodName =  asyncMethod.getName();
         JParameter[] asyncParams = asyncMethod.getParameters();
         JParameter callbackParam = asyncParams[asyncParams.length - 1];  // callback is assumed to be the last parameter
         String realMethodName = "_realRpcMethod_" + asyncMethodName;
-        String callbackClassName = "_TokenCallback_" + asyncMethodName;
+        String callbackClassName = "_TokenCallback_" + asyncMethodName + "_" + sequence;
 
         w.println();
         w.print("public class ");
