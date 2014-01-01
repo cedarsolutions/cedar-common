@@ -150,12 +150,13 @@ public class XsrfRpcProxyCreatorTest {
         StringSourceWriter writer = new StringSourceWriter();
         JMethod asyncMethod = createMockedAsyncMethod();
 
-        creator.generateInterfaceRpcMethod(writer, asyncMethod);
+        String sequence = "XXXX";
+        creator.generateInterfaceRpcMethod(writer, asyncMethod, sequence);
         String actual = writer.toString();
 
         String expected = "\n" +
         "public void createExchange(java.lang.String name, com.google.gwt.user.client.rpc.AsyncCallback callback) {\n" +
-        "  AbstractTokenCallback tokenCallback = new _TokenCallback_createExchange(name, callback);\n" +
+        "  AbstractTokenCallback tokenCallback = new _TokenCallback_createExchange_XXXX(name, callback);\n" +
         "  com.cedarsolutions.client.gwt.rpc.IXsrfTokenRpcAsync xsrfTokenRpc = getXsrfTokenRpc();\n" +
         "  xsrfTokenRpc.generateXsrfToken(tokenCallback);\n" +
         "}\n";
@@ -170,15 +171,16 @@ public class XsrfRpcProxyCreatorTest {
         StringSourceWriter writer = new StringSourceWriter();
         JMethod asyncMethod = createMockedAsyncMethod();
 
-        creator.generateTokenCallback(writer, asyncMethod);
+        String sequence = "XXXX";
+        creator.generateTokenCallback(writer, asyncMethod, sequence);
         String actual = writer.toString();
 
         String expected = "\n" +
-        "public class _TokenCallback_createExchange extends AbstractTokenCallback {\n" +
+        "public class _TokenCallback_createExchange_XXXX extends AbstractTokenCallback {\n" +
         "  private java.lang.String name;\n" +
         "  private com.google.gwt.user.client.rpc.AsyncCallback callback;\n" +
         "  \n" +
-        "  public _TokenCallback_createExchange(java.lang.String name, com.google.gwt.user.client.rpc.AsyncCallback callback) {\n" +
+        "  public _TokenCallback_createExchange_XXXX(java.lang.String name, com.google.gwt.user.client.rpc.AsyncCallback callback) {\n" +
         "    super(callback);\n" +
         "    this.name = name;\n" +
         "    this.callback = callback;\n" +
