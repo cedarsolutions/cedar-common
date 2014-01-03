@@ -22,10 +22,12 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.junit.gwt.classloader;
 
+import static com.cedarsolutions.junit.gwt.classloader.GwtResourceCreator.substituteReplaceVariables;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -124,6 +126,47 @@ public class GwtResourceCreatorTest {
         assertEquals(two, GwtResourceCreator.parseDefaultStringMapValue(new String[] { "key1", "value1", "key2", "value2", }));
         assertEquals(three, GwtResourceCreator.parseDefaultStringMapValue(new String[] { "key1", null,  null, "value2", }));
     }
+
+    /** Test substituteReplaceVariables(). */
+    @Test public void testSubstituteReplaceVariables() {
+        assertSubsituteReplaceWorks("", "");
+        assertSubsituteReplaceWorks("whatever", "whatever");
+        assertSubsituteReplaceWorks("whatever null", "whatever {0}", (Object) null);
+        assertSubsituteReplaceWorks("whatever hello", "whatever {0}", "hello");
+        assertSubsituteReplaceWorks("whatever 12", "whatever {0}", 12);
+        assertSubsituteReplaceWorks("whatever 196.423", "whatever {0}", 196.423);
+        assertSubsituteReplaceWorks("whatever true", "whatever {0}", true);
+        assertSubsituteReplaceWorks("whatever false", "whatever {0}", false);
+        assertSubsituteReplaceWorks("whatever {-1}", "whatever {-1}");  // {-1} is not a parameter, so it's ignored
+        assertSubsituteReplaceWorks("whatever {a}", "whatever {a}");    // {a} is not a parameter, so it's ignored
+        assertSubsituteReplaceWorks("whatever A B C", "whatever {0} {1} {2}", "A", "B", "C");
+        assertSubsituteReplaceWorks("whatever C B A", "whatever {2} {1} {0}", "A", "B", "C");
+
+        assertSubsituteReplaceFails("whatever", (Object[]) null);            // null input
+        assertSubsituteReplaceFails(null, "whatever");                       // null input
+        assertSubsituteReplaceFails("whatever", "arg1");                     // no {0} for "arg1"
+        assertSubsituteReplaceFails("whatever", 12);                         // no {0} for 12
+        assertSubsituteReplaceFails("whatever {0}");                         // no argument for {0}
+        assertSubsituteReplaceFails("whatever {1}", "arg1");                 // no {0} for "arg1"
+        assertSubsituteReplaceFails("whatever {0} {1}", "arg1");             // no argument for {0}
+        assertSubsituteReplaceFails("whatever {-1}", "arg1");                // no {0} for "arg1"
+        assertSubsituteReplaceFails("whatever {2} {1}", "A", "B", "C");      // no argument {0} for "A"
+        assertSubsituteReplaceFails("whatever {3} {2} {1}", "A", "B", "C");  // uses 1/2/3 instead of 0/1/2
+    }
+
+    /** Assert that substituteReplaceVariables() succeeds for particular input. */
+    private static void assertSubsituteReplaceWorks(String expected, String message, Object ... arguments) {
+        assertEquals(expected, substituteReplaceVariables(message, arguments));
+    }
+
+    /** Assert that substituteReplaceVariables() fails for particular input. */
+    private static void assertSubsituteReplaceFails(String message, Object ... arguments) {
+        try {
+            substituteReplaceVariables(message, arguments);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) { }
+    }
+
 
     /** Constants interface that we can use for testing. */
     protected interface TestMessages extends Messages {

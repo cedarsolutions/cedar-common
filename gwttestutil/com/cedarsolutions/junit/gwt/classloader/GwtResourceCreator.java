@@ -26,8 +26,12 @@ import static org.mockito.Mockito.mock;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -120,7 +124,8 @@ public class GwtResourceCreator {
 
         for (Annotation annotation : invocation.getMethod().getDeclaredAnnotations()) {
             if (annotation instanceof DefaultMessage) {
-                answer = ((DefaultMessage) annotation).value();
+                String message = ((DefaultMessage) annotation).value();
+                return substituteReplaceVariables(message, invocation.getArguments());
             }
         }
 
@@ -185,4 +190,61 @@ public class GwtResourceCreator {
 
         return map;
     }
+
+    /**
+     * Substitute/replace parameters in a message.
+     * @param message    Message to subsitute/replace in
+     * @param arguments  List of arguments to take parameters from
+     * @throws IllegalArgumentException  The parameter list doesn't match up with the arguments.
+     */
+    protected static String substituteReplaceVariables(String message, Object[] arguments) throws IllegalArgumentException {
+        // Pre-validate so that we get out quickly
+        if (message == null || arguments == null) {
+            throw new IllegalArgumentException("Internal error replacing variables: null input");
+        }
+
+        // Make a list of all the argument parameters {0}, {1}, etc.
+        List<Integer> argumentParameters = new ArrayList<Integer>();
+        for (int i = 0; i < arguments.length; i++) {
+            argumentParameters.add(i);
+        }
+
+        // Find all of the parameters in the message, like {0}, {1}, etc.
+        Pattern pattern = Pattern.compile("(\\{)([0-9]+)(\\})");
+        List<Integer> messageParameters = new ArrayList<Integer>();
+        Matcher matcher = pattern.matcher(message);
+        while (matcher.find()) {
+            int messageParameter = Integer.parseInt(matcher.group(2));
+            messageParameters.add(messageParameter);
+        }
+
+        // Check that every message parameter has a corresponding argument parameter
+        for (Integer argumentParameter : argumentParameters) {
+            if (!messageParameters.contains(argumentParameter)) {
+                throw new IllegalArgumentException("Required argument " + argumentParameter + " not present: " + message);
+            }
+        }
+
+        // Check that every argument parameter has a corresponding message parameter
+        for (Integer messageParameter : messageParameters) {
+            if (!argumentParameters.contains(messageParameter)) {
+                throw new IllegalArgumentException("Argument " + messageParameter + " beyond range of arguments: " + message);
+            }
+        }
+
+        // Now that we know the parameters are valid, replace them with real values.
+        String result = message;
+        if (arguments.length > 0) {
+            for (int i = 0; i < arguments.length; i++) {
+                Object argument = arguments[i];
+                String value = argument == null ? "null" : String.valueOf(argument);
+                String variable = "{" + i + "}";
+                result = result.replace(variable, value);
+            }
+        }
+
+        // Return the result, which is always non-null by this point
+        return result;
+    }
+
 }
