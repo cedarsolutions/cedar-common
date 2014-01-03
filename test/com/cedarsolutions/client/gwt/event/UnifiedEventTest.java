@@ -46,7 +46,12 @@ public class UnifiedEventTest {
 
     /** Test the ClickEvent constructor. */
     @Test public void testConstructorClickEvent() {
-        UnifiedEvent event = new UnifiedEvent((UnifiedEventType) null);
+        UnifiedEvent event = new UnifiedEvent();
+        assertNotNull(event);
+        assertEquals(UnifiedEventType.DEFAULT_EVENT, event.getEventType());
+        assertNull(event.getClickEvent());
+
+        event = new UnifiedEvent((UnifiedEventType) null);
         assertNotNull(event);
         assertNull(event.getEventType());
         assertNull(event.getClickEvent());

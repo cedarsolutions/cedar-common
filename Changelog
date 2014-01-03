@@ -1,3 +1,8 @@
+Version 3.4.4   unreleased
+
+    * Add support for UnifiedEvent with DEFAULT_EVENT, since the type is often not used.
+    * Add new UnifiedEventType KEY_EVENT to be associated with key-related handlers.
+
 Version 3.4.3   01 Jan 2014
 
     * Fix XsrfRpcProxyCreator so it doesn't cause compiler errors if RPCs have overloaded methods.

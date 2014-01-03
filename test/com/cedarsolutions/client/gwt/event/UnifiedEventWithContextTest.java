@@ -46,11 +46,23 @@ public class UnifiedEventWithContextTest {
 
     /** Test the ClickEvent constructor. */
     @Test public void testConstructorClickEvent() {
-        UnifiedEventWithContext<String> event = new UnifiedEventWithContext<String>((UnifiedEventType) null, null);
+        UnifiedEventWithContext<String> event = new UnifiedEventWithContext<String>(null);
+        assertNotNull(event);
+        assertEquals(UnifiedEventType.DEFAULT_EVENT, event.getEventType());
+        assertNull(event.getClickEvent());
+        assertNull(event.getContext());
+
+        event = new UnifiedEventWithContext<String>((UnifiedEventType) null, null);
         assertNotNull(event);
         assertNull(event.getEventType());
         assertNull(event.getClickEvent());
         assertNull(event.getContext());
+
+        event = new UnifiedEventWithContext<String>("hello");
+        assertNotNull(event);
+        assertEquals(UnifiedEventType.DEFAULT_EVENT, event.getEventType());
+        assertNull(event.getClickEvent());
+        assertEquals("hello", event.getContext());
 
         event = new UnifiedEventWithContext<String>(UnifiedEventType.MENU_EVENT, "hello");
         assertNotNull(event);

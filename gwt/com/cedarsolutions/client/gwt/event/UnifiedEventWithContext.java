@@ -36,6 +36,11 @@ public class UnifiedEventWithContext<T> extends UnifiedEvent {
     /** Context associated with this event. */
     private T context;
 
+    /** Create a unified event when no extra event type information is needed. */
+    public UnifiedEventWithContext(T context) {
+        this(UnifiedEventType.DEFAULT_EVENT, context);
+    }
+
     /** Create a unified event of a particular type. */
     public UnifiedEventWithContext(UnifiedEventType eventType, T context) {
         super(eventType);

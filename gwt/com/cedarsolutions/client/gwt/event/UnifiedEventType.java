@@ -28,10 +28,12 @@ package com.cedarsolutions.client.gwt.event;
  */
 public enum UnifiedEventType {
     UNKNOWN,
+    DEFAULT_EVENT,  // A default event, when no extra information is needed.
     CLICK_EVENT,    // ClickEvent from ClickHandler
     MENU_EVENT,     // Menu item was selected
     BUTTON_EVENT,   // View handled a button press
     INIT_EVENT,     // View initialization was triggered
     SELECTED_EVENT, // View was selected
-    SORT_EVENT;     // Sort was triggered
+    SORT_EVENT,     // Sort was triggered
+    KEY_EVENT,      // Some sort of key event occurred
 }
