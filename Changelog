@@ -3,6 +3,8 @@ Version 3.4.4   unreleased
     * Add support for UnifiedEvent with DEFAULT_EVENT, since the type is often not used.
     * Add new UnifiedEventType KEY_EVENT to be associated with key-related handlers.
     * Improve GwtResourceCreator to deal with messages that contain parameters like {0}.
+    * Add methods on DateUtils and GwtDateUtils to support formatting time only, no date.
+    * Add new TimeOnlyColumn for use with DataTable, using new GwtDateUtils functionality.
 
 Version 3.4.3   01 Jan 2014
 

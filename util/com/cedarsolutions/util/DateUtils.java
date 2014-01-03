@@ -45,6 +45,9 @@ public class DateUtils {
     /** Format used for date/time. */
     public static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
+    /** Format used for time only. */
+    public static final String TIME_ONLY_FORMAT = "HH:mm:ss";
+
     /** Format used for timestamp. */
     public static final String TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss,SSS";
 
@@ -219,6 +222,16 @@ public class DateUtils {
      */
     public static String formatTime(Date date) {
         return formatDate(date, TIME_FORMAT);
+    }
+
+    /**
+     * Format a time only using the standard format (HH:MM:SS).
+     * @param date  Java date to format
+     * @return String generated based on input date, or null if passed-in date is null.
+     * @throws CedarRuntimeException If the date cannot be formatted.
+     */
+    public static String formatTimeOnly(Date date) {
+        return formatDate(date, TIME_ONLY_FORMAT);
     }
 
     /**
