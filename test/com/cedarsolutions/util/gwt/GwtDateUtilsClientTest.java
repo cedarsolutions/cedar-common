@@ -24,6 +24,7 @@ package com.cedarsolutions.util.gwt;
 
 import static com.cedarsolutions.util.gwt.GwtDateUtils.formatDate;
 import static com.cedarsolutions.util.gwt.GwtDateUtils.formatTime;
+import static com.cedarsolutions.util.gwt.GwtDateUtils.formatTimeOnly;
 import static com.cedarsolutions.util.gwt.GwtDateUtils.formatTimeWithZone;
 import static com.cedarsolutions.util.gwt.GwtDateUtils.formatTimestamp;
 import static com.cedarsolutions.util.gwt.GwtDateUtils.formatTimestampWithZone;
@@ -107,6 +108,13 @@ public class GwtDateUtilsClientTest extends ClientTestCase {
         assertEquals(GwtDateUtils.TIME_FORMAT, result.getPattern());
     }
 
+    /** Test getTimeOnlyFormat(). */
+    public void testGetTimeOnlyFormat() {
+        DateTimeFormat result = GwtDateUtils.getTimeOnlyFormat();
+        assertNotNull(result);
+        assertEquals(GwtDateUtils.TIME_ONLY_FORMAT, result.getPattern());
+    }
+
     /** Test getTimestampFormat(). */
     public void testGetTimestampFormat() {
         DateTimeFormat result = GwtDateUtils.getTimestampFormat();
@@ -122,7 +130,7 @@ public class GwtDateUtilsClientTest extends ClientTestCase {
         assertEquals("2011-11-12", formatDate(GwtDateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)));
     }
 
-    /** Test formatDateTime(). */
+    /** Test formatTime(). */
     public void testFormatTime() {
         assertEquals("", formatTime(null));
         assertEquals("2011-01-02T03:04", formatTime(GwtDateUtils.createDate(2011, 1, 2, 3, 4, 5, 6)));
@@ -130,10 +138,18 @@ public class GwtDateUtilsClientTest extends ClientTestCase {
         assertEquals("2011-11-12T13:14", formatTime(GwtDateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)));
 
         // We don't know what zone the tests will be run in, so we can't fully test this
-        assertEquals("", GwtDateUtils.formatTimeWithZone(null));
+        assertEquals("", formatTimeWithZone(null));
         assertTrue(formatTimeWithZone(GwtDateUtils.createDate(2011, 1, 2, 3, 4, 5, 6)).startsWith("2011-01-02T03:04"));
         assertTrue(formatTimeWithZone(GwtDateUtils.createDate(2011, 11, 12, 13, 14, 15, 16)).startsWith("2011-11-12T13:14"));
         assertTrue(formatTimeWithZone(GwtDateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)).startsWith("2011-11-12T13:14"));
+    }
+
+    /** Test formatTimeOnly(). */
+    public void testFormatTimeOnly() {
+        assertEquals("", formatTimeOnly(null));
+        assertEquals("03:04:05", formatTimeOnly(GwtDateUtils.createDate(2011, 1, 2, 3, 4, 5, 6)));
+        assertEquals("13:14:15", formatTimeOnly(GwtDateUtils.createDate(2011, 11, 12, 13, 14, 15, 16)));
+        assertEquals("13:14:15", formatTimeOnly(GwtDateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)));
     }
 
     /** Test formatTimestamp(). */

@@ -106,17 +106,25 @@ public class DateUtilsTest {
         assertEquals("2011-11-12", DateUtils.formatDate(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)));
     }
 
-    /** Test formatDateTime(). */
-    @Test public void testFormatDateTime() {
-        assertEquals("", DateUtils.formatDate(null));
+    /** Test formatTime(). */
+    @Test public void testFormatTime() {
+        assertEquals("", DateUtils.formatTime(null));
         assertEquals("2011-01-02T03:04", DateUtils.formatTime(DateUtils.createDate(2011, 1, 2, 3, 4, 5, 6)));
         assertEquals("2011-11-12T13:14", DateUtils.formatTime(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 16)));
         assertEquals("2011-11-12T13:14", DateUtils.formatTime(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)));
     }
 
+    /** Test formatTimeOnly(). */
+    @Test public void testFormatTimeOnly() {
+        assertEquals("", DateUtils.formatTimeOnly(null));
+        assertEquals("03:04:05", DateUtils.formatTimeOnly(DateUtils.createDate(2011, 1, 2, 3, 4, 5, 6)));
+        assertEquals("13:14:15", DateUtils.formatTimeOnly(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 16)));
+        assertEquals("13:14:15", DateUtils.formatTimeOnly(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)));
+    }
+
     /** Test formatTimestamp(). */
     @Test public void testFormatTimestamp() {
-        assertEquals("", DateUtils.formatDate(null));
+        assertEquals("", DateUtils.formatTimestamp(null));
         assertEquals("2011-01-02T03:04:05,006", DateUtils.formatTimestamp(DateUtils.createDate(2011, 1, 2, 3, 4, 5, 6)));
         assertEquals("2011-11-12T13:14:15,016", DateUtils.formatTimestamp(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 16)));
         assertEquals("2011-11-12T13:14:15,167", DateUtils.formatTimestamp(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)));
@@ -124,7 +132,7 @@ public class DateUtilsTest {
 
     /** Test formatNumericTimestamp(). */
     @Test public void testFormatNumericTimestamp() {
-        assertEquals("", DateUtils.formatDate(null));
+        assertEquals("", DateUtils.formatNumericTimestamp(null));
         assertEquals("20110102030405006", DateUtils.formatNumericTimestamp(DateUtils.createDate(2011, 1, 2, 3, 4, 5, 6)));
         assertEquals("20111112131415016", DateUtils.formatNumericTimestamp(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 16)));
         assertEquals("20111112131415167", DateUtils.formatNumericTimestamp(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 167)));

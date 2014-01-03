@@ -47,6 +47,9 @@ public class GwtDateUtils {
     /** Format used for date/time. */
     public static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
+    /** Format used for time only. */
+    public static final String TIME_ONLY_FORMAT = "HH:mm:ss";
+
     /** Format used for date/time. */
     public static final String TIME_WITH_ZONE_FORMAT = "yyyy-MM-dd'T'HH:mm ZZZ";
 
@@ -131,6 +134,11 @@ public class GwtDateUtils {
         return getFormat(TIME_FORMAT);
     }
 
+    /** Get the standard time-only format. */
+    public static DateTimeFormat getTimeOnlyFormat() {
+        return getFormat(TIME_ONLY_FORMAT);
+    }
+
     /** Get the standard time format, including time zone. */
     public static DateTimeFormat getTimeWithZoneFormat() {
         return getFormat(TIME_WITH_ZONE_FORMAT);
@@ -162,6 +170,15 @@ public class GwtDateUtils {
      */
     public static String formatTime(Date date) {
         return formatDate(date, getTimeFormat());
+    }
+
+    /**
+     * Format time only using the standard format (HH:MM:SS).
+     * @param date  Java date to format
+     * @return String generated based on input date, or null if passed-in date is null.
+     */
+    public static String formatTimeOnly(Date date) {
+        return formatDate(date, getTimeOnlyFormat());
     }
 
     /**
