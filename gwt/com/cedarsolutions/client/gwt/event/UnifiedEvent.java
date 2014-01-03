@@ -63,6 +63,11 @@ public class UnifiedEvent {
     /** Underlying click event, if any. */
     private ClickEvent clickEvent;
 
+    /** Create a unified event when no extra event type information is needed. */
+    public UnifiedEvent() {
+        this(UnifiedEventType.DEFAULT_EVENT);
+    }
+
     /** Create a unified event of a particular type. */
     public UnifiedEvent(UnifiedEventType eventType) {
         this.eventType = eventType;
