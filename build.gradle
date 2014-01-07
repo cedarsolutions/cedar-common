@@ -239,7 +239,7 @@ project(":gwt") {
     dependencies {
         compile "com.google.gwt:gwt-dev:${config_gwtVersion}"
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
-        compile "com.google.gwt.inject:gin:2.0.0"
+        compile "com.google.gwt.inject:gin:2.1.2"
         compile "com.googlecode.cedar-common:mvp4g:1.5.0-20121019.011853-3-repackaged"
         compile "com.googlecode.cedar-common:gwt-sl:1.2"
         compile project(":util")
