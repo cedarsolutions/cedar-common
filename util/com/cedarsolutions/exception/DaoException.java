@@ -45,20 +45,12 @@ public class DaoException extends CedarRuntimeException {
         super(message, cause);
     }
 
-    public DaoException(String message, Throwable cause, RootCause rootCause) {
-        super(message, cause, rootCause);
-    }
-
     public DaoException(LocalizableMessage localizableMessage) {
         super(localizableMessage);
     }
 
     public DaoException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
-    }
-
-    public DaoException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
-        super(localizableMessage, cause, rootCause);
     }
 
 }

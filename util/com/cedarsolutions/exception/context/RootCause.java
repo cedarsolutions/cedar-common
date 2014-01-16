@@ -20,7 +20,7 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.exception;
+package com.cedarsolutions.exception.context;
 
 import com.cedarsolutions.shared.domain.TranslatableDomainObject;
 import com.flipthebird.gwthashcodeequals.EqualsBuilder;
@@ -41,14 +41,12 @@ import com.flipthebird.gwthashcodeequals.HashCodeBuilder;
  * </p>
  *
  * <p>
- * The RootCause associated with this exception preserves as much of the
- * exception hierarchy as possible.  We can't save off the actual Class object
- * because it's not translatable.  However, we can save off useful information
- * from the class, like its name and canonical name.  That should be enough,
- * even if it's not as clean as we might hope.  Unfortunately, we can't include
- * the code to <i>create</i> the root cause in here, because any code that
- * touches Class is not translatable.  So, that code lives server-side, in
- * ServiceExceptionUtils.
+ * This root cause class preserves as much of the exception hierarchy as
+ * possible.  We can't save off the actual Class object because it's not
+ * translatable.  However, we can save off useful information from the class,
+ * like its name and canonical name.  That should be enough, even if it's not
+ * as clean as we might hope.  Unfortunately, the code to create the root cause
+ * is not translatable, so it has to live server-side in ExceptionUtils.
  * </p>
  *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
@@ -62,19 +60,17 @@ public class RootCause extends TranslatableDomainObject {
     private String simpleName;
     private String message;
     private String location;
-    private String stackTrace;
     private RootCause cause;
 
     public RootCause() {
     }
 
-    public RootCause(String name, String canonicalName, String simpleName, String message, String location, String stackTrace, RootCause cause) {
+    public RootCause(String name, String canonicalName, String simpleName, String message, String location, RootCause cause) {
         this.name = name;
         this.canonicalName = canonicalName;
         this.simpleName = simpleName;
         this.message = message;
         this.location = location;
-        this.stackTrace = stackTrace;
         this.cause = cause;
     }
 
@@ -87,7 +83,6 @@ public class RootCause extends TranslatableDomainObject {
                     .append(this.simpleName, other.simpleName)
                     .append(this.message, other.message)
                     .append(this.location, other.location)
-                    .append(this.stackTrace, other.stackTrace)
                     .append(this.cause, other.cause)
                     .isEquals();
     }
@@ -100,7 +95,6 @@ public class RootCause extends TranslatableDomainObject {
                     .append(this.simpleName)
                     .append(this.message)
                     .append(this.location)
-                    .append(this.stackTrace)
                     .append(this.cause)
                     .toHashCode();
     }
@@ -123,10 +117,6 @@ public class RootCause extends TranslatableDomainObject {
 
     public String getLocation() {
         return this.location;
-    }
-
-    public String getStackTrace() {
-        return this.stackTrace;
     }
 
     public RootCause getCause() {

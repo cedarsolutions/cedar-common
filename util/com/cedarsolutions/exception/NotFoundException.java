@@ -44,20 +44,12 @@ public class NotFoundException extends CedarRuntimeException {
         super(message, cause);
     }
 
-    public NotFoundException(String message, Throwable cause, RootCause rootCause) {
-        super(message, cause, rootCause);
-    }
-
     public NotFoundException(LocalizableMessage localizableMessage) {
         super(localizableMessage);
     }
 
     public NotFoundException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
-    }
-
-    public NotFoundException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
-        super(localizableMessage, cause, rootCause);
     }
 
 }

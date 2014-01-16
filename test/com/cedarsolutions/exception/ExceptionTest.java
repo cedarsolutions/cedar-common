@@ -31,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.cedarsolutions.exception.context.ExceptionContext;
 import com.cedarsolutions.shared.domain.LocalizableMessage;
 import com.cedarsolutions.shared.domain.ValidationErrors;
 
@@ -51,6 +52,28 @@ public class ExceptionTest {
             assertEquals(null, e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), (String) null);
             assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
+        }
+
+        try {
+            throw new CedarException((String) null);
+        } catch (CedarException e) {
+            assertEquals(null, e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), (String) null);
+            assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
+        }
+
+        try {
+            throw new CedarException((LocalizableMessage) null);
+        } catch (CedarException e) {
+            assertNull(message.getText(), e.getMessage());
+            assertNull(e.getLocalizableMessage());
+            assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
 
         try {
@@ -59,6 +82,8 @@ public class ExceptionTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
 
         try {
@@ -67,6 +92,8 @@ public class ExceptionTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
 
         try {
@@ -75,6 +102,8 @@ public class ExceptionTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertSame(cause, e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
 
         try {
@@ -83,7 +112,15 @@ public class ExceptionTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertSame(cause, e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
+
+        ExceptionContext context = new ExceptionContext();
+        CedarException e = new CedarException(message, cause);
+        e.setContext(context);
+        assertTrue(e.hasContext());
+        assertSame(context, e.getContext());
     }
 
     /** Test CedarRuntimeException. */
@@ -97,6 +134,28 @@ public class ExceptionTest {
             assertEquals(null, e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), (String) null);
             assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
+        }
+
+        try {
+            throw new CedarRuntimeException((String) null);
+        } catch (CedarRuntimeException e) {
+            assertEquals(null, e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), (String) null);
+            assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
+        }
+
+        try {
+            throw new CedarRuntimeException((LocalizableMessage) null);
+        } catch (CedarRuntimeException e) {
+            assertNull(message.getText(), e.getMessage());
+            assertNull(e.getLocalizableMessage());
+            assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
 
         try {
@@ -105,6 +164,8 @@ public class ExceptionTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
 
         try {
@@ -113,6 +174,8 @@ public class ExceptionTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertNull(e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
 
         try {
@@ -121,6 +184,8 @@ public class ExceptionTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertSame(cause, e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
 
         try {
@@ -129,7 +194,15 @@ public class ExceptionTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertSame(cause, e.getCause());
+            assertFalse(e.hasContext());
+            assertNull(e.getContext());
         }
+
+        ExceptionContext context = new ExceptionContext();
+        CedarRuntimeException e = new CedarRuntimeException(message, cause);
+        e.setContext(context);
+        assertTrue(e.hasContext());
+        assertSame(context, e.getContext());
     }
 
     /** Test DaoException. */
@@ -273,6 +346,57 @@ public class ExceptionTest {
         try {
             throw new NotConfiguredException(message, cause);
         } catch (NotConfiguredException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals(message.getText(), e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), message);
+            assertSame(cause, e.getCause());
+        }
+    }
+
+    /** Test NotFoundException. */
+    @Test public void testNotFoundException() {
+        Throwable cause = new Exception("cause");
+        LocalizableMessage message = new LocalizableMessage("whatever");
+
+        try {
+            throw new NotFoundException();
+        } catch (NotFoundException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals(null, e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), (String) null);
+            assertNull(e.getCause());
+        }
+
+        try {
+            throw new NotFoundException("error");
+        } catch (NotFoundException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals("error", e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), "error");
+            assertNull(e.getCause());
+        }
+
+        try {
+            throw new NotFoundException(message);
+        } catch (NotFoundException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals(message.getText(), e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), message);
+            assertNull(e.getCause());
+        }
+
+        try {
+            throw new NotFoundException("error", cause);
+        } catch (NotFoundException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals("error", e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), "error");
+            assertSame(cause, e.getCause());
+        }
+
+        try {
+            throw new NotFoundException(message, cause);
+        } catch (NotFoundException e) {
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
@@ -468,7 +592,6 @@ public class ExceptionTest {
 
     /** Test ServiceException. */
     @Test public void testServiceException() {
-        RootCause rootCause = new RootCause();
         Throwable cause = new Exception("cause");
         LocalizableMessage message = new LocalizableMessage("whatever");
 
@@ -479,7 +602,6 @@ public class ExceptionTest {
             assertEquals(null, e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), (String) null);
             assertNull(e.getCause());
-            assertNull(e.getRootCause());
         }
 
         try {
@@ -489,7 +611,6 @@ public class ExceptionTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertNull(e.getCause());
-            assertNull(e.getRootCause());
         }
 
         try {
@@ -499,7 +620,6 @@ public class ExceptionTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertNull(e.getCause());
-            assertNull(e.getRootCause());
         }
 
         try {
@@ -509,7 +629,6 @@ public class ExceptionTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertSame(cause, e.getCause());
-            assertNull(e.getRootCause());
         }
 
         try {
@@ -519,27 +638,6 @@ public class ExceptionTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertSame(cause, e.getCause());
-            assertNull(e.getRootCause());
-        }
-
-        try {
-            throw new ServiceException("error", cause, rootCause);
-        } catch (ServiceException e) {
-            assertTrue(e instanceof CedarRuntimeException);
-            assertEquals("error", e.getMessage());
-            assertMessageValues(e.getLocalizableMessage(), "error");
-            assertSame(cause, e.getCause());
-            assertSame(rootCause, e.getRootCause());
-        }
-
-        try {
-            throw new ServiceException(message, cause, rootCause);
-        } catch (ServiceException e) {
-            assertTrue(e instanceof CedarRuntimeException);
-            assertEquals(message.getText(), e.getMessage());
-            assertMessageValues(e.getLocalizableMessage(), message);
-            assertSame(cause, e.getCause());
-            assertSame(rootCause, e.getRootCause());
         }
     }
 

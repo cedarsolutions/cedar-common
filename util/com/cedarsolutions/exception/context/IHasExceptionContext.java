@@ -6,7 +6,7 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * Copyright (c) 2013 Kenneth J. Pronovici.
+ * Copyright (c) 2014 Kenneth J. Pronovici.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -20,36 +20,21 @@
  * Project  : Common Java Functionality
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-package com.cedarsolutions.exception;
-
-import com.cedarsolutions.shared.domain.LocalizableMessage;
+package com.cedarsolutions.exception.context;
 
 /**
- * Error related to an enumeration.
+ * Identifies an exception with associated context.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public class EnumException extends CedarRuntimeException {
+public interface IHasExceptionContext {
 
-    private static final long serialVersionUID = 1L;
+    /** Whether any context is set. */
+    boolean hasContext();
 
-    public EnumException() {
-        super();
-    }
+    /** Get the context. */
+    void setContext(ExceptionContext context);
 
-    public EnumException(String message) {
-        super(message);
-    }
-
-    public EnumException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public EnumException(LocalizableMessage localizableMessage) {
-        super(localizableMessage);
-    }
-
-    public EnumException(LocalizableMessage localizableMessage, Throwable cause) {
-        super(localizableMessage, cause);
-    }
+    /** Set the context. */
+    ExceptionContext getContext();
 
 }

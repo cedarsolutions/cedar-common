@@ -46,20 +46,12 @@ public class InvalidDataException extends CedarRuntimeException {
         super(message, cause);
     }
 
-    public InvalidDataException(String message, Throwable cause, RootCause rootCause) {
-        super(message, cause, rootCause);
-    }
-
     public InvalidDataException(LocalizableMessage localizableMessage) {
         super(localizableMessage);
     }
 
     public InvalidDataException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
-    }
-
-    public InvalidDataException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
-        super(localizableMessage, cause, rootCause);
     }
 
     public InvalidDataException(String message, ValidationErrors details) {
