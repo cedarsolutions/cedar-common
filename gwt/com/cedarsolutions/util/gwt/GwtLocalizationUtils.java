@@ -106,7 +106,7 @@ public class GwtLocalizationUtils {
     public static String getConstant(ConstantsWithLookup constants, String methodName) {
         try {
             return constants.getString(methodName);
-        } catch (java.util.MissingResourceException e) {
+        } catch (Exception e) { // It'll usually be java.util.MissingResourceException
             return null;
         }
     }
