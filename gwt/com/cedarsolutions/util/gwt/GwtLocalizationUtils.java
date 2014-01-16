@@ -88,12 +88,26 @@ public class GwtLocalizationUtils {
                 return defaultValue;
             } else {
                 try {
-                    String result = constants.getString(prefix + "_" + key);
+                    String result = getConstant(constants, prefix + "_" + key);
                     return result != null ? result : defaultValue;
                 } catch (Exception e) {
                     return defaultValue;
                 }
             }
+        }
+    }
+
+    /**
+     * Get the value of a method from a constants interface, returning null if the method is unknown.
+     * @param constants     GWT constants to use as translation source
+     * @param methodName    Name of the method on the constants interface
+     * @return The value returned from the constants interface, or null if the method name is unknown.
+     */
+    public static String getConstant(ConstantsWithLookup constants, String methodName) {
+        try {
+            return constants.getString(methodName);
+        } catch (java.util.MissingResourceException e) {
+            return null;
         }
     }
 
