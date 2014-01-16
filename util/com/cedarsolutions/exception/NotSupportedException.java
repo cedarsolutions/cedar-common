@@ -40,16 +40,24 @@ public class NotSupportedException extends CedarRuntimeException {
         super(message);
     }
 
-    public NotSupportedException(LocalizableMessage localizableMessage) {
-        super(localizableMessage);
-    }
-
     public NotSupportedException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    public NotSupportedException(String message, Throwable cause, RootCause rootCause) {
+        super(message, cause, rootCause);
+    }
+
+    public NotSupportedException(LocalizableMessage localizableMessage) {
+        super(localizableMessage);
+    }
+
     public NotSupportedException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
+    }
+
+    public NotSupportedException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
+        super(localizableMessage, cause, rootCause);
     }
 
 }

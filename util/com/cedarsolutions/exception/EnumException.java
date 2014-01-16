@@ -40,16 +40,24 @@ public class EnumException extends CedarRuntimeException {
         super(message);
     }
 
-    public EnumException(LocalizableMessage localizableMessage) {
-        super(localizableMessage);
-    }
-
     public EnumException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    public EnumException(String message, Throwable cause, RootCause rootCause) {
+        super(message, cause, rootCause);
+    }
+
+    public EnumException(LocalizableMessage localizableMessage) {
+        super(localizableMessage);
+    }
+
     public EnumException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
+    }
+
+    public EnumException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
+        super(localizableMessage, cause, rootCause);
     }
 
 }

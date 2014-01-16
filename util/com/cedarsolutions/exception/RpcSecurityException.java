@@ -48,16 +48,24 @@ public class RpcSecurityException extends ServiceException {
         super(message);
     }
 
-    public RpcSecurityException(LocalizableMessage localizableMessage) {
-        super(localizableMessage);
-    }
-
     public RpcSecurityException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    public RpcSecurityException(String message, Throwable cause, RootCause rootCause) {
+        super(message, cause, rootCause);
+    }
+
+    public RpcSecurityException(LocalizableMessage localizableMessage) {
+        super(localizableMessage);
+    }
+
     public RpcSecurityException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
+    }
+
+    public RpcSecurityException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
+        super(localizableMessage, cause, rootCause);
     }
 
 }

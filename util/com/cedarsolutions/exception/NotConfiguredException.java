@@ -40,16 +40,24 @@ public class NotConfiguredException extends CedarRuntimeException {
         super(message);
     }
 
-    public NotConfiguredException(LocalizableMessage localizableMessage) {
-        super(localizableMessage);
-    }
-
     public NotConfiguredException(String message, Throwable cause) {
         super(message, cause);
     }
 
+    public NotConfiguredException(String message, Throwable cause, RootCause rootCause) {
+        super(message, cause, rootCause);
+    }
+
+    public NotConfiguredException(LocalizableMessage localizableMessage) {
+        super(localizableMessage);
+    }
+
     public NotConfiguredException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
+    }
+
+    public NotConfiguredException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
+        super(localizableMessage, cause, rootCause);
     }
 
 }
