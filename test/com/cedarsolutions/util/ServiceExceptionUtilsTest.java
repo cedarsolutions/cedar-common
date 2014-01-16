@@ -54,7 +54,8 @@ public class ServiceExceptionUtilsTest {
             assertEquals(null, e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), (String) null);
             assertNull(e.getCause());
-            assertNull(e.getRootCause());
+            assertNotNull(e.getContext());
+            assertNull(e.getContext().getRootCause());
         }
 
         try {
@@ -64,7 +65,8 @@ public class ServiceExceptionUtilsTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertNull(e.getCause());
-            assertNull(e.getRootCause());
+            assertNotNull(e.getContext());
+            assertNull(e.getContext().getRootCause());
         }
 
         try {
@@ -74,7 +76,8 @@ public class ServiceExceptionUtilsTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertNull(e.getCause());
-            assertNull(e.getRootCause());
+            assertNotNull(e.getContext());
+            assertNull(e.getContext().getRootCause());
         }
 
         try {
@@ -84,12 +87,8 @@ public class ServiceExceptionUtilsTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertSame(cause1, e.getCause());
-            assertNotNull(e.getRootCause());
-            assertEquals(cause1.getClass().getName(), e.getRootCause().getName());
-            assertEquals(cause1.getClass().getCanonicalName(), e.getRootCause().getCanonicalName());
-            assertEquals(cause1.getClass().getSimpleName(), e.getRootCause().getSimpleName());
-            assertEquals(cause1.getMessage(), e.getRootCause().getMessage());
-            assertNull(e.getRootCause().getCause());
+            assertNotNull(e.getContext());
+            assertNotNull(e.getContext().getRootCause());
         }
 
         try {
@@ -99,12 +98,8 @@ public class ServiceExceptionUtilsTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertSame(cause1, e.getCause());
-            assertNotNull(e.getRootCause());
-            assertEquals(cause1.getClass().getName(), e.getRootCause().getName());
-            assertEquals(cause1.getClass().getCanonicalName(), e.getRootCause().getCanonicalName());
-            assertEquals(cause1.getClass().getSimpleName(), e.getRootCause().getSimpleName());
-            assertEquals(cause1.getMessage(), e.getRootCause().getMessage());
-            assertNull(e.getRootCause().getCause());
+            assertNotNull(e.getContext());
+            assertNotNull(e.getContext().getRootCause());
         }
 
         try {
@@ -114,16 +109,8 @@ public class ServiceExceptionUtilsTest {
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertSame(cause2, e.getCause());
-            assertNotNull(e.getRootCause());
-            assertEquals(cause2.getClass().getName(), e.getRootCause().getName());
-            assertEquals(cause2.getClass().getCanonicalName(), e.getRootCause().getCanonicalName());
-            assertEquals(cause1.getClass().getSimpleName(), e.getRootCause().getSimpleName());
-            assertEquals(cause2.getMessage(), e.getRootCause().getMessage());
-            assertNotNull(e.getRootCause().getCause());
-            assertEquals(nested.getClass().getName(), e.getRootCause().getCause().getName());
-            assertEquals(nested.getClass().getCanonicalName(), e.getRootCause().getCause().getCanonicalName());
-            assertEquals(nested.getClass().getSimpleName(), e.getRootCause().getCause().getSimpleName());
-            assertEquals(nested.getMessage(), e.getRootCause().getCause().getMessage());
+            assertNotNull(e.getContext());
+            assertNotNull(e.getContext().getRootCause());
         }
 
         try {
@@ -133,16 +120,8 @@ public class ServiceExceptionUtilsTest {
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertSame(cause2, e.getCause());
-            assertNotNull(e.getRootCause());
-            assertEquals(cause2.getClass().getName(), e.getRootCause().getName());
-            assertEquals(cause2.getClass().getCanonicalName(), e.getRootCause().getCanonicalName());
-            assertEquals(cause1.getClass().getSimpleName(), e.getRootCause().getSimpleName());
-            assertEquals(cause2.getMessage(), e.getRootCause().getMessage());
-            assertNotNull(e.getRootCause().getCause());
-            assertEquals(nested.getClass().getName(), e.getRootCause().getCause().getName());
-            assertEquals(nested.getClass().getCanonicalName(), e.getRootCause().getCause().getCanonicalName());
-            assertEquals(nested.getClass().getSimpleName(), e.getRootCause().getCause().getSimpleName());
-            assertEquals(nested.getMessage(), e.getRootCause().getCause().getMessage());
+            assertNotNull(e.getContext());
+            assertNotNull(e.getContext().getRootCause());
         }
     }
 

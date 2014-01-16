@@ -44,20 +44,12 @@ public class InvalidArgumentsException extends CedarRuntimeException {
         super(message, cause);
     }
 
-    public InvalidArgumentsException(String message, Throwable cause, RootCause rootCause) {
-        super(message, cause, rootCause);
-    }
-
     public InvalidArgumentsException(LocalizableMessage localizableMessage) {
         super(localizableMessage);
     }
 
     public InvalidArgumentsException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
-    }
-
-    public InvalidArgumentsException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
-        super(localizableMessage, cause, rootCause);
     }
 
 }

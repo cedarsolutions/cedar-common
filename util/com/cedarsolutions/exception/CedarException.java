@@ -24,17 +24,20 @@ package com.cedarsolutions.exception;
 
 import java.io.Serializable;
 
+import com.cedarsolutions.exception.context.ExceptionContext;
+import com.cedarsolutions.exception.context.IHasExceptionContext;
 import com.cedarsolutions.shared.domain.LocalizableMessage;
 
 /**
  * Exception that all Cedar Solutions checked exceptions inherit from.
- * The class implements Serializable, so it's safe to use it for GWT code.
+ * This class implements Serializable so it's safe to use it for GWT code.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public class CedarException extends Exception implements Serializable {
+public class CedarException extends RuntimeException implements Serializable, IHasExceptionContext {
 
     private static final long serialVersionUID = 1L;
     private LocalizableMessage localizableMessage;
+    private ExceptionContext context;
 
     public CedarException() {
         this((String) null);
@@ -49,15 +52,31 @@ public class CedarException extends Exception implements Serializable {
     }
 
     public CedarException(LocalizableMessage localizableMessage) {
-        this(localizableMessage, null);
+        this(localizableMessage, (Throwable) null);
     }
 
     public CedarException(LocalizableMessage localizableMessage, Throwable cause) {
-        super(localizableMessage.getText(), cause);
+        super(localizableMessage == null ? null : localizableMessage.getText(), cause);
         this.localizableMessage = localizableMessage;
     }
 
     public LocalizableMessage getLocalizableMessage() {
         return this.localizableMessage;
     }
+
+    @Override
+    public boolean hasContext() {
+        return this.context != null;
+    }
+
+    @Override
+    public void setContext(ExceptionContext context) {
+        this.context = context;
+    }
+
+    @Override
+    public ExceptionContext getContext() {
+        return this.context;
+    }
+
 }

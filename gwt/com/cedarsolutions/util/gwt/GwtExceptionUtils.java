@@ -22,6 +22,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.util.gwt;
 
+import com.cedarsolutions.exception.context.IHasExceptionContext;
+
 /**
  * Exception utilities that are translatable to GWT client code.
  *
@@ -50,31 +52,39 @@ public class GwtExceptionUtils {
      */
     public static String generateStackTrace(Throwable exception) {
         if (exception == null) {
-            return "null";
-        } else {
-            StringBuffer buffer = new StringBuffer();
-
-            buffer.append(exception.getClass().getName());
-            buffer.append(": ");
-            buffer.append(exception.getMessage());
-            buffer.append("\n");
-            buffer.append(generateStackTrace(exception.getStackTrace()));
-
-            if (exception.getCause() != null) {
-                buffer.append("Caused by: ");
-                buffer.append(generateStackTrace(exception.getCause()));
+            return null;
+        } else if (exception instanceof IHasExceptionContext) {
+            IHasExceptionContext hasContext = (IHasExceptionContext) exception;
+            if (hasContext.getContext() != null && hasContext.getContext().getStackTrace() != null) {
+                return hasContext.getContext().getStackTrace();
+            } else {
+                return generateStackTraceText(exception);
             }
-
-            return buffer.toString();
+        } else {
+            return generateStackTraceText(exception);
         }
     }
 
-    /**
-     * Format a string based on Exception.getStackTrace().
-     * @param stackTrace  Stack trace array
-     * @return Formatted string.
-     */
-    private static String generateStackTrace(Object[] stackTrace) {
+    /** Generate a stack trace string for an exception. */
+    private static String generateStackTraceText(Throwable exception) {
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append(exception.getClass().getName());
+        buffer.append(": ");
+        buffer.append(exception.getMessage());
+        buffer.append("\n");
+        buffer.append(generateStackTraceText(exception.getStackTrace()));
+
+        if (exception.getCause() != null) {
+            buffer.append("Caused by: ");
+            buffer.append(generateStackTrace(exception.getCause()));
+        }
+
+        return buffer.toString();
+    }
+
+    /** Generate a stack trace string for data as from exception.getStackTrace(). */
+    private static String generateStackTraceText(Object[] stackTrace) {
         StringBuffer buffer = new StringBuffer();
 
         for (Object line : stackTrace) {

@@ -22,7 +22,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.util;
 
-import com.cedarsolutions.exception.RootCause;
 import com.cedarsolutions.exception.ServiceException;
 import com.cedarsolutions.shared.domain.LocalizableMessage;
 
@@ -32,31 +31,34 @@ import com.cedarsolutions.shared.domain.LocalizableMessage;
  */
 public class ServiceExceptionUtils {
 
-    /** Create a service exception. */
+    /** Create a service exception, filling in exception context. */
     public static ServiceException createServiceException() {
-        return new ServiceException();
+        ServiceException exception = new ServiceException();
+        return ExceptionUtils.addExceptionContext(exception, 1);
     }
 
-    /** Create a service exception. */
+    /** Create a service exception, filling in exception context. */
     public static ServiceException createServiceException(String message) {
-        return new ServiceException(message);
+        ServiceException exception = new ServiceException(message);
+        return ExceptionUtils.addExceptionContext(exception, 1);
     }
 
-    /** Create a service exception. */
+    /** Create a service exception, filling in exception context. */
     public static ServiceException createServiceException(LocalizableMessage localizableMessage) {
-        return new ServiceException(localizableMessage);
+        ServiceException exception = new ServiceException(localizableMessage);
+        return ExceptionUtils.addExceptionContext(exception, 1);
     }
 
-    /** Create a service exception, automatically filling in the root cause. */
+    /** Create a service exception, filling in exception context. */
     public static ServiceException createServiceException(String message, Throwable cause) {
-        RootCause rootCause = ExceptionUtils.createRootCause(cause);
-        return new ServiceException(message, cause, rootCause);
+        ServiceException exception = new ServiceException(message, cause);
+        return ExceptionUtils.addExceptionContext(exception, 1);
     }
 
-    /** Create a service exception, automatically filling in the root cause. */
+    /** Create a service exception, filling in exception context. */
     public static ServiceException createServiceException(LocalizableMessage localizableMessage, Throwable cause) {
-        RootCause rootCause = ExceptionUtils.createRootCause(cause);
-        return new ServiceException(localizableMessage, cause, rootCause);
+        ServiceException exception = new ServiceException(localizableMessage, cause);
+        return ExceptionUtils.addExceptionContext(exception, 1);
     }
 
 }

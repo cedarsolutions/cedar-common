@@ -27,6 +27,9 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.cedarsolutions.exception.CedarRuntimeException;
+import com.cedarsolutions.exception.context.ExceptionContext;
+
 /**
  * Unit tests for GwtExceptionUtils.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
@@ -34,9 +37,19 @@ import org.junit.Test;
 public class GwtExceptionUtilsTest {
 
     /** Test generateStackTrace(). */
+    // Just spot-check, since it's hard to confirm the exact output
     @Test public void testGenerateStackTrace() {
-        // Just spot-check, since it's hard to confirm the exact output
-        assertEquals("null", GwtExceptionUtils.generateStackTrace(null));
+        assertEquals(null, GwtExceptionUtils.generateStackTrace(null));
+
+        CedarRuntimeException e = new CedarRuntimeException();
+        assertNotNull(GwtExceptionUtils.generateStackTrace(e));
+
+        e.setContext(new ExceptionContext());
+        assertNotNull(GwtExceptionUtils.generateStackTrace(e));
+
+        e.getContext().setStackTrace("X");
+        assertEquals("X", GwtExceptionUtils.generateStackTrace(e));
+
         assertNotNull(GwtExceptionUtils.generateStackTrace(new Exception("whatever")));
         assertNotNull(GwtExceptionUtils.generateStackTrace(new Exception("whatever", new Exception("cause"))));
     }

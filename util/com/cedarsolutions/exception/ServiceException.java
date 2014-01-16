@@ -53,20 +53,12 @@ public class ServiceException extends CedarRuntimeException {
         super(message, cause);
     }
 
-    public ServiceException(String message, Throwable cause, RootCause rootCause) {
-        super(message, cause, rootCause);
-    }
-
     public ServiceException(LocalizableMessage localizableMessage) {
         super(localizableMessage);
     }
 
     public ServiceException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
-    }
-
-    public ServiceException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
-        super(localizableMessage, cause, rootCause);
     }
 
 }

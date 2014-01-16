@@ -1,7 +1,8 @@
 Version 4.0.0   unreleased
 
     * Improve GwtLocalizationUtils so it deals transparently with unknown/invalid constants.
-    * Revamp exception hierarchy to make RootCause generally available in all runtime exceptions.
+    * Revamp exception hierarchy to make an abtracted exception context available in all exceptions.
+    * Make GwtExceptionUtils smart enough to use exception context for stack trace, if it exists.
 
 Version 3.5.0   06 Jan 2013
 

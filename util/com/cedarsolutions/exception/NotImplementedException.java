@@ -44,20 +44,12 @@ public class NotImplementedException extends CedarRuntimeException {
         super(message, cause);
     }
 
-    public NotImplementedException(String message, Throwable cause, RootCause rootCause) {
-        super(message, cause, rootCause);
-    }
-
     public NotImplementedException(LocalizableMessage localizableMessage) {
         super(localizableMessage);
     }
 
     public NotImplementedException(LocalizableMessage localizableMessage, Throwable cause) {
         super(localizableMessage, cause);
-    }
-
-    public NotImplementedException(LocalizableMessage localizableMessage, Throwable cause, RootCause rootCause) {
-        super(localizableMessage, cause, rootCause);
     }
 
 }
