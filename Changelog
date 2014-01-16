@@ -1,12 +1,13 @@
-Version 4.0.0   unreleased
+Version 4.0.0   16 Jan 2014
 
+    * Bump to 4.0.0 due to interface changes.
     * Improve GwtLocalizationUtils so it deals transparently with unknown/invalid constants.
     * Revamp exception hierarchy to make an abtracted exception context available in all exceptions.
     * Make GwtExceptionUtils smart enough to use exception context for stack trace, if it exists.
 
-Version 3.5.0   06 Jan 2013
+Version 3.5.0   06 Jan 2014
 
-   * Bump up to GIN 2.1.2, which allows CedarCommon to be used with GWT 2.6.0 RC3.
+    * Bump up to GIN 2.1.2, which allows CedarCommon to be used with GWT 2.6.0 RC3.
 
 Version 3.4.4   03 Jan 2014
 
