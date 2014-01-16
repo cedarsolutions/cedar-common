@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import com.cedarsolutions.exception.RootCause;
+
 /**
  * Exception utilities.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
@@ -71,5 +73,35 @@ public class ExceptionUtils {
 
         return stackTrace == null ? "null" : stackTrace;
     }
+
+    /**
+     * Create a root cause based on a Throwable exception.
+     * @param exception  Exception to use as source
+     * @return ExceptionCause generated from the input cause.
+     */
+    public static RootCause createRootCause(Throwable exception) {
+        if (exception == null) {
+            return null;
+        } else {
+            String name = exception.getClass().getName();
+            String canonicalName = exception.getClass().getCanonicalName();
+            String simpleName = exception.getClass().getSimpleName();
+            String message = exception.getMessage();
+            String location = getLocation(exception);
+            String stackTrace = generateStackTrace(exception);
+            RootCause cause = createRootCause(exception.getCause());
+            return new RootCause(name, canonicalName, simpleName, message, location, stackTrace, cause);
+        }
+    }
+
+    /** Create a location string like "com.cedarsolutions.whatever.MyClass.myMethod(MyClass.java:14)". */
+    private static String getLocation(Throwable exception) {
+        String fileName = exception.getStackTrace()[0].getFileName();
+        String lineNumber = String.valueOf(exception.getStackTrace()[0].getLineNumber());
+        String className = exception.getStackTrace()[0].getClassName();
+        String methodName = exception.getStackTrace()[0].getMethodName();
+        return className + "." + methodName + "(" + fileName + ":" + lineNumber + ")";
+    }
+
 }
 

@@ -31,7 +31,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.cedarsolutions.exception.ServiceException.RootCause;
 import com.cedarsolutions.shared.domain.LocalizableMessage;
 import com.cedarsolutions.shared.domain.ValidationErrors;
 
