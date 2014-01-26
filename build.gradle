@@ -83,6 +83,7 @@ cedarSigning {
 
 // Configuration for all projects
 allprojects {
+    apply plugin: "eclipse"
     apply plugin: "java"
     compileJava.options.fork(memoryMaximumSize: config_javaCompilerMemory)
 }
@@ -522,6 +523,9 @@ task generateJavadoc(dependsOn: subprojects.jdoc) << {
 // Always re-generate everything, otherwise we get duplicate sections in files
 tasks.eclipse.dependsOn(cleanEclipse)
 
+// Generate Eclipse classpath info for subprojects first, so all files exist when we need them
+tasks.eclipseClasspath.dependsOn(subprojects.eclipseClasspath)
+
 // Clean up extended settings
 task cleanEclipseExtendedSettings(type: Delete) << {
 
@@ -578,6 +582,46 @@ project.eclipse.project.file.withXml { provider ->
     ignoreResourcesFromDirectories(provider, [ ".gradle", "build", "gwt-unitCache", "www-test", "war", ])
 }
 
+// Find the source path for a dependency, i.e. gwt-sl-1.2-sources.jar for gwt-sl-1.2.jar
+//
+// This is really big hack, but I can't figure out any other way to do it.  I'm
+// deriving the complete .classpath file by creating a unique list of all
+// dependencies in the subprojects.  However, as far as I can tell, I can't ask
+// Gradle whether there's a source dependency for a jar.  So, I have to dig
+// around in the Gradle cache and see if I can find one.  Yuck.
+//
+// A jar dependency looks something like this:
+//
+//    C:\Ken\gradle-cache\caches\artifacts-26\filestore\antlr\antlr\2.7.2\jar\546b5220622c4d9b2da45ad1899224b6ce1c8830\antlr-2.7.2.jar
+//
+// If there is a source jar, it will look something like this:
+//
+//    C:\Ken\gradle-cache\caches\artifacts-26\filestore\antlr\antlr\2.7.2\source\b89cfcdcb699c972f9a6a0cdf333a3f39ed33306\antlr-2.7.2-sources.jar
+// 
+// Note that the base directory is the same, but the generated id is not.  We
+// have to find the source directory, then find the first subdirectory under
+// that, then assume that the first jar in that directory is the source jar.
+// Nasty!
+// 
+// @param path  Full path to a jar dependency, as from configurations.runtime.each
+// @return The path to the related sources, or null if none appears to exist
+def findSourcepath(String path) {
+    def sourcepath = null
+
+    def sourcedir = new File(new File(new File(new File(path).parent).parent).parent + "/source")
+    if (sourcedir.exists()) {
+        sourcedir.eachDir {
+            it.listFiles({dir, file-> file ==~ /.*?\.jar/ } as FilenameFilter).each {
+                if (sourcepath == null) {
+                    sourcepath = it.canonicalPath
+                }
+            }
+        }
+    }
+
+    return sourcepath
+}
+
 // Customize the Eclipse .classpath file
 // By default, Gradle generates one Eclipse project per configured subproject.
 // For CedarCommon, I want one big project with a bunch of source folders, so I
@@ -629,8 +673,13 @@ eclipse.classpath.file {
         // Add an entry for each library in the list
         withXml { xml ->
             def node = xml.asNode()
-            libraries.each() { key, value ->
-                node.appendNode("classpathentry", [ kind : "lib", path : key, exported : "false", ])
+            libraries.each() { path, unused ->
+                def sourcepath = findSourcepath(path)
+                if (sourcepath == null) {
+                    node.appendNode("classpathentry", [ kind : "lib", path : path, exported : "false", ])
+                } else {
+                    node.appendNode("classpathentry", [ kind : "lib", path : path, sourcepath : sourcepath, exported : "false", ])
+                }
             }
         }
 
