@@ -310,7 +310,7 @@ public abstract class PropertyBasedConfig implements InitializingBean {
 
     /** Get a map of all fields on this object, excluding fields we don't want to report on. */
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getFields() {
+    protected Map<String, Object> getFields() {
         try {
             Map<String, Object> fields = (Map<String, Object>) BeanUtils.describe(this);
             fields.remove("properties");
@@ -322,7 +322,7 @@ public abstract class PropertyBasedConfig implements InitializingBean {
     }
 
     /** Get the maximum length of any key in the map. */
-    private static int getMaxKeyLength(Map<String, Object> map) {
+    protected static int getMaxKeyLength(Map<String, Object> map) {
         int max = 0;
 
         for (String key : map.keySet()) {
