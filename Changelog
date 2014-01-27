@@ -1,6 +1,7 @@
 Version 4.0.1   unreleased
 
     * Add a hack into build.gradle so that source jars get included in Eclipse .classpath if available.
+    * Make a few methods on PropertyBasedConfig protected, to make it easier to extend.
 
 Version 4.0.0   16 Jan 2014
 
