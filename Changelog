@@ -1,3 +1,10 @@
+Version 4.1.0   unreleased
+
+    * Add new service ProcessBuilderService.
+    * Add FilesystemService to wrap FilesystemUtils in a way that's easier to inject.
+    * Add FilesystemUtils.getGlobContents() and related method in FilesystemService.
+    * Add PropertiesUtils.getMatchingPrefixes() and PropertiesUtils.getMatchingChildren().
+
 Version 4.0.1   27 Jan 2014
 
     * Add a hack into build.gradle so that source jars get included in Eclipse .classpath if available.
