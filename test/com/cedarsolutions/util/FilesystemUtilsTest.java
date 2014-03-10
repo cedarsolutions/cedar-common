@@ -406,6 +406,63 @@ public class FilesystemUtilsTest {
         FilesystemUtils.removeEmptyDir("target/working/newdir");
     }
 
+    /** Test getGlobContents(). */
+    @Test public void testGetGlobContents() throws Exception {
+        try {
+            assertFalse(FilesystemUtils.dirExists("target/working/contents"));
+
+            try {
+                FilesystemUtils.getGlobContents("target/working/contents", "*");
+                fail("Expected CedarRuntimeException");
+            } catch (CedarRuntimeException e) { }
+
+            FilesystemUtils.createDir("target/working/contents");
+            FilesystemUtils.createDir("target/working/contents/subdir1");
+            FilesystemUtils.createDir("target/working/contents/subdir2");
+            FilesystemUtils.createDir("target/working/contents/subdir3");
+            FilesystemUtils.createFile("target/working/contents/file1");
+            FilesystemUtils.createFile("target/working/contents/file2");
+            FilesystemUtils.createFile("target/working/contents/subdir1/file3");
+
+            List<String> contents = FilesystemUtils.getGlobContents("target/working/contents", "*");
+            assertEquals(5, contents.size());
+            assertTrue(contents.contains("subdir1"));
+            assertTrue(contents.contains("subdir2"));
+            assertTrue(contents.contains("subdir3"));
+            assertTrue(contents.contains("file1"));
+            assertTrue(contents.contains("file2"));
+
+            contents = FilesystemUtils.getGlobContents("target/working/contents", "subdir*");
+            assertEquals(3, contents.size());
+            assertTrue(contents.contains("subdir1"));
+            assertTrue(contents.contains("subdir2"));
+            assertTrue(contents.contains("subdir3"));
+
+            contents = FilesystemUtils.getGlobContents("target/working/contents", "**/file*");
+            assertEquals(3, contents.size());
+            assertTrue(contents.contains("file1"));
+            assertTrue(contents.contains("file2"));
+            assertTrue(contents.contains("subdir1/file3"));
+
+            contents = FilesystemUtils.getGlobContents("target/working/contents/subdir1", "*");
+            assertEquals(1, contents.size());
+            assertTrue(contents.contains("file3"));
+
+            contents = FilesystemUtils.getGlobContents("target/working/contents/subdir2", "*");
+            assertTrue(contents.isEmpty());
+
+            contents = FilesystemUtils.getGlobContents("target/working/contents/subdir3", "*");
+            assertTrue(contents.isEmpty());
+
+            try {
+                FilesystemUtils.getGlobContents("target/working/contents/file1", "*");
+                fail("Expected CedarRuntimeException");
+            } catch (CedarRuntimeException e) { }
+        } finally {
+            FilesystemUtils.removeDir("target/working/contents", true);
+        }
+    }
+
     /** Test getDirContents(). */
     @Test public void testGetDirContents() throws Exception {
         try {
