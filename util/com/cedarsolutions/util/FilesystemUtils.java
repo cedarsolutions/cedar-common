@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.tools.ant.DirectoryScanner;
+
 import com.cedarsolutions.exception.CedarRuntimeException;
 
 /**
@@ -379,6 +381,38 @@ public class FilesystemUtils {
         }
 
         return buffer.toString();
+    }
+
+    /**
+     * Get a list of files and directories that match a glob pattern.
+     * @param dirPath  Directory to operate on
+     * @param glob     Ant-style glob to use
+     * @return List of files and directories that match the glob, possibly recursive (depending on glob).
+     * @see <a href="http://stackoverflow.com/questions/794381">Stack Overflow</a>
+     */
+    public static List<String> getGlobContents(String dirPath, String glob) {
+        File dirFile = new File(dirPath);
+        if (!dirFile.exists() || !dirFile.isDirectory()) {
+            throw new CedarRuntimeException("Directory does not exist.");
+        }
+
+        List<String> contents = new ArrayList<String>();
+
+        DirectoryScanner scanner = new DirectoryScanner();
+        scanner.setIncludes(new String[]{ glob, });
+        scanner.setBasedir(dirPath);
+        scanner.setCaseSensitive(true);
+        scanner.scan();
+
+        for (String file : scanner.getIncludedFiles()) {
+            contents.add(normalize(file));
+        }
+
+        for (String dir : scanner.getIncludedDirectories()) {
+            contents.add(normalize(dir));
+        }
+
+        return contents;
     }
 
     /**
