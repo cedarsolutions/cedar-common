@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 
 import com.cedarsolutions.exception.CedarRuntimeException;
@@ -78,22 +79,27 @@ public class DateUtils {
     /** Number of milliseconds per day. */
     public static final long MILLISECONDS_PER_DAY = MILLISECONDS_PER_HOUR * HOURS_PER_DAY;
 
-    /** Get a current date. */
+    /** Get the current date, in the local time zone. */
     public static Date getCurrentDate() {
         return new DateTime().toDate();
     }
 
-    /** Get the current year. */
+    /** Get the current date, in the UTC time zone. */
+    public static Date getCurrentUtcDate() {
+        return new DateTime(DateTimeZone.UTC).toDate();
+    }
+
+    /** Get the current year, in the local time zone. */
     public static int getCurrentYear() {
         return new DateTime().getYear();
     }
 
-    /** Get the current date with time set to midnight. */
+    /** Get the current date with time set to midnight, in the local time zone. */
     public static Date getCurrentDateAtMidnight() {
         return getCurrentDateAtTime("00:00");
     }
 
-    /** Get the current date with a specific time set. */
+    /** Get the current date with a specific time set, in the local time zone. */
     public static Date getCurrentDateAtTime(String time) {
         return resetTime(getCurrentDate(), time);
     }
@@ -109,12 +115,21 @@ public class DateUtils {
     }
 
     /**
-     * Create a date using a standard ISO 8601 date format.
+     * Create a date using a standard ISO 8601 date format, in the local time zone.
      * @param iso8601Date  ISO 8601 date to use, something like '2011-12-31' or '2011-12-13T14:32'
-     * @return Copy of source date, or null if source is null.
+     * @return Date created based on passed-in string.
      */
     public static Date createDate(String iso8601Date) {
         return new DateTime(iso8601Date).toDate();
+    }
+
+    /**
+     * Create a date using a standard ISO 8601 date format, in the UTC time zone.
+     * @param iso8601Date  ISO 8601 date to use, something like '2011-12-31' or '2011-12-13T14:32'
+     * @return Date created based on passed-in string.
+     */
+    public static Date createUtcDate(String iso8601Date) {
+        return new DateTime(iso8601Date, DateTimeZone.UTC).toDate();
     }
 
     /**
@@ -143,7 +158,7 @@ public class DateUtils {
     }
 
     /**
-     * Create a date as a copy of another date.
+     * Create a date as a copy of another date, in the local time zone.
      * @param source   Source date to copy.
      * @return Copy of source date, or null if source is null.
      */
@@ -152,7 +167,7 @@ public class DateUtils {
     }
 
     /**
-     * Create a date based on input values, with time fields set to zero.
+     * Create a date based on input values, with time fields set to zero, in the local time zone.
      * @param year  Year, on the range 0-9999
      * @param month Month, on the range 1-12
      * @param day   Day, on the range 1-31
@@ -163,7 +178,7 @@ public class DateUtils {
     }
 
     /**
-     * Create a date based on input values, with seconds and milliseconds set to zero.
+     * Create a date based on input values, with seconds and milliseconds set to zero, in the local time zone.
      * @param year        Year, on the range 0-9999
      * @param month       Month, on the range 1-12
      * @param day         Day, on the range 1-31
@@ -176,7 +191,7 @@ public class DateUtils {
     }
 
     /**
-     * Create a date based on input values, with milliseconds set to zero.
+     * Create a date based on input values, with milliseconds set to zero, in the local time zone.
      * @param year        Year, on the range 0-9999
      * @param month       Month, on the range 1-12
      * @param day         Day, on the range 1-31
@@ -190,7 +205,7 @@ public class DateUtils {
     }
 
     /**
-     * Create a date based on input values.
+     * Create a date based on input values, in the local time zone.
      * @param year        Year, on the range 1-12
      * @param month       Month, on the range 1-12
      * @param day         Day, on the range 1-31
@@ -317,8 +332,9 @@ public class DateUtils {
         return date == null ? null : parseJodaDate(date, format).toDate();
     }
 
+
     /**
-     * Format a string to a Joda date using the specified format.
+     * Parse a string to a Joda date using the specified format.
      * @param date   Date string to parse, presumed to use the passed-in format
      * @param format Date format compatible with Joda time library
      * @return Joda date parsed from input string, or null if input date is null.
@@ -327,6 +343,21 @@ public class DateUtils {
     public static DateTime parseJodaDate(String date, String format) {
         try {
             return date == null ? null : DateTimeFormat.forPattern(format).parseDateTime(date);
+        } catch (Exception e) {
+            throw new CedarRuntimeException("Failed to parsed date [" + date + "] using format [" + format + "]");
+        }
+    }
+
+    /**
+     * Parse a string to a Joda date using the specified format.
+     * @param date   Date string to parse, presumed to use the passed-in format
+     * @param format Date format compatible with Joda time library
+     * @return Joda date parsed from input string, or null if input date is null.
+     * @throws CedarRuntimeException If the date cannot be parsed.
+     */
+    public static DateTime parseJodaDate(String date, String format, DateTimeZone zone) {
+        try {
+            return date == null ? null : DateTimeFormat.forPattern(format).withZone(zone).parseDateTime(date);
         } catch (Exception e) {
             throw new CedarRuntimeException("Failed to parsed date [" + date + "] using format [" + format + "]");
         }

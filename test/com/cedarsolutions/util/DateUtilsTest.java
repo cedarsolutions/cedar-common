@@ -26,6 +26,7 @@ import static com.cedarsolutions.junit.util.Assertions.assertAfter;
 import static com.cedarsolutions.junit.util.Assertions.assertBefore;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
 import com.cedarsolutions.exception.CedarRuntimeException;
@@ -51,6 +53,15 @@ public class DateUtilsTest {
         Date start = new DateTime().toDate();
         Date current = DateUtils.getCurrentDate();
         Date stop = new DateTime().toDate();
+        assertAfter(start, current);
+        assertBefore(stop, current);
+    }
+
+    /** Test getCurrentUtcDate(). */
+    @Test public void testGetUtcCurrentDate() {
+        Date start = new DateTime(DateTimeZone.UTC).toDate();
+        Date current = DateUtils.getCurrentDate();
+        Date stop = new DateTime(DateTimeZone.UTC).toDate();
         assertAfter(start, current);
         assertBefore(stop, current);
     }
@@ -251,6 +262,12 @@ public class DateUtilsTest {
     /** Test createDate() using the ISO 8601 date format. */
     @Test public void testCreateDateIso8601Format() {
         assertEquals(DateUtils.createDate(2011, 11, 12, 13, 14, 15, 167), DateUtils.createDate("2011-11-12T13:14:15.167"));
+    }
+
+    /** Test createUtcDate() using the ISO 8601 date format. */
+    @Test public void testCreateUtcDateIso8601Format() {
+        Date date = DateUtils.createDate("2011-11-12T13:14:15.167");
+        assertNotNull(date);   // it's hard to verify it exactly
     }
 
     /** Test createDate() using copy from another date. */
