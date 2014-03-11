@@ -215,6 +215,11 @@ project(":util") {
         compile "org.springframework:spring-webmvc:3.2.4.RELEASE"
     }
 
+    configurations {
+        // These transitive dependencies are not required 
+        all*.exclude group: "org.apache.ant", module: "ant-launcher"
+    }
+
     uploadArchives {
         repositories {
             mavenDeployer {
@@ -507,7 +512,7 @@ project(":test") {
 // In order to work, this requires evaluationDependsOnChildren().
 task publish(dependsOn: subprojects.publish) << {
     tasks.label.execute()
-}   
+}
 
 // Generate Javadoc for all subprojects into a single directory tree.
 // In order to work, this requires evaluationDependsOnChildren().
@@ -598,12 +603,12 @@ project.eclipse.project.file.withXml { provider ->
 // If there is a source jar, it will look something like this:
 //
 //    C:\Ken\gradle-cache\caches\artifacts-26\filestore\antlr\antlr\2.7.2\source\b89cfcdcb699c972f9a6a0cdf333a3f39ed33306\antlr-2.7.2-sources.jar
-// 
+//
 // Note that the base directory is the same, but the generated id is not.  We
 // have to find the source directory, then find the first subdirectory under
 // that, then assume that the first jar in that directory is the source jar.
 // Nasty!
-// 
+//
 // @param path  Full path to a jar dependency, as from configurations.runtime.each
 // @return The path to the related sources, or null if none appears to exist
 def findSourcepath(String path) {
@@ -634,7 +639,7 @@ eclipse.classpath.file {
         def projects = [ "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", "test", ]
 
         // List of source folders in the proper order
-        def sources = [ "resources", "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", 
+        def sources = [ "resources", "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil",
                         "test", "externalutil", "externalgwt", "externaltest", "suites", ]
 
         // List of all the unique libraries among all of the subprojects, ignoring internal builds
