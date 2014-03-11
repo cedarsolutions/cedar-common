@@ -4,6 +4,7 @@ Version 4.1.0   unreleased
     * Add FilesystemService to wrap FilesystemUtils in a way that's easier to inject.
     * Add FilesystemUtils.getGlobContents() and related method in FilesystemService.
     * Add PropertiesUtils.getMatchingPrefixes() and PropertiesUtils.getMatchingChildren().
+    * Add some UTC-specific methods on DateUtils.
 
 Version 4.0.1   27 Jan 2014
 
