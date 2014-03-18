@@ -33,12 +33,15 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import org.apache.tools.ant.DirectoryScanner;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.cedarsolutions.exception.CedarRuntimeException;
 
@@ -469,7 +472,7 @@ public class FilesystemUtils {
      * @see <a href="http://stackoverflow.com/questions/3321842/poor-performance-of-javas-unzip-utilities">Stack Overflow</a>
      */
     @SuppressWarnings("unchecked")
-    public static final void unzip(String zipFilePath, String targetDirPath) {
+    public static void unzip(String zipFilePath, String targetDirPath) {
         ZipFile zip = null;
         try {
             zip = new ZipFile(zipFilePath);
@@ -503,6 +506,21 @@ public class FilesystemUtils {
             throw new CedarRuntimeException("Error unzipping file: " + e.getMessage(), e);
         } finally {
             close(zip);
+        }
+    }
+
+    /**
+     * Get the last modified date for a file, in UTC.
+     * @param filePath  Path of the file to check
+     * @return UTC date representing the last modified time for the file.
+     */
+    public static Date getLastModifiedDate(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists() || !file.isFile()) {
+            throw new CedarRuntimeException("File does not exist: " + filePath);
+        } else {
+            long instant = file.lastModified();
+            return new DateTime(instant, DateTimeZone.UTC).toDate();
         }
     }
 
