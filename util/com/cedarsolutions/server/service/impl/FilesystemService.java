@@ -23,6 +23,7 @@
 package com.cedarsolutions.server.service.impl;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import com.cedarsolutions.server.service.IFilesystemService;
@@ -263,6 +264,16 @@ public class FilesystemService extends AbstractService implements IFilesystemSer
     @Override
     public void unzip(String zipFilePath, String targetDirPath) {
         FilesystemUtils.unzip(zipFilePath, targetDirPath);
+    }
+
+    /**
+     * Get the last modified date for a file, in UTC.
+     * @param filePath  Path of the file to check
+     * @return UTC date representing the last modified time for the file.
+     */
+    @Override
+    public Date getLastModifiedDate(String filePath) {
+        return FilesystemUtils.getLastModifiedDate(filePath);
     }
 
 }

@@ -23,6 +23,7 @@
 package com.cedarsolutions.server.service;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 
@@ -196,5 +197,12 @@ public interface IFilesystemService {
      * @see <a href="http://stackoverflow.com/questions/3321842/poor-performance-of-javas-unzip-utilities">Stack Overflow</a>
      */
      void unzip(String zipFilePath, String targetDirPath);
+
+     /**
+      * Get the last modified date for a file, in UTC.
+      * @param filePath  Path of the file to check
+      * @return UTC date representing the last modified time for the file.
+      */
+     Date getLastModifiedDate(String filePath);
 
 }

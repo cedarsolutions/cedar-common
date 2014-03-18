@@ -31,6 +31,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -522,4 +523,11 @@ public class FilesystemUtilsTest {
         assertTrue(contents.contains("test/folder2"));
         assertTrue(contents.contains("test/folder2/file3.txt"));
     }
+
+    /** Test getLastModifiedDate(). */
+    @Test public void testGetLastModifiedDate() {
+        Date lastModified = FilesystemUtils.getLastModifiedDate("test/com/cedarsolutions/util/test.zip");
+        assertEquals(lastModified.getTime(), new File("test/com/cedarsolutions/util/test.zip").lastModified());
+    }
+
 }
