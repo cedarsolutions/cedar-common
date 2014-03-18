@@ -1,4 +1,4 @@
-Version 4.2.0   unreleased
+Version 4.2.0   18 Mar 2014
 
     * Add FilesystemUtils.getLastModifiedDate() and related method on IFilesystemService.
 
