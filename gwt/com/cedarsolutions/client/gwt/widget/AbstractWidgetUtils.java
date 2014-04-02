@@ -130,6 +130,46 @@ public abstract class AbstractWidgetUtils {
     }
 
     /**
+     * Use a popup's key preview hooks to click a button when escape is pressed.
+     * @param preview  Preview event passed to popup's onPreviewNativeEvent method
+     * @param button   Button to click.
+     */
+    public void clickButtonOnEscape(NativePreviewEvent preview, Button button) {
+        if (preview != null) {
+            NativeEvent event = preview.getNativeEvent();
+            if (event != null) {
+                if (NativeEventType.KEYDOWN.equals(NativeEventType.convert(event.getType()))) {
+                    switch (event.getKeyCode()) {
+                    case KeyCodes.KEY_ESCAPE:
+                        button.click();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Use a popup's key preview hooks to click a button when enter is pressed.
+     * @param preview  Preview event passed to popup's onPreviewNativeEvent method
+     * @param button   Button to click.
+     */
+    public void clickButtonOnEnter(NativePreviewEvent preview, Button button) {
+        if (preview != null) {
+            NativeEvent event = preview.getNativeEvent();
+            if (event != null) {
+                if (NativeEventType.KEYDOWN.equals(NativeEventType.convert(event.getType()))) {
+                    switch (event.getKeyCode()) {
+                    case KeyCodes.KEY_ENTER:
+                        button.click();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Globally handle the enter key, using it to click the indicated button.
      * @param button  Button to click when the enter key is pressed
      */
