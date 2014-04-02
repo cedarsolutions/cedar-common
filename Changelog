@@ -1,4 +1,4 @@
-Version 4.3.0   unreleased
+Version 4.3.0   02 Apr 2014
 
     * Add AbstractWidgetUtils.clickButtonOnEscape() and .clickButtonOnEnter().
 
