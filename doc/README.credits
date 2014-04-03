@@ -31,6 +31,7 @@ LICENSES
    ================================================================================================
    Apache License v2.0           doc/licenses/apache_v2.0_license.txt
    Sun License                   doc/licenses/sun_license.txt
+   BSD 3-Clause License          doc/licenses/bsd-3-clause.txt
 
 
 UPSTREAM SOURCES
@@ -40,8 +41,15 @@ UPSTREAM SOURCES
    ArcBees ElementId             Apache License v2.0        http://code.google.com/p/gwt-platform/issues/detail?id=389
    Base64Coder                   Apache License v2.0        http://www.source-code.biz/base64coder/java/
    gwt-test-utils                Apache License v2.0        http://code.google.com/p/gwt-test-utils/
-   GWT 2.4.0                     Apache License v2.0        http://http://gwt.google.com
+   GWT v2.4.0                    Apache License v2.0        http://http://gwt.google.com
    Sun                           Sun License                http://java.sun.com/developer/technicalArticles/Programming/sprintf/
+   Wildcard v1.1                 BSD 3-Clause License[*]    https://code.google.com/p/wildcard/source/browse/#svn%2Ftags%2F1.1
+
+        [*] The Wildcard project is documented as being under the "New BSD License", which
+            links to the BSD 3-Clause License on opensource.org.  There is no copyright statement
+            or license text in the source tree, only the code license choice that Google requires
+            authors to make when a project is created.  I believe this is adequate evidence of
+            licensing intent.
 
 
 EXTERNAL CODE
@@ -50,8 +58,9 @@ EXTERNAL CODE
    ================================================================================================
    ArcBees ElementId             com.gwtplatform.idhandler.*
    Base64Coder                   biz.source_code.base64Coder.*
-   GWT 2.4.0                     com.cedarsolutions.client.gwt.custom.*
+   GWT v2.4.0                    com.cedarsolutions.client.gwt.custom.*
    Sun                           com.sun.util.*
+   Wildcard v1.1                 com.esotericsoftware.wildcard.*
 
 
 DERIVED CODE

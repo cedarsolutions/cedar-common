@@ -207,17 +207,11 @@ project(":util") {
         compile "javax.servlet:servlet-api:2.5"
         compile "joda-time:joda-time:2.3"
         compile "log4j:log4j:1.2.17"
-        compile "org.apache.ant:ant:1.9.3"
         compile "org.springframework:spring-beans:3.2.4.RELEASE"
         compile "org.springframework:spring-context:3.2.4.RELEASE"
         compile "org.springframework:spring-core:3.2.4.RELEASE"
         compile "org.springframework:spring-web:3.2.4.RELEASE"
         compile "org.springframework:spring-webmvc:3.2.4.RELEASE"
-    }
-
-    configurations {
-        // These transitive dependencies are not required 
-        all*.exclude group: "org.apache.ant", module: "ant-launcher"
     }
 
     uploadArchives {

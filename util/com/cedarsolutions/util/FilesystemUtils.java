@@ -39,11 +39,11 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.tools.ant.DirectoryScanner;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import com.cedarsolutions.exception.CedarRuntimeException;
+import com.esotericsoftware.wildcard.Paths;
 
 /**
  * Filesystem-related utilities.
@@ -394,25 +394,16 @@ public class FilesystemUtils {
      * @see <a href="http://stackoverflow.com/questions/794381">Stack Overflow</a>
      */
     public static List<String> getGlobContents(String dirPath, String glob) {
+        List<String> contents = new ArrayList<String>();
+
         File dirFile = new File(dirPath);
         if (!dirFile.exists() || !dirFile.isDirectory()) {
             throw new CedarRuntimeException("Directory does not exist.");
         }
 
-        List<String> contents = new ArrayList<String>();
-
-        DirectoryScanner scanner = new DirectoryScanner();
-        scanner.setIncludes(new String[]{ glob, });
-        scanner.setBasedir(dirPath);
-        scanner.setCaseSensitive(true);
-        scanner.scan();
-
-        for (String file : scanner.getIncludedFiles()) {
-            contents.add(normalize(file));
-        }
-
-        for (String dir : scanner.getIncludedDirectories()) {
-            contents.add(normalize(dir));
+        Paths paths = new Paths(dirPath, glob);
+        for (String path : paths.getRelativePaths()) {
+            contents.add(normalize(path));
         }
 
         return contents;
