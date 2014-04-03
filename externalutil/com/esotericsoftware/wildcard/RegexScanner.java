@@ -9,74 +9,99 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+* <h3>
+* Code Source
+* </h3>
+*
+* <p>
+* This is external code that was copied into the CedarCommon codebase under
+* the terms of its license.
+* </p>
+*
+* <blockquote>
+*    <table border="1" cellpadding="5" cellspacing="0">
+*       <tbody>
+*          <tr>
+*             <td><i>Source:</i></td>
+*             <td><a href="https://code.google.com/p/wildcard/source/browse/#svn%2Ftags%2F1.1">Wildcard</a></td>
+*          </tr>
+*          <tr>
+*             <td><i>Date:</i></td>
+*             <td>April, 2014</td>
+*          </tr>
+*       </tbody>
+*    </table>
+* </blockquote>
+*/
 class RegexScanner {
-	private final File rootDir;
-	private final List<Pattern> includePatterns;
-	private final List<String> matches = new ArrayList(128);
+    private final File rootDir;
+    private final List<Pattern> includePatterns;
+    private final List<String> matches = new ArrayList(128);
 
-	public RegexScanner (File rootDir, List<String> includes, List<String> excludes) {
-		if (rootDir == null) throw new IllegalArgumentException("rootDir cannot be null.");
-		if (!rootDir.exists()) throw new IllegalArgumentException("Directory does not exist: " + rootDir);
-		if (!rootDir.isDirectory()) throw new IllegalArgumentException("File must be a directory: " + rootDir);
-		try {
-			rootDir = rootDir.getCanonicalFile();
-		} catch (IOException ex) {
-			throw new RuntimeException("OS error determining canonical path: " + rootDir, ex);
-		}
-		this.rootDir = rootDir;
+    public RegexScanner (File rootDir, List<String> includes, List<String> excludes) {
+        if (rootDir == null) throw new IllegalArgumentException("rootDir cannot be null.");
+        if (!rootDir.exists()) throw new IllegalArgumentException("Directory does not exist: " + rootDir);
+        if (!rootDir.isDirectory()) throw new IllegalArgumentException("File must be a directory: " + rootDir);
+        try {
+            rootDir = rootDir.getCanonicalFile();
+        } catch (IOException ex) {
+            throw new RuntimeException("OS error determining canonical path: " + rootDir, ex);
+        }
+        this.rootDir = rootDir;
 
-		if (includes == null) throw new IllegalArgumentException("includes cannot be null.");
-		if (excludes == null) throw new IllegalArgumentException("excludes cannot be null.");
+        if (includes == null) throw new IllegalArgumentException("includes cannot be null.");
+        if (excludes == null) throw new IllegalArgumentException("excludes cannot be null.");
 
-		includePatterns = new ArrayList();
-		for (String include : includes)
-			includePatterns.add(Pattern.compile(include, Pattern.CASE_INSENSITIVE));
+        includePatterns = new ArrayList();
+        for (String include : includes)
+            includePatterns.add(Pattern.compile(include, Pattern.CASE_INSENSITIVE));
 
-		List<Pattern> excludePatterns = new ArrayList();
-		for (String exclude : excludes)
-			excludePatterns.add(Pattern.compile(exclude, Pattern.CASE_INSENSITIVE));
+        List<Pattern> excludePatterns = new ArrayList();
+        for (String exclude : excludes)
+            excludePatterns.add(Pattern.compile(exclude, Pattern.CASE_INSENSITIVE));
 
-		scanDir(rootDir);
+        scanDir(rootDir);
 
-		for (Iterator matchIter = matches.iterator(); matchIter.hasNext();) {
-			String filePath = (String)matchIter.next();
-			for (Pattern exclude : excludePatterns)
-				if (exclude.matcher(filePath).matches()) matchIter.remove();
-		}
-	}
+        for (Iterator matchIter = matches.iterator(); matchIter.hasNext();) {
+            String filePath = (String)matchIter.next();
+            for (Pattern exclude : excludePatterns)
+                if (exclude.matcher(filePath).matches()) matchIter.remove();
+        }
+    }
 
-	private void scanDir (File dir) {
-		for (File file : dir.listFiles()) {
-			for (Pattern include : includePatterns) {
-				String filePath = file.getPath().substring(rootDir.getPath().length() + 1);
-				if (include.matcher(filePath).matches()) {
-					matches.add(filePath);
-					break;
-				}
-			}
-			if (file.isDirectory()) scanDir(file);
-		}
-	}
+    private void scanDir (File dir) {
+        for (File file : dir.listFiles()) {
+            for (Pattern include : includePatterns) {
+                String filePath = file.getPath().substring(rootDir.getPath().length() + 1);
+                if (include.matcher(filePath).matches()) {
+                    matches.add(filePath);
+                    break;
+                }
+            }
+            if (file.isDirectory()) scanDir(file);
+        }
+    }
 
-	public List<String> matches () {
-		return matches;
-	}
+    public List<String> matches () {
+        return matches;
+    }
 
-	public File rootDir () {
-		return rootDir;
-	}
+    public File rootDir () {
+        return rootDir;
+    }
 
-	public static void main (String[] args) {
-		// System.out.println(new Paths("C:\\Java\\ls", "**"));
-		List<String> includes = new ArrayList();
-		includes.add("core[^T]+php");
-		// includes.add(".*/lavaserver/.*");
-		List<String> excludes = new ArrayList();
-		// excludes.add("website/**/doc**");
-		long start = System.nanoTime();
-		List<String> files = new RegexScanner(new File("..\\website\\includes"), includes, excludes).matches();
-		long end = System.nanoTime();
-		System.out.println(files.toString().replaceAll(", ", "\n").replaceAll("[\\[\\]]", ""));
-		System.out.println((end - start) / 1000000f);
-	}
+    public static void main (String[] args) {
+        // System.out.println(new Paths("C:\\Java\\ls", "**"));
+        List<String> includes = new ArrayList();
+        includes.add("core[^T]+php");
+        // includes.add(".*/lavaserver/.*");
+        List<String> excludes = new ArrayList();
+        // excludes.add("website/**/doc**");
+        long start = System.nanoTime();
+        List<String> files = new RegexScanner(new File("..\\website\\includes"), includes, excludes).matches();
+        long end = System.nanoTime();
+        System.out.println(files.toString().replaceAll(", ", "\n").replaceAll("[\\[\\]]", ""));
+        System.out.println((end - start) / 1000000f);
+    }
 }
