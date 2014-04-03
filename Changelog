@@ -1,3 +1,8 @@
+Version 4.3.1   unreleased
+
+    * Add new external utility code, 3 classes from the Wildcard v1.1 project.
+    * Re-implement FilesystemUtils.getGlobContents() in terms of Wildcard.
+
 Version 4.3.0   02 Apr 2014
 
     * Add AbstractWidgetUtils.clickButtonOnEscape() and .clickButtonOnEnter().
