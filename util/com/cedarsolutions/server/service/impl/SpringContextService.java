@@ -101,7 +101,18 @@ public class SpringContextService extends AbstractService implements ISpringCont
         }
     }
 
-    /** Set (update) a named attribute in the session. */
+    /**
+     * Set (update) a named attribute in the session.
+     *
+     * <p>
+     * Note: in some containers, it is critical that value.equals(null) returns
+     * false.  If that method call blows up, you won't be able to set the attribute.
+     * This is an example of something that works differently in Jetty 6 and 8.
+     * </p>
+     *
+     * @param name   Name of the attribute
+     * @param value  Value of the attribute
+     */
     @Override
     public <T extends Serializable> void setSessionAttribute(String name, T value) {
         HttpSession session = this.getRequestSession();

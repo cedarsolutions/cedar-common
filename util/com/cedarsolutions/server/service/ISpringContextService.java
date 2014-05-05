@@ -46,7 +46,19 @@ public interface ISpringContextService {
     /** Get a named attribute from the session. */
     <T extends Serializable> T getSessionAttribute(String name);
 
-    /** Set (update) a named attribute in the session. */
+    /**
+     * Set (update) a named attribute in the session.
+     *
+     * <p>
+     * Note: in some containers, it is <b>critical</b> that <code>value.equals(null)</code>
+     * returns <code>false</code>.  If that method call blows up, you won't be able to
+     * set the attribute.  (For instance, Jetty 8 blows up, but containers such as
+     * Jetty 6 or WebSphere 7 don't.)
+     * </p>
+     *
+     * @param name   Name of the attribute
+     * @param value  Value of the attribute
+     */
     <T extends Serializable> void setSessionAttribute(String name, T value);
 
     /**
