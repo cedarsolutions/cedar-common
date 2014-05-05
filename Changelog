@@ -1,3 +1,7 @@
+Version 4.3.2   unreleased
+
+    * Bump up to the latest Mvp4g snapshot, which supports Super Dev Mode.
+
 Version 4.3.1   02 Apr 2014
 
     * Add new external utility code, 3 classes from the Wildcard v1.1 project.
