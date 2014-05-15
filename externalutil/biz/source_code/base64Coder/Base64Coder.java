@@ -45,6 +45,7 @@ package biz.source_code.base64Coder;
 *
 * @author Christian d'Heureuse, Inventec Informatik AG, Zurich, Switzerland
 */
+@Deprecated
 public class Base64Coder {
 
 // The line separator string of the operating system.

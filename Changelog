@@ -1,3 +1,8 @@
+Version 4.3.3   unreleased
+
+    * Add AbstractWidgetUtils.getUrl() to tie button clicks to URLs.
+    * Deprecate Base64Coder, since there are lots of alternatives to this code.
+
 Version 4.3.2   06 May 2014
 
     * Bump up to the latest Mvp4g snapshot, which supports Super Dev Mode.
