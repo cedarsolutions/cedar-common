@@ -91,6 +91,14 @@ public abstract class AbstractWidgetUtils {
     }
 
     /**
+     * Open the referenced URL, as for download via a button click.
+     * @see <a href="http://stackoverflow.com/questions/4703014">Stack Overflow</a>
+     */
+    public void openUrl(String url) {
+        NativeUtils.openUrl(url);
+    }
+
+    /**
      * Get the URL prefix of the hosting page, a proxy over GWT.getHostPageBaseURL().
      * @return If non-empty, the base URL is guaranteed to end with a slash
      **/

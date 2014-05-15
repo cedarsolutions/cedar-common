@@ -47,4 +47,12 @@ public class NativeUtils {
         $wnd.location = url;
     }-*/;
 
+    /**
+     * Open the referenced URL, as for download via a button click.
+     * @see <a href="http://stackoverflow.com/questions/4703014">Stack Overflow</a>
+     */
+    public static native void openUrl(String url)/*-{
+        $wnd.open(url, "target=_blank")
+    }-*/;
+
 }
