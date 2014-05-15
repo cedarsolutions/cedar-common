@@ -133,15 +133,23 @@ subprojects {
         excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
     }
 
+    task javadocJar(type: Jar, dependsOn: jdoc) {
+        classifier = "javadoc"
+        archiveName = "cedar-common-${baseName}-${version}-${classifier}.${extension}"
+        from "${project.docsDir}/javadoc"
+    }
+
     artifacts {
         archives jar
         archives sourcesJar
+        archives javadocJar
     }
 
     signing {
         required = { cedarPublish.isSignatureRequired() }
         sign jar
         sign sourcesJar
+        sign javadocJar
     }
 
     uploadArchives {
