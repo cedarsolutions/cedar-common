@@ -211,6 +211,7 @@ project(":util") {
         compile "com.flipthebird.gwt-hashcode-equals:gwt-hashcode-equals:0.1.0"
         compile "com.google.code.gson:gson:1.7.2"
         compile "commons-beanutils:commons-beanutils:1.8.3"
+        compile "commons-codec:commons-codec:1.9"
         compile "commons-lang:commons-lang:2.6"
         compile "javax.servlet:servlet-api:2.5"
         compile "joda-time:joda-time:2.3"

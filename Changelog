@@ -2,6 +2,7 @@ Version 4.3.3   17 May 2014
 
     * Add AbstractWidgetUtils.getUrl() to tie button clicks to URLs.
     * Deprecate Base64Coder, since there are lots of alternatives to this code.
+    * Change SerializationUtils to use Base64 from commons-codec.
 
 Version 4.3.2   06 May 2014
 
