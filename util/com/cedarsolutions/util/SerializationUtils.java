@@ -27,7 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import biz.source_code.base64Coder.Base64Coder;
+import org.apache.commons.codec.binary.Base64;
 
 import com.cedarsolutions.exception.CedarRuntimeException;
 
@@ -52,7 +52,7 @@ public class SerializationUtils {
     @SuppressWarnings("unchecked")
     public static <T> T fromString(String string) {
         try {
-            byte [] data = Base64Coder.decode(string);
+            byte[] data = Base64.decodeBase64(string.getBytes("UTF-8"));
             ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
             try {
                 return (T) ois.readObject();
@@ -71,7 +71,7 @@ public class SerializationUtils {
             ObjectOutputStream oos = new ObjectOutputStream(baos);
             try {
                 oos.writeObject(object);
-                return new String(Base64Coder.encode(baos.toByteArray()));
+                return new String(Base64.encodeBase64(baos.toByteArray()));
             } finally {
                 oos.close();
             }
