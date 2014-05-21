@@ -25,6 +25,7 @@ package com.cedarsolutions.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,8 +56,8 @@ public class JaxbUtilsTest {
         } catch (CedarRuntimeException e) { }
     }
 
-    /** Test a round-trip. */
-    @Test public void testRoundTrip() {
+    /** Test a round-trip, no schema. */
+    @Test public void testRoundTripNoSchema() {
         String string = "1";
         Date date = DateUtils.getCurrentDate();
         Integer integer = new Integer(111);
@@ -82,6 +83,42 @@ public class JaxbUtilsTest {
         assertEquals(integer, result.getInteger());
         assertEquals(longinteger, result.getLonginteger());
         assertEquals(list, result.getList());
+    }
+
+    /** Test a round-trip, with schema. */
+    @Test public void testRoundTripWithSchema() {
+        String string = "1";
+        Date date = DateUtils.getCurrentDate();
+        Integer integer = new Integer(111);
+        Long longinteger = new Long(222);
+        List<String> list = new ArrayList<String>();
+        list.add("one");
+        list.add("two");
+
+        TestClass input = new TestClass(string, date, integer, longinteger, list);
+        assertNotNull(input);
+        assertEquals(string, input.getString());
+        assertEquals(date, input.getDate());
+        assertEquals(integer, input.getInteger());
+        assertEquals(longinteger, input.getLonginteger());
+
+        String serialized = JaxbUtils.getInstance().marshalDocument(input, "http://whatever/xsd/myschema.xsd");
+        assertTrue(serialized.contains("xsi:schemaLocation=\"http://whatever/xsd/myschema.xsd\""));
+        assertNotNull(serialized);
+
+        TestClass result = JaxbUtils.getInstance().unmarshalDocument(TestClass.class, serialized);
+        assertNotNull(result);
+        assertEquals(string, result.getString());
+        assertEquals(date, result.getDate());
+        assertEquals(integer, result.getInteger());
+        assertEquals(longinteger, result.getLonginteger());
+        assertEquals(list, result.getList());
+    }
+
+    /** Test generating a schema. */
+    @Test public void testGenerateSchema() {
+        // Just make sure it doesn't blow up
+        assertNotNull(JaxbUtils.getInstance().generateSchema(TestClass.class));
     }
 
 }
