@@ -1,4 +1,4 @@
-Version 4.3.4   unreleased
+Version 4.3.4   21 May 2014
 
     * Add new method JaxbUtils.generateSchema().
     * Add new method JaxbUtils.marshalDocument() that takes a schema location.
