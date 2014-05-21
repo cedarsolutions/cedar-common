@@ -1,3 +1,8 @@
+Version 4.3.4   unreleased
+
+    * Add new method JaxbUtils.generateSchema().
+    * Add new method JaxbUtils.marshalDocument() that takes a schema location.
+
 Version 4.3.3   17 May 2014
 
     * Add AbstractWidgetUtils.getUrl() to tie button clicks to URLs.

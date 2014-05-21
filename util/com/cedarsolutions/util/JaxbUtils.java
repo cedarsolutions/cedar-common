@@ -22,6 +22,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.util;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -31,10 +32,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.ValidationEvent;
 import javax.xml.bind.util.ValidationEventCollector;
+import javax.xml.transform.Result;
 import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import com.cedarsolutions.exception.CedarRuntimeException;
@@ -106,18 +110,33 @@ public class JaxbUtils {
     }
 
     /**
-     * Marshal an object of type T, creating XML.
+     * Marshal an object of type T, creating XML with no schema location.
      * @param <T>  Type of the object
      * @param value  Value to marshal.
      * @return Generated XML.
      */
     public <T> String marshalDocument(T value) {
+        return marshalDocument(value, null);
+    }
+
+    /**
+     * Marshal an object of type T, creating XML.
+     * @param <T>  Type of the object
+     * @param value  Value to marshal.
+     * @param schema Location of the schema to be placed in the XML, or null
+     * @return Generated XML.
+     */
+    public <T> String marshalDocument(T value, String schema) {
         try {
             JAXBContext context = this.getJaxbContext(value.getClass());
 
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_FRAGMENT, false);
+
+            if (schema != null) {
+                marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, schema);
+            }
 
             StringWriter writer = new StringWriter();
             marshaller.marshal(value, writer);
@@ -182,4 +201,37 @@ public class JaxbUtils {
             throw new CedarRuntimeException("Error unmarshalling XML: " + e.getMessage(), e);
         }
     }
+
+    /**
+     * Generate the XML schema for a JAXB type.
+     * @param <T>  Type of the object
+     * @param type Type of the object to unmarshal
+     */
+    public <T> String generateSchema(Class<T> type) {
+        try {
+            JAXBContext context = this.getJaxbContext(type);
+            SchemaResolver resolver = new SchemaResolver();
+            context.generateSchema(resolver);
+            return resolver.getWriter().toString();
+        } catch (IOException e) {
+            throw new CedarRuntimeException("Error generating schema: " + e.getMessage(), e);
+        }
+    }
+
+    /** A resolver used for generating a schema from JAXB. */
+    private static class SchemaResolver extends SchemaOutputResolver {
+        private StringWriter writer = new StringWriter();
+
+        public StringWriter getWriter() {
+            return this.writer;
+        }
+
+        @Override
+        public Result createOutput(String namespaceUri, String suggestedFileName) throws IOException {
+            Result result = new StreamResult(this.writer);
+            result.setSystemId("id");
+            return result;
+        }
+    }
+
 }
