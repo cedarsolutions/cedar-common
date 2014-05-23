@@ -1,3 +1,8 @@
+Version 4.4.0   unreleased
+
+    * Add constructors to InvalidDataException so we can provide both details and cause.
+    * Improve validation handling within JaxbUtils, now throwing InvalidDataException.
+
 Version 4.3.4   21 May 2014
 
     * Add new method JaxbUtils.generateSchema().

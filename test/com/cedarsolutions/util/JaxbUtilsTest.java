@@ -102,8 +102,8 @@ public class JaxbUtilsTest {
         assertEquals(integer, input.getInteger());
         assertEquals(longinteger, input.getLonginteger());
 
-        String serialized = JaxbUtils.getInstance().marshalDocument(input, "http://whatever/xsd/myschema.xsd");
-        assertTrue(serialized.contains("xsi:schemaLocation=\"http://whatever/xsd/myschema.xsd\""));
+        String serialized = JaxbUtils.getInstance().marshalDocument(input, "http://whatever http://whatever/xsd/myschema.xsd");
+        assertTrue(serialized.contains("xsi:schemaLocation=\"http://whatever http://whatever/xsd/myschema.xsd\""));
         assertNotNull(serialized);
 
         TestClass result = JaxbUtils.getInstance().unmarshalDocument(TestClass.class, serialized);
