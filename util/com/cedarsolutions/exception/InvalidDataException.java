@@ -58,8 +58,17 @@ public class InvalidDataException extends CedarRuntimeException {
         this(new LocalizableMessage(message), details);
     }
 
+    public InvalidDataException(String message, ValidationErrors details, Throwable cause) {
+        this(new LocalizableMessage(message), details, cause);
+    }
+
     public InvalidDataException(LocalizableMessage localizableMessage, ValidationErrors details) {
         super(localizableMessage);
+        this.details = details;
+    }
+
+    public InvalidDataException(LocalizableMessage localizableMessage, ValidationErrors details, Throwable cause) {
+        super(localizableMessage, cause);
         this.details = details;
     }
 
