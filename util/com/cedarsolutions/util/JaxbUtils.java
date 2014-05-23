@@ -28,6 +28,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -40,8 +41,14 @@ import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+
+import org.xml.sax.SAXException;
 
 import com.cedarsolutions.exception.CedarRuntimeException;
+import com.cedarsolutions.exception.InvalidDataException;
+import com.cedarsolutions.shared.domain.ValidationErrors;
 
 /**
  * JAXB utilities that operate on a cached JAXB context.
@@ -57,6 +64,9 @@ import com.cedarsolutions.exception.CedarRuntimeException;
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class JaxbUtils {
+
+    /** Validation error key used for XML errors. */
+    public static final String ERROR_KEY = "jaxb";
 
     /** Singleton instance. */
     private static JaxbUtils INSTANCE;
@@ -164,6 +174,7 @@ public class JaxbUtils {
      * @param xml XML to use as source
      * @param validate  Whether to validate the unmarshalling step
      * @return Object of type T, unmarshalled from the XML.
+     * @throws InvalidDataException If the XML could not be parsed or if there are validation errors.
      */
     public <T> T unmarshalDocument(Class<T> type, String xml, boolean validate) {
         try {
@@ -172,33 +183,38 @@ public class JaxbUtils {
             StringReader reader = new StringReader(xml);
             Source source = new StreamSource(reader);
 
-            Unmarshaller unmarshaller = context.createUnmarshaller();
+            if (!validate) {
+                Unmarshaller unmarshaller = context.createUnmarshaller();
+                JAXBElement<T> element = unmarshaller.unmarshal(source, type);
+                return element.getValue();
+            } else {
+                // If an adapter fails, we don't get an unmarshal exception.
+                // Instead, we have to register and interrogate a handler.
+                // See also: http://java.net/jira/browse/JAXB-537
 
-            // If an adapter fails, we don't get an unmarshal exception.
-            // Instead, we have to register and interrogate a handler.
-            // See also: http://java.net/jira/browse/JAXB-537
-            ValidationEventCollector eventHandler = new ValidationEventCollector();
-            unmarshaller.setEventHandler(eventHandler);
+                Unmarshaller unmarshaller = context.createUnmarshaller();
 
-            JAXBElement<T> element = unmarshaller.unmarshal(source, type);
+                String xsd = this.generateSchema(type);
+                SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+                Schema schema = sf.newSchema(new StreamSource(new StringReader(xsd)));
 
-            if (validate) {
+                ValidationEventCollector eventHandler = new ValidationEventCollector();
+                unmarshaller.setEventHandler(eventHandler);
+                unmarshaller.setSchema(schema);
+
+                JAXBElement<T> element = unmarshaller.unmarshal(source, type);
                 if (eventHandler.hasEvents()) {
-                    StringBuffer buffer = new StringBuffer();
-
-                    buffer.append("Error unmarshalling XML: found validation error(s)");
-                    for (ValidationEvent event : eventHandler.getEvents()) {
-                        buffer.append("\n\t -> ");
-                        buffer.append(event.getMessage());
-                    }
-
-                    throw new CedarRuntimeException(buffer.toString());
+                    throw generateValidationError(type, eventHandler);
                 }
-            }
 
-            return element.getValue();
+                return element.getValue();
+            }
         } catch (JAXBException e) {
-            throw new CedarRuntimeException("Error unmarshalling XML: " + e.getMessage(), e);
+            throw translateJaxbUnmarshalError(type, e);
+        } catch (SAXException e) {
+            InvalidDataException invalid = getUnmarshalError(type, e);
+            invalid.getDetails().addMessage(ERROR_KEY, e.getMessage());
+            throw invalid;
         }
     }
 
@@ -218,6 +234,12 @@ public class JaxbUtils {
         }
     }
 
+    /** Get a "raw" invalid data exception for a class, with empty details attached. */
+    private static <T> InvalidDataException getUnmarshalError(Class<T> type, Throwable cause) {
+        ValidationErrors details = new ValidationErrors(ERROR_KEY, "Error unmarshalling XML for " + type.getSimpleName());
+        return new InvalidDataException("Error unmarshalling XML for " + type.getSimpleName(), details);
+    }
+
     /** A resolver used for generating a schema from JAXB. */
     private static class SchemaResolver extends SchemaOutputResolver {
         private StringWriter writer = new StringWriter();
@@ -232,6 +254,46 @@ public class JaxbUtils {
             result.setSystemId("id");
             return result;
         }
+    }
+
+    /** Generate a JAXB unmarshal exception due to validation problems. */
+    private static <T> InvalidDataException generateValidationError(Class<T> type, ValidationEventCollector eventHandler) {
+        InvalidDataException invalid = getUnmarshalError(type, null);
+
+        invalid.getDetails().addMessage(ERROR_KEY, "Found validation errors");
+        for (ValidationEvent event : eventHandler.getEvents()) {
+            invalid.getDetails().addMessage(ERROR_KEY, event.getMessage());
+        }
+        return invalid;
+    }
+
+    /** Translate a JAXB unmarshal exception into something legible. */
+    private static <T> InvalidDataException translateJaxbUnmarshalError(Class<T> type, JAXBException e) {
+        boolean added = false;
+        InvalidDataException invalid = getUnmarshalError(type, e);
+
+        // This was developed through trial-and-error.  I don't know how well it will hold up in the future.
+        if (e.getCause() != null && e.getLinkedException() != null) {
+            try {
+                throw e.getLinkedException();
+            } catch (org.xml.sax.SAXParseException sax) {
+                String message = "Line " + sax.getLineNumber() + ", column " + sax.getColumnNumber() + ": " + e.getCause().getMessage();
+                invalid.getDetails().addMessage(ERROR_KEY, message);
+                added = true;
+            } catch (Throwable other) { }
+        }
+
+        if (!added && e.getCause() != null && e.getCause().getMessage() != null) {
+            invalid.getDetails().addMessage(ERROR_KEY, e.getCause().getMessage());
+            added = true;
+        }
+
+        if (!added && e.getMessage() != null) {
+            invalid.getDetails().addMessage(ERROR_KEY, e.getMessage());
+            added = true;
+        }
+
+        return invalid;
     }
 
 }
