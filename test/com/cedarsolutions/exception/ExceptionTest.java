@@ -579,12 +579,34 @@ public class ExceptionTest {
         }
 
         try {
+            throw new InvalidDataException("error", details, cause);
+        } catch (InvalidDataException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals("error", e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), "error");
+            assertSame(cause, e.getCause());
+            assertTrue(e.hasDetails());
+            assertSame(details, e.getDetails());
+        }
+
+        try {
             throw new InvalidDataException(message, details);
         } catch (InvalidDataException e) {
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertNull(e.getCause());
+            assertTrue(e.hasDetails());
+            assertSame(details, e.getDetails());
+        }
+
+        try {
+            throw new InvalidDataException(message, details, cause);
+        } catch (InvalidDataException e) {
+            assertTrue(e instanceof CedarRuntimeException);
+            assertEquals(message.getText(), e.getMessage());
+            assertMessageValues(e.getLocalizableMessage(), message);
+            assertSame(cause, e.getCause());
             assertTrue(e.hasDetails());
             assertSame(details, e.getDetails());
         }
