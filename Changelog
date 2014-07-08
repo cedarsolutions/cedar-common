@@ -1,4 +1,4 @@
-Version 4.4.1   unreleased
+Version 4.5.0   08 Jul 2014
 
     * Pull in SimplePager as external code to change private variables to protected.
     * Improve DataTablePager so the last page icon is disabled unless the page count is known.
