@@ -22,9 +22,9 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.widget.table;
 
+import com.cedarsolutions.client.gwt.custom.pager.SimplePager;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.view.client.HasRows;
 import com.google.gwt.view.client.Range;
 
@@ -32,14 +32,25 @@ import com.google.gwt.view.client.Range;
  * Standard pager for use with DataTable.
  *
  * <p>
- * I took this implementation mostly from a Google Groups posting
- * (referenced below).  It maintains a set page size and displays
- * page numbers and total pages more elegantly than the original
- * Google pager.
+ * This pager maintains a set page size and displays page numbers and
+ * total pages more elegantly than the original Google pager.  It also
+ * fixes rendering problems with the last page button, which should
+ * only be shown if the last page is known to exist.
+ * </p>
+ *
+ * <p>
+ * This pager does not support the fast forward button that is provided
+ * by the original SimplePager widget.
+ * </p>
+ *
+ * <p>
+ * The initial implementation was taken from a Google Groups posting,
+ * referenced below.  I have modified that implementation over time.
+ * So much of this class has been overridden that it almost should be
+ * rewritten from scratch, but I've been trying to avoid that.
  * </p>
  *
  * @see <a href="http://www.mail-archive.com/google-web-toolkit@googlegroups.com/msg62640.html">Google Groups</a>
- * @author manstis
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public class DataTablePager extends SimplePager {
@@ -58,6 +69,13 @@ public class DataTablePager extends SimplePager {
     /** Get the customized style for this widget. */
     protected static SimplePager.Resources getResources() {
         return GWT.create(SimplePager.Resources.class);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onRangeOrRowCountChanged() {
+      super.onRangeOrRowCountChanged();
+      this.setLastPageButtonDisabled(!this.hasLastPage());
     }
 
     /** {@inheritDoc} */
@@ -138,4 +156,34 @@ public class DataTablePager extends SimplePager {
             return formatter.format(pageStart) + "-" + formatter.format(endIndex) + (exact ? " of " : " of over ") + formatter.format(dataSize);
         }
     }
+
+    /**
+     * Enable or disable the last page button.
+     * @param disabled true to disable, false to enable
+     */
+    protected void setLastPageButtonDisabled(boolean disabled) {
+      if (lastPage != null) {
+        lastPage.setDisabled(disabled);
+      }
+    }
+
+    /** True if we know for certain there is a last page beyond the one currently displayed. */
+    protected boolean hasLastPage() {
+        HasRows display = getDisplay();
+        Range range = display.getVisibleRange();
+        int pageStart = range.getStart() + 1;
+        int size = range.getLength();
+        int dataSize = display.getRowCount();
+        int endIndex = Math.min(dataSize, pageStart + size - 1);
+        endIndex = Math.max(pageStart, endIndex);
+        boolean exact = display.isRowCountExact();
+        if (dataSize == 0) {
+            return false;
+        } else if (pageStart == endIndex) {
+            return false;
+        } else {
+            return !exact ? false : dataSize > endIndex;
+        }
+    }
+
 }

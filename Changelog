@@ -1,3 +1,8 @@
+Version 4.4.1   unreleased
+
+    * Pull in SimplePager as external code to change private variables to protected.
+    * Improve DataTablePager so the last page icon is disabled unless the page count is known.
+
 Version 4.4.0   23 May 2014
 
     * Add constructors to InvalidDataException so we can provide both details and cause.
@@ -172,14 +177,14 @@ Version 2.1.8   26 Sep 2013
 
 Version 2.1.7   14 Sep 2013
 
-    * Refactor out common build code, such as code to run tests and generated Javadoc
+    * Refactor out common build code, such as code to run tests and generated Javadoc.
     * Remove the tools subproject, which has been obsoleted by the Gradle build process.
 
 Version 2.1.6   13 Sep 2013
 
     * Update dependencies to App Engine 1.8.4.
     * Add StringUtils.wrapLine() method that takes the newline to use.
-    * Refactor out a lot of build functionality into shared Gradles plugins (cedar-build).
+    * Refactor out a lot of build functionality into shared Gradle plugins (cedar-build).
 
 Version 2.1.5   10 Sep 2013
 
@@ -192,6 +197,6 @@ Version 2.1.4   10 Sep 2013
 
 Version 2.1.3   10 Sep 2013
 
-    * Major reorganization of project layout with some package changes
-    * Convert build process to Gradle (>= 1.7)
+    * Major reorganization of project layout with some package changes.
+    * Convert build process to Gradle (>= 1.7).
 
