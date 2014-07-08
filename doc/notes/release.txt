@@ -1,6 +1,6 @@
 Here's the release process.
 
-0. Be sure to pull both the CedarCommon and Javadoc projects
+0. Be sure to pull the CedarCommon, Javadoc, and Maven projects!
 1. Run all of the tests, using the run.all.tests Ant task
 2. Update build.properties with the release version number
 3. Update the Changelog file with the release version number and release date
