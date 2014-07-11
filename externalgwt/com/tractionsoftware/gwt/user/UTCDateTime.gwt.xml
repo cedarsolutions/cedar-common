@@ -1,0 +1,20 @@
+<module>
+    <inherits name="com.google.gwt.user.User"/>
+    <stylesheet src="timebox.css" />
+
+    <replace-with class="com.tractionsoftware.gwt.user.client.ui.impl.UTCDateBoxImplHtml4">
+        <when-type-is class="com.tractionsoftware.gwt.user.client.ui.impl.UTCDateBoxImpl" />
+    </replace-with>
+
+    <replace-with class="com.tractionsoftware.gwt.user.client.ui.impl.UTCTimeBoxImplHtml4">
+        <when-type-is class="com.tractionsoftware.gwt.user.client.ui.impl.UTCTimeBoxImpl" />
+    </replace-with>
+
+    <source path="client">
+        <include name="ui/InputWidget.java" />
+        <include name="ui/UTCDateBox.java" />
+        <include name="ui/UTCTimeBox.java" />
+        <include name="ui/impl/UTC*.java" />
+        <include name="util/DomUtils.java" />
+    </source>
+</module>
