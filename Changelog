@@ -1,3 +1,7 @@
+Version 4.6.0   unreleased
+
+    * Package external UTCDateBox and UTCTimeBox from Traction Software, to support Java 1.6.
+
 Version 4.5.0   08 Jul 2014
 
     * Pull in SimplePager as external code to change private variables to protected.

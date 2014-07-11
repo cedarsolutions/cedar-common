@@ -41,6 +41,7 @@ UPSTREAM SOURCES
    ArcBees ElementId             Apache License v2.0        http://code.google.com/p/gwt-platform/issues/detail?id=389
    Base64Coder                   Apache License v2.0        http://www.source-code.biz/base64coder/java/
    gwt-test-utils                Apache License v2.0        http://code.google.com/p/gwt-test-utils/
+   gwt-traction                  Apache License v2.0        http://tractionsoftware.github.io/gwt-traction/
    GWT v2.4.0                    Apache License v2.0        http://http://gwt.google.com
    GWT v2.5.1                    Apache License v2.0        http://http://gwt.google.com
    Sun                           Sun License                http://java.sun.com/developer/technicalArticles/Programming/sprintf/
@@ -59,6 +60,7 @@ EXTERNAL CODE
    ================================================================================================
    ArcBees ElementId             com.gwtplatform.idhandler.*
    Base64Coder                   biz.source_code.base64Coder.*
+   gwt-traction                  com.tractionsoftware.*
    GWT v2.4.0 or v2.5.1          com.cedarsolutions.client.gwt.custom.*
    Sun                           com.sun.util.*
    Wildcard v1.1                 com.esotericsoftware.wildcard.*
