@@ -42,8 +42,9 @@ UPSTREAM SOURCES
    Base64Coder                   Apache License v2.0        http://www.source-code.biz/base64coder/java/
    gwt-test-utils                Apache License v2.0        http://code.google.com/p/gwt-test-utils/
    gwt-traction                  Apache License v2.0        http://tractionsoftware.github.io/gwt-traction/
-   GWT v2.4.0                    Apache License v2.0        http://http://gwt.google.com
-   GWT v2.5.1                    Apache License v2.0        http://http://gwt.google.com
+   GWT v2.4.0                    Apache License v2.0        http://www.gwtproject.org
+   GWT v2.5.1                    Apache License v2.0        http://www.gwtproject.org
+   GWT v2.6.1                    Apache License v2.0        http://www.gwtproject.org
    Sun                           Sun License                http://java.sun.com/developer/technicalArticles/Programming/sprintf/
    Wildcard v1.1                 BSD 3-Clause License[*]    https://code.google.com/p/wildcard/source/browse/#svn%2Ftags%2F1.1
 
@@ -61,7 +62,7 @@ EXTERNAL CODE
    ArcBees ElementId             com.gwtplatform.idhandler.*
    Base64Coder                   biz.source_code.base64Coder.*
    gwt-traction                  com.tractionsoftware.*
-   GWT v2.4.0 or v2.5.1          com.cedarsolutions.client.gwt.custom.*
+   GWT (any version)             com.cedarsolutions.client.gwt.custom.*
    Sun                           com.sun.util.*
    Wildcard v1.1                 com.esotericsoftware.wildcard.*
 

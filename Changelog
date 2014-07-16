@@ -1,3 +1,7 @@
+Version 4.7.0   unreleased
+
+    * Package the RichTextToolbar from GWT's showcase.
+
 Version 4.6.0   11 Jul 2014
 
     * Package external UTCDateBox and UTCTimeBox from Traction Software, to support Java 1.6.
