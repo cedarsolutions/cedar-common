@@ -1,4 +1,4 @@
-Version 4.8.0   unreleased
+Version 4.8.0   22 Sep 2014
 
     * Change standard log4j date format to include time zone.
     * Bump up to AppEngine v1.9.11, since v1.8.8 is getting kind of old.
