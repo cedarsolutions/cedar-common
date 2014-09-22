@@ -56,7 +56,8 @@ public class JavaLoggingFormatterTest {
         assertEquals("test.class.Name", info.getClassName());
         assertEquals("message", info.getMessage());
 
-        assertEquals("2011-10-07T13:01:42,663 [INFO ] --> [test.class.Name] message" + StringUtils.LINE_ENDING, info.format());
+        String zone = DateUtils.formatDate(now, "Z"); // like "-0500"
+        assertEquals("2011-10-07 13:01:42,663 " + zone + " [INFO ] --> [test.class.Name] message" + StringUtils.LINE_ENDING, info.format());
     }
 
     /** Test LogInfo.deriveLevel(). */

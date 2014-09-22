@@ -1,3 +1,7 @@
+Version 4.8.0   unreleased
+
+    * Change standard log4j date format to include time zone, like "%d{yyyy-MM-dd HH:mm:ss,SSS ZZZZ}".
+
 Version 4.7.0   16 Jul 2014
 
     * Package the RichTextToolbar from GWT's showcase.

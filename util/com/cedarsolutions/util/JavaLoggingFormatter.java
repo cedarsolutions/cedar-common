@@ -33,7 +33,7 @@ import org.apache.log4j.Level;
  *
  * <p>
  * The goal here is to produce the equivalent of the Log4j conversion
- * pattern "%d{ISO8601} [%-5p] --> [%c] %m%n".
+ * pattern "%d{yyyy-MM-dd HH:mm:ss,SSS ZZZZ} [%-5p] --> [%c] %m%n".
  * </p>
  *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
@@ -67,7 +67,7 @@ public class JavaLoggingFormatter extends Formatter {
         public String format() {
             StringBuffer buffer = new StringBuffer();
 
-            buffer.append(DateUtils.formatTimestamp(this.date));
+            buffer.append(formatTimestamp(this.date));
 
             buffer.append(" [");
             buffer.append(padded(5, this.level.toString()));
@@ -150,6 +150,14 @@ public class JavaLoggingFormatter extends Formatter {
             }
 
             return buffer.toString();
+        }
+
+        private static String formatTimestamp(Date date) {
+            // Note that this is a Joda time format, not SimpleDateFormat, so
+            // it's not exactly equivalent to the Log4j format above.  In
+            // particular, we use just a single Z rather than ZZZZ.  Using ZZZZ
+            // with Joda gives us "America/Chicago" when we want "-0500".
+            return DateUtils.formatDate(date, "yyyy-MM-dd HH:mm:ss,SSS Z");
         }
     }
 }
