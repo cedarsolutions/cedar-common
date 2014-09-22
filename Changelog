@@ -1,6 +1,7 @@
 Version 4.8.0   unreleased
 
-    * Change standard log4j date format to include time zone, like "%d{yyyy-MM-dd HH:mm:ss,SSS ZZZZ}".
+    * Change standard log4j date format to include time zone.
+    * Bump up to AppEngine v1.9.11, since v1.8.8 is getting kind of old.
 
 Version 4.7.0   16 Jul 2014
 
