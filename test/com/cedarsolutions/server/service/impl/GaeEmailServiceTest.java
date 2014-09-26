@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -125,7 +125,7 @@ public class GaeEmailServiceTest {
 
         GaeEmailService service = createService();
         Message message = mock(Message.class);
-        when(service.getGaeEmailUtils().createMessage((EmailMessage) any())).thenReturn(message);
+        when(service.getGaeEmailUtils().createMessage(isA(EmailMessage.class))).thenReturn(message);
         when(service.getTemplateService().renderTemplate("g", "n", SUBJECT, context)).thenReturn("subject-rendered");
         when(service.getTemplateService().renderTemplate("g", "n", PLAINTEXT, context)).thenReturn("plaintext-rendered");
         when(service.getTemplateService().renderTemplate("g", "n", HTML, context)).thenReturn("html-rendered");
@@ -159,7 +159,7 @@ public class GaeEmailServiceTest {
 
         GaeEmailService service = createService();
         Message message = mock(Message.class);
-        when(service.getGaeEmailUtils().createMessage((EmailMessage) any())).thenReturn(message);
+        when(service.getGaeEmailUtils().createMessage(isA(EmailMessage.class))).thenReturn(message);
         when(service.getTemplateService().renderTemplate("g", "n", SUBJECT, context)).thenReturn("subject-rendered");
         when(service.getTemplateService().renderTemplate("g", "n", PLAINTEXT, context)).thenReturn("plaintext-rendered");
         when(service.getTemplateService().renderTemplate("g", "n", HTML, context)).thenReturn("html-rendered");

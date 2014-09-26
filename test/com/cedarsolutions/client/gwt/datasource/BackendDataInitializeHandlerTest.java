@@ -24,7 +24,7 @@ package com.cedarsolutions.client.gwt.datasource;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -70,7 +70,7 @@ public class BackendDataInitializeHandlerTest {
 
         // Criteria will be set, but nothing else happens
         verify(renderer).setSearchCriteria(criteria);
-        verify(presenter, times(0)).setDataSource(any(BackendDataSource.class));
+        verify(presenter, times(0)).setDataSource(isA(BackendDataSource.class));
     }
 
     /** Test handleEvent() when no renderer is set. */
@@ -91,7 +91,7 @@ public class BackendDataInitializeHandlerTest {
         // Data source will be set, but nothing else happens
         verify(presenter).setDataSource(dataSource);
         verify(presenter, times(0)).getDefaultCriteria();
-        verify(dataSource.getDataProvider(), times(0)).addDataDisplay(any(HasData.class));
+        verify(dataSource.getDataProvider(), times(0)).addDataDisplay(isA(HasData.class));
     }
 
     /** Test handleEvent() when no display is set. */
@@ -118,7 +118,7 @@ public class BackendDataInitializeHandlerTest {
         InOrder order = inOrder(presenter, renderer);
         order.verify(renderer).setSearchCriteria(criteria);
         order.verify(presenter).setDataSource(dataSource);
-        verify(dataSource.getDataProvider(), times(0)).addDataDisplay(any(HasData.class));
+        verify(dataSource.getDataProvider(), times(0)).addDataDisplay(isA(HasData.class));
     }
 
     /** Test handleEvent() with a normal setup. */
