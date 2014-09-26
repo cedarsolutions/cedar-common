@@ -30,7 +30,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -115,7 +115,7 @@ public class GaeAuthenticationFilterTest {
         filter.setAuthenticationManager(authenticationManager);
         filter.afterPropertiesSet();
 
-        when(authenticationManager.authenticate(any(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
+        when(authenticationManager.authenticate(isA(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
         when(userService.isUserLoggedIn()).thenReturn(false);     // user is not logged in
 
         GaeUser gaeUser = callDoFilter(filter);  // no client roles
@@ -140,7 +140,7 @@ public class GaeAuthenticationFilterTest {
         filter.setAuthenticationManager(authenticationManager);
         filter.afterPropertiesSet();
 
-        when(authenticationManager.authenticate(any(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
+        when(authenticationManager.authenticate(isA(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
         when(userService.isUserLoggedIn()).thenReturn(false);     // user is not logged in
 
         GaeUser gaeUser = callDoFilter(filter, "ONE");
@@ -167,7 +167,7 @@ public class GaeAuthenticationFilterTest {
         filter.afterPropertiesSet();
 
         User user = new User("email", "authDomain", "userId", "federatedIdentity");
-        when(authenticationManager.authenticate(any(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
+        when(authenticationManager.authenticate(isA(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
         when(userService.isUserLoggedIn()).thenReturn(true);      // user is logged in
         when(userService.isUserAdmin()).thenReturn(false);        // user is not an admin
         when(userService.getCurrentUser()).thenReturn(user);      // this is the logged in user
@@ -195,7 +195,7 @@ public class GaeAuthenticationFilterTest {
         filter.afterPropertiesSet();
 
         User user = new User("email", "authDomain", "userId", "federatedIdentity");
-        when(authenticationManager.authenticate(any(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
+        when(authenticationManager.authenticate(isA(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
         when(userService.isUserLoggedIn()).thenReturn(true);      // user is logged in
         when(userService.isUserAdmin()).thenReturn(false);        // user is not an admin
         when(userService.getCurrentUser()).thenReturn(user);      // this is the logged in user
@@ -224,7 +224,7 @@ public class GaeAuthenticationFilterTest {
         filter.afterPropertiesSet();
 
         User user = new User("email", "authDomain", "userId", "federatedIdentity");
-        when(authenticationManager.authenticate(any(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
+        when(authenticationManager.authenticate(isA(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
         when(userService.isUserLoggedIn()).thenReturn(true);      // user is logged in
         when(userService.isUserAdmin()).thenReturn(true);         // user is an admin
         when(userService.getCurrentUser()).thenReturn(user);      // this is the logged in user
@@ -252,7 +252,7 @@ public class GaeAuthenticationFilterTest {
         filter.afterPropertiesSet();
 
         User user = new User("email", "authDomain", "userId", "federatedIdentity");
-        when(authenticationManager.authenticate(any(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
+        when(authenticationManager.authenticate(isA(GaeUserAuthenticationToken.class))).thenAnswer(new AuthenticationAnswer());
         when(userService.isUserLoggedIn()).thenReturn(true);      // user is logged in
         when(userService.isUserAdmin()).thenReturn(true);         // user is an admin
         when(userService.getCurrentUser()).thenReturn(user);      // this is the logged in user

@@ -22,7 +22,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.datasource;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,9 +43,9 @@ public class BackendDataUtilsTest {
         when(presenter.getRenderer()).thenReturn(renderer);
 
         BackendDataUtils.setStandardEventHandlers(presenter);
-        verify(renderer).setInitializationEventHandler(any(BackendDataInitializeHandler.class));
-        verify(renderer).setRefreshEventHandler(any(BackendDataRefreshHandler.class));
-        verify(renderer).setCriteriaResetEventHandler(any(BackendDataCriteriaResetHandler.class));
+        verify(renderer).setInitializationEventHandler(isA(BackendDataInitializeHandler.class));
+        verify(renderer).setRefreshEventHandler(isA(BackendDataRefreshHandler.class));
+        verify(renderer).setCriteriaResetEventHandler(isA(BackendDataCriteriaResetHandler.class));
     }
 
 }

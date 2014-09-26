@@ -1,3 +1,7 @@
+Version 4.8.1   unreleased
+
+    * Be more strict about using Mockito's isA() in unit tests rather than any().
+
 Version 4.8.0   22 Sep 2014
 
     * Change standard log4j date format to include time zone.
