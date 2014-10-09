@@ -1,0 +1,2 @@
+- add checkstye, metrics, coverage gradle tasks and integrate with Jenkins
+- Checkstyle should ignore gradle suites, otherwise we get warnings about bad packages
