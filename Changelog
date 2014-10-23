@@ -1,4 +1,4 @@
-Version 4.9.0   unreleased
+Version 4.9.0   23 Oct 2014
 
     * Add new filter GwtCacheControlFilter to standardize caching for GWT files.
 
