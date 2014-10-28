@@ -1,3 +1,7 @@
+Version 4.9.1   unreleased
+
+    * Fix rendering problems with tabs if a bookmark is the first action after login.
+
 Version 4.9.0   23 Oct 2014
 
     * Add new filter GwtCacheControlFilter to standardize caching for GWT files.
