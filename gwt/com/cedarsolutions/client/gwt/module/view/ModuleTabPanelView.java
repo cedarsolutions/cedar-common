@@ -147,6 +147,14 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
      * @param tabIndex Index of the tab to replace.
      */
     protected void replaceTabWithView(IModuleTabView view, String viewName, String title, int tabIndex) {
+        // Deselect all existing tabs.  If we don't do this, going to a
+        // bookmark at initial login leaves the very first tab highlighted
+        // along with the one that was selected by the bookmark.  The oldTab
+        // comes back as the previous tab in the list, which is not actually
+        // the highlighted one in all cases.  Since we don't have a reference
+        // to the highlighted one, we need to deselect them all.
+        this.getTabPanel().deselectAllTabs();
+
         // Check whether there's already a tab at this index
         IModuleTabView oldTab = null;
         if (this.getTabPanel().getWidgetCount() > tabIndex) {

@@ -574,6 +574,14 @@ public void add(Widget w) {
       return null;
   }
 
+  /** Deselect all tabs. */
+  // Added for Cedar Common
+  public void deselectAllTabs() {
+      for (int index = 0; index < this.tabs.size(); index++) {
+          this.tabs.get(index).setSelected(false);
+      }
+  }
+
   /**
    * Returns the number of tabs and widgets.
    */
@@ -736,10 +744,10 @@ public boolean remove(int index) {
     return true;
   }
 
-/** 
+/**
  * Remove the tab at the indicated index, without selecting any tab as a result.
  * This is intended for use when replacing the view that is rendering a tab.
- * The caller MUST re-select a valid tab after calling this method. 
+ * The caller MUST re-select a valid tab after calling this method.
  */
 // Added for Cedar Common
 public boolean removeWithoutSelecting(int index) {
@@ -754,7 +762,7 @@ public boolean removeWithoutSelecting(int index) {
 
     Tab tab = tabs.remove(index);
     tab.getWidget().removeFromParent();
-    
+
     selectedIndex = -1;  // otherwise, this tab still looks selected, and attempt to re-select it are ignored
 
     return true;
