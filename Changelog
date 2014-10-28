@@ -1,4 +1,4 @@
-Version 4.9.1   unreleased
+Version 4.9.1   28 Oct 2014
 
     * Fix rendering problems with tabs if a bookmark is the first action after login.
 
