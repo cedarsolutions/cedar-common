@@ -121,7 +121,9 @@ public class TimerTest {
         timer = new Timer();
         timer.start();
         assertTrue(timer.isStarted());
-        try { Thread.sleep(100); } catch (InterruptedException e) { }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) { }
         timer.stop();
         long value = timer.getElapsedTime();
         assertTrue(value > 0);
@@ -197,7 +199,9 @@ public class TimerTest {
         timer = new Timer();
         timer.start();
         assertTrue(timer.isStarted());
-        try { Thread.sleep(100); } catch (InterruptedException e) { }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) { }
         timer.stop();
         String value = timer.getElapsedTimeString();
         assertNotNull(value);
