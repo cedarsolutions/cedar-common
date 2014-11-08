@@ -1,6 +1,7 @@
 Version 4.9.2   unreleased
 
    * Document that this version of CedarCommon is compatible only with GWT v2.5 and v2.6.
+   * Bump up to AppEngine v1.9.15, since this will be one of the last releases of v4.x.
 
 Version 4.9.1   28 Oct 2014
 
