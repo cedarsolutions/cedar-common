@@ -1,4 +1,4 @@
-Version 5.0.0   unreleased
+Version 5.0.0   08 Nov 2014
 
     * Change AbstractDropdownList interface to avoid conflicts with new GWT 2.7.x methods.
     * Change ListItem, OrderedList, UnorderedList to fix deprecations by using new-style Element.
