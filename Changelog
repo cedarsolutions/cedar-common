@@ -1,16 +1,8 @@
 Version 5.0.0   unreleased
 
-    * Make changes to support GWT 2.7.x, based on 2.7.0-rc1.
-        - Change AbstractDropdownList.setSelectedValue() to setSelectedObjectValue() to avoid conflict with 2.7.x class.
-        - Change AbstractDropdownList.getSelectedValue() to getSelectedObjectValue() to avoid conflicts with 2.7.x class.
-        - Convert ListItem, OrderedList, UnorderedList to use new-style Element and avoid deprecation warnings.
+    * Change AbstractDropdownList interface to avoid conflicts with new GWT 2.7.x methods.
+    * Change ListItem, OrderedList, UnorderedList to fix deprecations by using new-style Element.
     * Move up to newest version of various dependencies, since this is a major release.
-        - AppEngine v1.9.15
-        - Joda Time v2.5
-        - Spring v3.2.9
-        - Mvp4g v1.5.0 (official)
-        - Mockito v1.10.8
-        - Javassist v3.18.2-GA
 
 Version 4.9.1   28 Oct 2014
 
