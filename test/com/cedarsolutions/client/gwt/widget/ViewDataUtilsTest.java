@@ -81,7 +81,7 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
     @Test public void testFillInputDropdownSingle() {
         AbstractDropdownList<String> input = mock(AbstractDropdownList.class);
         ViewDataUtils.fillInput(input, "hello");
-        verify(input).setSelectedValue("hello");
+        verify(input).setSelectedObjectValue("hello");
     }
 
     /** Test fillInput() for dropdown, list (null). */
@@ -89,7 +89,7 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
         AbstractDropdownList<String> input = mock(AbstractDropdownList.class);
         List<String> list = null;
         ViewDataUtils.fillInput(input, list);
-        verify(input).setSelectedValue(null);
+        verify(input).setSelectedObjectValue(null);
     }
 
     /** Test fillInput() for dropdown, list (empty). */
@@ -97,7 +97,7 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
         AbstractDropdownList<String> input = mock(AbstractDropdownList.class);
         List<String> list = new ArrayList<String>();
         ViewDataUtils.fillInput(input, list);
-        verify(input).setSelectedValue(null);
+        verify(input).setSelectedObjectValue(null);
     }
 
     /** Test fillInput() for dropdown, list (not empty). */
@@ -107,7 +107,7 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
         list.add("hello");
         list.add("goodbye");
         ViewDataUtils.fillInput(input, list);
-        verify(input).setSelectedValue("hello");
+        verify(input).setSelectedObjectValue("hello");
     }
 
     /** Test fillInput() for ValueBoxBase, single item. */
@@ -312,17 +312,17 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
     @Test public void testGetCriteriaListDropdown() {
         AbstractDropdownList<String> input = mock(AbstractDropdownList.class);
 
-        when(input.getSelectedValue()).thenReturn(null);
+        when(input.getSelectedObjectValue()).thenReturn(null);
         assertEquals(null, ViewDataUtils.getCriteriaList(input));
 
         List<String> expected = new ArrayList<String>();
         expected.add("");  // because we can't tell whether the empty string is a valid value
-        when(input.getSelectedValue()).thenReturn("");
+        when(input.getSelectedObjectValue()).thenReturn("");
         assertEquals(expected, ViewDataUtils.getCriteriaList(input));
 
         expected = new ArrayList<String>();
         expected.add("hello");
-        when(input.getSelectedValue()).thenReturn("hello");
+        when(input.getSelectedObjectValue()).thenReturn("hello");
         assertEquals(expected, ViewDataUtils.getCriteriaList(input));
     }
 
@@ -330,13 +330,13 @@ public class ViewDataUtilsTest extends StubbedClientTestCase {
     @Test public void testGetCriteriaDropdown() {
         AbstractDropdownList<String> input = mock(AbstractDropdownList.class);
 
-        when(input.getSelectedValue()).thenReturn(null);
+        when(input.getSelectedObjectValue()).thenReturn(null);
         assertEquals(null, ViewDataUtils.getCriteria(input));
 
-        when(input.getSelectedValue()).thenReturn("");
+        when(input.getSelectedObjectValue()).thenReturn("");
         assertEquals("", ViewDataUtils.getCriteria(input));  // because we can't tell whether empty string is a valid value
 
-        when(input.getSelectedValue()).thenReturn("hello");
+        when(input.getSelectedObjectValue()).thenReturn("hello");
         assertEquals("hello", ViewDataUtils.getCriteria(input));
     }
 

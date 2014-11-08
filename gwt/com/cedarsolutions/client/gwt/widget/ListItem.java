@@ -22,7 +22,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.widget;
 
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.HasText;
 
@@ -47,20 +47,26 @@ public class ListItem extends ComplexPanel implements HasText {
 
     /** Create a list item with specified text. */
     public ListItem(String text) {
-        this.setElement(DOM.createElement("li"));
+        this.setElement(Document.get().createElement("li"));
         this.setText(text);
     }
 
     /** Set the text. */
     @Override
     public void setText(String text) {
-        DOM.setInnerText(getElement(), text == null ? "" : text);
+        // This safe because we know we set an object of this type in the constructor.
+        com.google.gwt.dom.client.Element element = this.getElement();
+        if (element != null) {
+            element.setInnerText(text == null ? "" : text);
+        }
     }
 
     /** Get the text. */
     @Override
     public String getText() {
-        return DOM.getInnerText(getElement());
+        // This safe because we know we set an object of this type in the constructor.
+        com.google.gwt.dom.client.Element element = this.getElement();
+        return element == null ? null : element.getInnerText();
     }
 
 }
