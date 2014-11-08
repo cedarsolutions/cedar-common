@@ -213,13 +213,13 @@ project(":util") {
         compile "commons-codec:commons-codec:1.9"
         compile "commons-lang:commons-lang:2.6"
         compile "javax.servlet:servlet-api:2.5"
-        compile "joda-time:joda-time:2.3"
+        compile "joda-time:joda-time:2.5"
         compile "log4j:log4j:1.2.17"
-        compile "org.springframework:spring-beans:3.2.4.RELEASE"
-        compile "org.springframework:spring-context:3.2.4.RELEASE"
-        compile "org.springframework:spring-core:3.2.4.RELEASE"
-        compile "org.springframework:spring-web:3.2.4.RELEASE"
-        compile "org.springframework:spring-webmvc:3.2.4.RELEASE"
+        compile "org.springframework:spring-beans:4.1.1.RELEASE"
+        compile "org.springframework:spring-context:4.1.1.RELEASE"
+        compile "org.springframework:spring-core:4.1.1.RELEASE"
+        compile "org.springframework:spring-web:4.1.1.RELEASE"
+        compile "org.springframework:spring-webmvc:4.1.1.RELEASE"
     }
 
     uploadArchives {
@@ -248,13 +248,15 @@ project(":gwt") {
     dependencies {
         compile "com.google.gwt:gwt-dev:${config_gwtVersion}"
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
-        compile ("com.google.gwt.inject:gin:2.1.2") {
-            exclude group: "asm" // conflicts with ASM dependency in GWT itself
-        }
-        compile "com.googlecode.cedar-common:mvp4g:1.5.0-20140506.192324-8-repackaged"
+        compile "com.google.gwt.inject:gin:2.1.2"
+        compile "com.googlecode.mvp4g:mvp4g:1.5.0"
         compile "com.googlecode.cedar-common:gwt-sl:1.2"
         compile project(":util")
     }
+
+    configurations {
+        all*.exclude group: "asm" // the ASM from GIN conflicts with the one in GWT 2.7.x
+    } 
 
     uploadArchives {
         repositories {
@@ -321,8 +323,8 @@ project(":testutil") {
     dependencies {
         compile "javax.servlet:servlet-api:2.5"
         compile "junit:junit:4.11"
-        compile "org.mockito:mockito-all:1.9.5"
-        compile "org.springframework:spring-test:3.2.4.RELEASE"
+        compile "org.mockito:mockito-all:1.10.8"
+        compile "org.springframework:spring-test:4.1.1.RELEASE"
         compile project(":util")
     }
 
@@ -353,8 +355,8 @@ project(":gwttestutil") {
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
         compile "junit-addons:junit-addons:1.4"
         compile "junit:junit:4.11"
-        compile "org.javassist:javassist:3.18.0-GA"
-        compile "org.mockito:mockito-all:1.9.5"
+        compile "org.javassist:javassist:3.18.2-GA"
+        compile "org.mockito:mockito-all:1.10.8"
         compile project(":util")
     }
 
@@ -385,8 +387,8 @@ project(":gaetestutil") {
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
         compile "junit-addons:junit-addons:1.4"
         compile "junit:junit:4.11"
-        compile "org.javassist:javassist:3.18.0-GA"
-        compile "org.mockito:mockito-all:1.9.5"
+        compile "org.javassist:javassist:3.18.2-GA"
+        compile "org.mockito:mockito-all:1.10.8"
         compile project(":util")
         compile project(":gae")
         compile project(":testutil")
