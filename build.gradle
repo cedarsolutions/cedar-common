@@ -215,11 +215,11 @@ project(":util") {
         compile "javax.servlet:servlet-api:2.5"
         compile "joda-time:joda-time:2.5"
         compile "log4j:log4j:1.2.17"
-        compile "org.springframework:spring-beans:4.1.1.RELEASE"
-        compile "org.springframework:spring-context:4.1.1.RELEASE"
-        compile "org.springframework:spring-core:4.1.1.RELEASE"
-        compile "org.springframework:spring-web:4.1.1.RELEASE"
-        compile "org.springframework:spring-webmvc:4.1.1.RELEASE"
+        compile "org.springframework:spring-beans:3.2.9.RELEASE"
+        compile "org.springframework:spring-context:3.2.9.RELEASE"
+        compile "org.springframework:spring-core:3.2.9.RELEASE"
+        compile "org.springframework:spring-web:3.2.9.RELEASE"
+        compile "org.springframework:spring-webmvc:3.2.9.RELEASE"
     }
 
     uploadArchives {
@@ -324,7 +324,7 @@ project(":testutil") {
         compile "javax.servlet:servlet-api:2.5"
         compile "junit:junit:4.11"
         compile "org.mockito:mockito-all:1.10.8"
-        compile "org.springframework:spring-test:4.1.1.RELEASE"
+        compile "org.springframework:spring-test:3.2.9.RELEASE"
         compile project(":util")
     }
 
