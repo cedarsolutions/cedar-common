@@ -194,7 +194,6 @@ subprojects {
     project.tasks.javadoc.doFirst {
         throw new Exception("Do not use javadoc task, use generateJavadoc instead.")
     }
-
 }
 
 // Subproject for cedar-common-util
@@ -249,7 +248,9 @@ project(":gwt") {
     dependencies {
         compile "com.google.gwt:gwt-dev:${config_gwtVersion}"
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
-        compile "com.google.gwt.inject:gin:2.1.2"
+        compile ("com.google.gwt.inject:gin:2.1.2") {
+            exclude group: "asm" // conflicts with ASM dependency in GWT itself
+        }
         compile "com.googlecode.cedar-common:mvp4g:1.5.0-20140506.192324-8-repackaged"
         compile "com.googlecode.cedar-common:gwt-sl:1.2"
         compile project(":util")

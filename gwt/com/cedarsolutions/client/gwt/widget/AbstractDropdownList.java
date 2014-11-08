@@ -39,10 +39,10 @@ import com.google.gwt.user.client.ui.ListBox;
 public abstract class AbstractDropdownList<T> extends ListBox {
 
     /** Map from String key to the underlying value. */
-    private Map<String, T> keyToValueMap = new HashMap<String, T>();
+    private Map<String, T> keyToObjectValueMap = new HashMap<String, T>();
 
     /** Map from underlying value back to String key. */
-    private Map<T, String> valueToKeyMap = new HashMap<T, String>();
+    private Map<T, String> objectValueToKeyMap = new HashMap<T, String>();
 
     /** Get the display value used for the "any" key (null). */
     protected abstract String getAnyDisplay();
@@ -100,8 +100,8 @@ public abstract class AbstractDropdownList<T> extends ListBox {
      * @param display Display string to be presented to user
      */
     public void addDropdownItem(T item, String key, String display) {
-        this.keyToValueMap.put(key, item);
-        this.valueToKeyMap.put(item, key);
+        this.keyToObjectValueMap.put(key, item);
+        this.objectValueToKeyMap.put(item, key);
         this.addItem(display, key);
     }
 
@@ -129,11 +129,11 @@ public abstract class AbstractDropdownList<T> extends ListBox {
     }
 
     /**
-     * Set the selected value.
+     * Set the selected object value (not the string value).
      * @param value  Value to select, possibly null to mean "any"
      */
-    public void setSelectedValue(T value) {
-        String selected = this.valueToKeyMap.get(value);
+    public void setSelectedObjectValue(T value) {
+        String selected = this.objectValueToKeyMap.get(value);
         for (int index = 0; index < this.getItemCount(); index++) {
             String current = this.getValue(index);
             if (GwtStringUtils.equals(current, selected)) {
@@ -145,15 +145,15 @@ public abstract class AbstractDropdownList<T> extends ListBox {
     }
 
     /**
-     * Get the selected value.
+     * Get the selected object value (not the string value).
      * @return The selected value, possibly null to mean "any". */
-    public T getSelectedValue() {
+    public T getSelectedObjectValue() {
         int index = this.getSelectedIndex();
         if (index < 0) {
             return null;
         } else {
             String selected = this.getValue(this.getSelectedIndex());
-            return keyToValueMap.get(selected);
+            return keyToObjectValueMap.get(selected);
         }
     }
 

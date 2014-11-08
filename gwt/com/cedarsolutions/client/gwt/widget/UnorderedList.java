@@ -22,7 +22,7 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.widget;
 
-import com.google.gwt.user.client.DOM;
+import com.google.gwt.dom.client.Document;
 import com.google.gwt.user.client.ui.ComplexPanel;
 
 /**
@@ -34,7 +34,7 @@ public class UnorderedList extends ComplexPanel {
 
     /** Create an unordered list. */
     public UnorderedList() {
-        setElement(DOM.createElement("ul"));
+        setElement(Document.get().createElement("ul"));
     }
 
     /** Append a text item onto the list. */
@@ -45,7 +45,8 @@ public class UnorderedList extends ComplexPanel {
 
     /** Append a list item onto the list. */
     public void add(ListItem listItem) {
-        super.add(listItem, getElement());
+        // This safe because we know we set an object of this type in the constructor.
+        super.add(listItem, (com.google.gwt.dom.client.Element) getElement());
     }
 
     /** Insert a text item at the specified position. */
@@ -56,7 +57,8 @@ public class UnorderedList extends ComplexPanel {
 
     /** Insert a list item at the specified position. */
     public void insert(ListItem listItem, int beforeIndex) {
-        super.insert(listItem, getElement(), beforeIndex, true);
+        // This safe because we know we set an object of this type in the constructor.
+        super.insert(listItem, (com.google.gwt.dom.client.Element) getElement(), beforeIndex, true);
     }
 
 }

@@ -74,31 +74,31 @@ public class AbstractDropdownListClientTest extends ClientTestCase {
 
         IntegerList list = new IntegerList();
 
-        list.setSelectedValue(1);
-        assertEquals(new Integer(1), list.getSelectedValue());
+        list.setSelectedObjectValue(1);
+        assertEquals(new Integer(1), list.getSelectedObjectValue());
 
-        list.setSelectedValue(null);
-        assertEquals(new Integer(1), list.getSelectedValue());
+        list.setSelectedObjectValue(null);
+        assertEquals(new Integer(1), list.getSelectedObjectValue());
 
-        list.setSelectedValue(2);
-        assertEquals(new Integer(2), list.getSelectedValue());
+        list.setSelectedObjectValue(2);
+        assertEquals(new Integer(2), list.getSelectedObjectValue());
 
-        list.setSelectedValue(null);
-        assertEquals(new Integer(1), list.getSelectedValue());
+        list.setSelectedObjectValue(null);
+        assertEquals(new Integer(1), list.getSelectedObjectValue());
     }
 
     /** Check that every value can be selected, for ComplicatedList. */
     public void testSetSelectedValueComplicated() {
         ComplicatedList list = new ComplicatedList();
 
-        list.setSelectedValue(null);
-        assertEquals(null, list.getSelectedValue());
+        list.setSelectedObjectValue(null);
+        assertEquals(null, list.getSelectedObjectValue());
 
-        list.setSelectedValue(1);
-        assertEquals(new Integer(1), list.getSelectedValue());
+        list.setSelectedObjectValue(1);
+        assertEquals(new Integer(1), list.getSelectedObjectValue());
 
-        list.setSelectedValue(2);
-        assertEquals(new Integer(2), list.getSelectedValue());
+        list.setSelectedObjectValue(2);
+        assertEquals(new Integer(2), list.getSelectedObjectValue());
     }
 
     /** Test removeDropdownItem(). */

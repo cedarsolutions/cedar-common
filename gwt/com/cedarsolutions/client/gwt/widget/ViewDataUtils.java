@@ -111,7 +111,7 @@ public class ViewDataUtils {
      * @param value  Value to fill in
      */
     public static <T> void fillInput(AbstractDropdownList<T> input, T value) {
-        input.setSelectedValue(value);
+        input.setSelectedObjectValue(value);
     }
 
     /**
@@ -121,9 +121,9 @@ public class ViewDataUtils {
      */
     public static <T> void fillInput(AbstractDropdownList<T> input, List<T> values) {
         if (values == null || values.isEmpty()) {
-            input.setSelectedValue(null);
+            input.setSelectedObjectValue(null);
         } else {
-            input.setSelectedValue(values.get(0));
+            input.setSelectedObjectValue(values.get(0));
         }
     }
 
@@ -248,11 +248,11 @@ public class ViewDataUtils {
      * @return A single-item list containing the criteria, or null if criteria is empty.
      */
     public static <T> List<T> getCriteriaList(AbstractDropdownList<T> input) {
-        if (input.getSelectedValue() == null) {
+        if (input.getSelectedObjectValue() == null) {
             return null;
         } else {
             List<T> result = new ArrayList<T>();
-            result.add(input.getSelectedValue());
+            result.add(input.getSelectedObjectValue());
             return result;
         }
     }
@@ -263,7 +263,7 @@ public class ViewDataUtils {
      * @return Value from the input field.
      */
     public static <T> T getCriteria(AbstractDropdownList<T> input) {
-        return input.getSelectedValue();
+        return input.getSelectedObjectValue();
     }
 
     /**
