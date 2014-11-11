@@ -1,4 +1,4 @@
-Version 5.0.2   unreleased
+Version 5.0.2   11 Nov 2014
 
     * Add Assertions.assertListEquals() and Assertions.assertMapEquals().
 
