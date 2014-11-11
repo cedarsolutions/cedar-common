@@ -1,3 +1,7 @@
+Version 5.0.2   unreleased
+
+    * Add Assertions.assertListEquals() and Assertions.assertMapEquals().
+
 Version 5.0.1   08 Nov 2014
 
     * Update the README to be explicit about only supporting GWT 2.7 or better.
