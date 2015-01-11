@@ -89,6 +89,38 @@ public class GaeUserServiceTest {
         service.afterPropertiesSet();
     }
 
+    /** Test getGoogleAccountsLoginUrl(). */
+    @Test public void testGetGoogleAccountsLoginUrl() {
+        String destinationUrl = "destUrl";  // in this scenario, there's nothing to lose
+        String loginUrl = "loginUrl";
+
+        UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
+        GaeUserService service = new GaeUserService();
+        service.setUserService(userService);
+        service.setSpringContextService(springContextService);
+        service.afterPropertiesSet();
+
+        when(userService.createLoginURL(destinationUrl)).thenReturn(loginUrl);
+        assertEquals(loginUrl, service.getGoogleAccountsLoginUrl(destinationUrl));
+    }
+
+    /** Test getGoogleAccountsLogoutUrl(). */
+    @Test public void testGetGoogleAccountsLogoutUrl() {
+        String logoutUrl = "logoutUrl";
+        String destinationUrl = "destinationUrl";
+
+        UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
+        GaeUserService service = new GaeUserService();
+        service.setUserService(userService);
+        service.setSpringContextService(springContextService);
+        service.afterPropertiesSet();
+
+        when(userService.createLogoutURL(destinationUrl)).thenReturn(logoutUrl);
+        assertEquals(logoutUrl, service.getGoogleAccountsLogoutUrl(destinationUrl));
+    }
+
     /** Test getLoginUrl(), simple case. */
     @Test public void testGetLoginUrl() {
         String destinationUrl = "destUrl";  // in this scenario, there's nothing to lose
