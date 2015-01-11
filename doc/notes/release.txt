@@ -1,11 +1,10 @@
-Here's the release process.
+Here's the release process (slightly different for this branch):
 
-0. Be sure to pull the CedarCommon, Javadoc, and Maven projects!
+0. Be sure to pull the CedarCommon and Maven projects!
 1. Run all of the tests, using the run.all.tests Ant task
 2. Update build.properties with the release version number
 3. Update the Changelog file with the release version number and release date
 4. Check in the build.properties and Changelog files
 5. Run the update.copyright.statements Ant task and check in changes
-6. Run the generate.javadoc Ant task and check in changes
-7. Run the publish.maven Ant task
-8. Push each of the projects to Google Code
+6. Run the publish.maven Ant task
+7. Push each of the projects to Google Code
