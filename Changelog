@@ -1,4 +1,4 @@
-Version 5.1.0   unreleased
+Version 5.1.0   11 Jan 2015
 
     * Bump up to GWT 2.7.0, AppEngine v1.9.17a, and CedarBuild v0.8.12.
     * Deprecate the GaeUserService and GaeUserRpc methods that handle federated login.
