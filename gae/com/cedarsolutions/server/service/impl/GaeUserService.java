@@ -48,14 +48,7 @@ import com.google.appengine.api.users.UserService;
 
 /**
  * User service designed for use with Google App Engine.
- *
- * <p>
- * This interface is intended as stable proxy over the static methods
- * in the Google-provided GAE UserService.  All of the service methods
- * are targeted around federated users, with authentication provided
- * via OpenId.
- * <p>
- *
+ * This interface is intended as stable proxy over the static methods in the Google-provided GAE UserService.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public class GaeUserService extends AbstractService implements IGaeUserService {
@@ -79,7 +72,27 @@ public class GaeUserService extends AbstractService implements IGaeUserService {
     }
 
     /**
-     * Get a proper login URL.
+     * Get a proper login URL to use with GAE's Google Accounts login mechanism.
+     * @param destinationUrl  Destination URL to redirect to after login
+     * @return Login URL that should be presented to the user.
+     */
+    @Override
+    public String getGoogleAccountsLoginUrl(String destinationUrl) throws ServiceException {
+        return this.userService.createLoginURL(destinationUrl);
+    }
+
+    /**
+     * Get a proper logout URL to use with GAE's Google Accounts login mechanism.
+     * @param destinationUrl Destination URL to redirect to after logout
+     * @return Logout URL that should be presented to the user.
+     */
+    @Override
+    public String getGoogleAccountsLogoutUrl(String destinationUrl) throws ServiceException {
+        return this.userService.createLogoutURL(destinationUrl);
+    }
+
+    /**
+     * Get a proper login URL to use with GAE's federated login mechanism.
      *
      * <p>
      * This doesn't work as consistently as one might hope. It does seem to work
@@ -112,7 +125,7 @@ public class GaeUserService extends AbstractService implements IGaeUserService {
     }
 
     /**
-     * Get a proper logout URL.
+     * Get a proper logout URL to use with GAE's federated login mechanism.
      * @param destinationUrl Destination URL to redirect to after logout
      * @return Logout URL that should be presented to the user.
      */

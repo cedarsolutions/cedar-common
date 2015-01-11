@@ -32,10 +32,24 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 public interface IGaeUserRpcAsync {
 
-    /** Get a proper login URL. */
+    /** Get a proper login URL to use with GAE's Google Accounts login mechanism. */
+    void getGoogleAccountsLoginUrl(String destinationUrl, AsyncCallback<String> callback);
+
+    /** Get a proper logout URL to use with GAE's Google Accounts login mechanism. */
+    void getGoogleAccountsLogoutUrl(String destinationUrl, AsyncCallback<String> callback);
+
+    /**
+     * Get a proper login URL to use with GAE's federated login mechanism.
+     * @deprecated Google has (vaguely) documented that the federated login mechanism (always "experimental") will be going away.
+     */
+    @Deprecated
     void getLoginUrl(OpenIdProvider openIdProvider, String destinationUrl, AsyncCallback<String> callback);
 
-    /** Get a proper logout URL. */
+    /**
+     * Get a proper logout URL to use with GAE's federated login mechanism.
+     * @deprecated Google has (vaguely) documented that the federated login mechanism (always "experimental") will be going away.
+     */
+    @Deprecated
     void getLogoutUrl(String destinationUrl, AsyncCallback<String> callback);
 
     /** Returns true if there is a user logged in, false otherwise. */
