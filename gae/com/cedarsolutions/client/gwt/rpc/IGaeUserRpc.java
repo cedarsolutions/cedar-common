@@ -36,18 +36,36 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface IGaeUserRpc extends RemoteService {
 
     /**
-     * Get a proper login URL.
-     * @param openIdProvider  Open id provider to use
+     * Get a proper login URL to use with GAE's Google Accounts login mechanism.
      * @param destinationUrl  Destination URL to redirect to after login
      * @return Login URL that should be presented to the user.
      */
-    String getLoginUrl(OpenIdProvider openIdProvider, String destinationUrl) throws ServiceException;
+    String getGoogleAccountsLoginUrl(String destinationUrl) throws ServiceException;
 
     /**
-     * Get a proper logout URL.
+     * Get a proper logout URL to use with GAE's Google Accounts login mechanism.
      * @param destinationUrl Destination URL to redirect to after logout
      * @return Logout URL that should be presented to the user.
      */
+    String getGoogleAccountsLogoutUrl(String destinationUrl) throws ServiceException;
+
+    /**
+     * Get a proper login URL to use with GAE's federated login mechanism.
+     * @param openIdProvider  Open id provider to use
+     * @param destinationUrl  Destination URL to redirect to after login
+     * @return Login URL that should be presented to the user.
+     * @deprecated Google has (vaguely) documented that the federated login mechanism (always "experimental") will be going away.
+     */
+    @Deprecated
+    String getLoginUrl(OpenIdProvider openIdProvider, String destinationUrl) throws ServiceException;
+
+    /**
+     * Get a proper logout URL to use with GAE's federated login mechanism.
+     * @param destinationUrl Destination URL to redirect to after logout
+     * @return Logout URL that should be presented to the user.
+     * @deprecated Google has (vaguely) documented that the federated login mechanism (always "experimental") will be going away.
+     */
+    @Deprecated
     String getLogoutUrl(String destinationUrl) throws ServiceException;
 
     /** Returns true if there is a user logged in, false otherwise. */
