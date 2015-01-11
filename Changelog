@@ -1,3 +1,7 @@
+Version 5.1.0   unreleased
+
+    * Bump up to GWT 2.7.0, AppEngine v1.9.17a, and CedarBuild v0.8.12.
+
 Version 5.0.2   11 Nov 2014
 
     * Add Assertions.assertListEquals() and Assertions.assertMapEquals().
