@@ -1,6 +1,8 @@
 Version 4.10.0  unreleased
 
     * Bump up to AppEngine v1.9.17a and CedarBuild v0.8.12.
+    * Deprecate the GaeUserService and GaeUserRpc methods that handle federated login.
+    * Implement new GaeUserService and GaeUserRpc methods to support Google Accounts logins.
 
 Version 4.9.2   08 Nov 2014
 

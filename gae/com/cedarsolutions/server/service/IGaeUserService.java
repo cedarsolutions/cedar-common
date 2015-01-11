@@ -28,31 +28,42 @@ import com.cedarsolutions.shared.domain.OpenIdProvider;
 
 /**
  * User service designed for use with Google App Engine.
- *
- * <p>
- * This interface is intended as stable proxy over the static methods
- * in the Google-provided GAE UserService.  All of the service methods
- * are targeted around federated users, with authentication provided
- * via OpenId.
- * <p>
- *
+ * This interface is intended as stable proxy over the static methods in the Google-provided GAE UserService.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public interface IGaeUserService {
 
     /**
-     * Get a proper login URL.
-     * @param openIdProvider  Open id provider to use
+     * Get a proper login URL to use with GAE's Google Accounts login mechanism.
      * @param destinationUrl  Destination URL to redirect to after login
      * @return Login URL that should be presented to the user.
      */
-    String getLoginUrl(OpenIdProvider openIdProvider, String destinationUrl) throws ServiceException;
+    String getGoogleAccountsLoginUrl(String destinationUrl) throws ServiceException;
 
     /**
-     * Get a proper logout URL.
+     * Get a proper logout URL to use with GAE's Google Accounts login mechanism.
      * @param destinationUrl Destination URL to redirect to after logout
      * @return Logout URL that should be presented to the user.
      */
+    String getGoogleAccountsLogoutUrl(String destinationUrl) throws ServiceException;
+
+    /**
+     * Get a proper login URL to use with GAE's federated login mechanism.
+     * @param openIdProvider  Open id provider to use
+     * @param destinationUrl  Destination URL to redirect to after login
+     * @return Login URL that should be presented to the user.
+     * @deprecated Google has (vaguely) documented that the federated login mechanism (always "experimental") will be going away.
+     */
+    @Deprecated
+    String getLoginUrl(OpenIdProvider openIdProvider, String destinationUrl) throws ServiceException;
+
+    /**
+     * Get a proper logout URL to use with GAE's federated login mechanism.
+     * @param destinationUrl Destination URL to redirect to after logout
+     * @return Logout URL that should be presented to the user.
+     * @deprecated Google has (vaguely) documented that the federated login mechanism (always "experimental") will be going away.
+     */
+    @Deprecated
     String getLogoutUrl(String destinationUrl) throws ServiceException;
 
     /** Returns true if there is a user logged in, false otherwise. */
