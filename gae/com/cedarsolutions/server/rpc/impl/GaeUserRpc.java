@@ -6,7 +6,7 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * Copyright (c) 2013 Kenneth J. Pronovici.
+ * Copyright (c) 2013,2015 Kenneth J. Pronovici.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -52,22 +52,44 @@ public class GaeUserRpc extends AbstractService implements IGaeUserRpc {
     }
 
     /**
-     * Get a proper login URL.
+     * Get a proper login URL to use with GAE's Google Accounts login mechanism.
+     * @param destinationUrl  Destination URL to redirect to after login
+     * @return Login URL that should be presented to the user.
+     */
+    @Override
+    public String getGoogleAccountsLoginUrl(String destinationUrl) throws ServiceException {
+        return this.gaeUserService.getGoogleAccountsLoginUrl(destinationUrl);
+    }
+
+    /**
+     * Get a proper logout URL to use with GAE's Google Accounts login mechanism.
+     * @param destinationUrl Destination URL to redirect to after logout
+     * @return Logout URL that should be presented to the user.
+     */
+    @Override
+    public String getGoogleAccountsLogoutUrl(String destinationUrl) throws ServiceException {
+        return this.gaeUserService.getGoogleAccountsLogoutUrl(destinationUrl);
+    }
+
+    /**
+     * Get a proper login URL to use with GAE's federated login mechanism.
      * @param openIdProvider Open id provider to use
      * @param destinationUrl Destination URL to redirect to after login
      * @return Login URL that should be presented to the user.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public String getLoginUrl(OpenIdProvider openIdProvider, String destinationUrl) throws ServiceException {
         return this.gaeUserService.getLoginUrl(openIdProvider, destinationUrl);
     }
 
     /**
-     * Get a proper logout URL.
+     * Get a proper logout URL to use with GAE's federated login mechanism.
      * @param destinationUrl Destination URL to redirect to after logout
      * @return Logout URL that should be presented to the user.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public String getLogoutUrl(String destinationUrl) throws ServiceException {
         return this.gaeUserService.getLogoutUrl(destinationUrl);
     }

@@ -6,7 +6,7 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * Copyright (c) 2013 Kenneth J. Pronovici.
+ * Copyright (c) 2013,2015 Kenneth J. Pronovici.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -87,6 +87,38 @@ public class GaeUserServiceTest {
         service.setUserService(userService);
         service.setSpringContextService(springContextService);
         service.afterPropertiesSet();
+    }
+
+    /** Test getGoogleAccountsLoginUrl(). */
+    @Test public void testGetGoogleAccountsLoginUrl() {
+        String destinationUrl = "destUrl";  // in this scenario, there's nothing to lose
+        String loginUrl = "loginUrl";
+
+        UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
+        GaeUserService service = new GaeUserService();
+        service.setUserService(userService);
+        service.setSpringContextService(springContextService);
+        service.afterPropertiesSet();
+
+        when(userService.createLoginURL(destinationUrl)).thenReturn(loginUrl);
+        assertEquals(loginUrl, service.getGoogleAccountsLoginUrl(destinationUrl));
+    }
+
+    /** Test getGoogleAccountsLogoutUrl(). */
+    @Test public void testGetGoogleAccountsLogoutUrl() {
+        String logoutUrl = "logoutUrl";
+        String destinationUrl = "destinationUrl";
+
+        UserService userService = mock(UserService.class);
+        SpringContextService springContextService = mock(SpringContextService.class);
+        GaeUserService service = new GaeUserService();
+        service.setUserService(userService);
+        service.setSpringContextService(springContextService);
+        service.afterPropertiesSet();
+
+        when(userService.createLogoutURL(destinationUrl)).thenReturn(logoutUrl);
+        assertEquals(logoutUrl, service.getGoogleAccountsLogoutUrl(destinationUrl));
     }
 
     /** Test getLoginUrl(), simple case. */

@@ -6,7 +6,7 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * Copyright (c) 2013 Kenneth J. Pronovici.
+ * Copyright (c) 2013,2015 Kenneth J. Pronovici.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,28 @@ public class GaeUserRpcTest {
         rpc.afterPropertiesSet();
     }
 
+    /** Test getGoogleAccountsLoginUrl(). */
+    @Test public void testGetGoogleAccountsLoginUrl() {
+        IGaeUserService gaeUserService = mock(IGaeUserService.class);
+        GaeUserRpc rpc = new GaeUserRpc();
+        rpc.setGaeUserService(gaeUserService);
+
+        when(gaeUserService.getGoogleAccountsLoginUrl("dest")).thenReturn("whatever");
+        assertEquals("whatever", rpc.getGoogleAccountsLoginUrl("dest"));
+    }
+
+    /** Test getGoogleAccountsLogoutUrl(). */
+    @Test public void testGetGoogleAccountsLogoutUrl() {
+        IGaeUserService gaeUserService = mock(IGaeUserService.class);
+        GaeUserRpc rpc = new GaeUserRpc();
+        rpc.setGaeUserService(gaeUserService);
+
+        when(gaeUserService.getGoogleAccountsLogoutUrl("dest")).thenReturn("whatever");
+        assertEquals("whatever", rpc.getGoogleAccountsLogoutUrl("dest"));
+    }
+
     /** Test getLoginUrl(). */
+    @SuppressWarnings("deprecation")
     @Test public void testGetLoginUrl() {
         IGaeUserService gaeUserService = mock(IGaeUserService.class);
         GaeUserRpc rpc = new GaeUserRpc();
@@ -80,6 +101,7 @@ public class GaeUserRpcTest {
     }
 
     /** Test getLogoutUrl(). */
+    @SuppressWarnings("deprecation")
     @Test public void testGetLogoutUrl() {
         IGaeUserService gaeUserService = mock(IGaeUserService.class);
         GaeUserRpc rpc = new GaeUserRpc();
