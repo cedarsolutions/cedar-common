@@ -3,6 +3,10 @@
 
 <suppressions>
 
+    <!-- NOTE: Changes to this file sometimes don't take effect immediately.  You may need
+               to restart Eclipse, refresh the project, and then execute Project > Clean
+               before Checkstyle warnings are actually suppressed in the Problems view. -->
+
     <suppress checks="ParameterNumber" files="DateUtilsTest.java"/>
     <suppress checks="LineLength" files="GaeAuthenticationFilterTest.java" />
     <suppress checks="MethodName" files="GwtLocalizationUtilsTest.java"/>
