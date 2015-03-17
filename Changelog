@@ -1,3 +1,9 @@
+Version 4.11.0   unreleased
+
+    * Bump up to AppEngine v1.9.18 just to stay up-to-date.
+    * Move to Maven Central based on support in CedarBuild v0.8.14.
+    * Pull in Objectify 3.1 from repackaged repository in Maven Central.
+
 Version 4.10.0  11 Jan 2015
 
     * Bump up to AppEngine v1.9.17a and CedarBuild v0.8.12.

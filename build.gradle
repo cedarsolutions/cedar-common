@@ -32,11 +32,10 @@ buildscript {
     repositories {
         mavenCentral()
         mavenLocal()   // Local Maven repository
-        maven { url "http://maven.cedar-common.googlecode.com/hg/maven/" }   // Cedar Common code
     }
 
     dependencies {
-        classpath "com.googlecode.cedar-common:cedar-build:0.8.12"
+        classpath "com.googlecode.cedar-common:cedar-build:0.8.14"
     }
 }
 
@@ -91,6 +90,7 @@ allprojects {
 // Common setup for subprojects
 subprojects {
 
+    apply plugin: "cedarBuild"
     apply plugin: "cedarPublish"
     apply plugin: "cedarJavadoc"
 
@@ -102,15 +102,20 @@ subprojects {
     targetCompatibility = JavaVersion.VERSION_1_6    // to be as easy-to-use as possible for other projects
 
     repositories {
-        mavenLocal()   // Local Maven repository
-        mavenCentral() // Maven Central repository
-        maven { url "http://maven.objectify-appengine.googlecode.com/git/" } // Objectify 3.x
-        maven { url "http://download.java.net/maven/2/" }                    // JavaMail and related code
-        maven { url "http://maven.cedar-common.googlecode.com/hg/maven/" }   // Cedar Common code
+        mavenLocal()                                       // Local Maven repository
+        mavenCentral()                                     // Maven Central repository
+        maven { url "http://download.java.net/maven/2/" }  // JavaMail and related code
+    }
+
+    cedarSigning {
+        gpgKeyId = config_gpgKeyId
+        gpgSecretKey = config_gpgSecretKey
+        projects = allprojects
     }
 
     cedarPublish {
-        mercurialMavenProject = config_mercurialMavenProject
+        mavenRepositoryUrl = config_mavenRepositoryUrl
+        mavenRepositoryUser = config_mavenRepositoryUser
     }
 
     cedarJavadoc {
@@ -155,7 +160,9 @@ subprojects {
     uploadArchives {
         repositories {
             mavenDeployer {
-                repository(url: cedarPublish.getPublishRepositoryUrl())
+                repository(url: cedarPublish.getPublishRepositoryUrl()) {
+                    authentication(userName: cedarPublish.getMavenRepositoryUser(), password: project.convention.plugins.cedarPublish.getMavenRepositoryPassword())
+                }
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
                 pom.artifactId = "cedar-common-${project.name}"
                 pom.project {
@@ -279,7 +286,7 @@ project(":gae") {
 
     dependencies {
         compile "com.google.appengine:appengine-api-1.0-sdk:${config_appEngineVersion}"
-        compile "com.googlecode.objectify:objectify:3.1"
+        compile "com.googlecode.cedar-common:objectify:3.1"
         compile "commons-io:commons-io:2.4"
         compile "javax.mail:mail:1.4.4"
         compile "javax.servlet:servlet-api:2.5"
