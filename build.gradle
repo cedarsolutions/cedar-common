@@ -32,11 +32,10 @@ buildscript {
     repositories {
         mavenCentral()
         mavenLocal()   // Local Maven repository
-        maven { url "http://maven.cedar-common.googlecode.com/hg/maven/" }   // Cedar Common code
     }
 
     dependencies {
-        classpath "com.googlecode.cedar-common:cedar-build:0.8.12"
+        classpath "com.googlecode.cedar-common:cedar-build:0.8.13"
     }
 }
 

@@ -1,6 +1,7 @@
 Version 5.1.1   unreleased
 
    * Bump up to AppEngine v1.9.18 just to stay up-to-date.
+   * Bump up to CedarBuild v0.8.14 to get support for publish to Maven Central.
 
 Version 5.1.0   11 Jan 2015
 
