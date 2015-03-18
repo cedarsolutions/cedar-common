@@ -31,7 +31,7 @@ import com.flipthebird.gwthashcodeequals.HashCodeBuilder;
 
 /**
  * Controls pagination state for back-end queries.
- * @see <a href="https://code.google.com/p/cedar-common/wiki/Pagination">The wiki for notes on pagination for non-GAE platforms</a>
+ * @see <a href="https://bitbucket.org/cedarsolutions/cedar-common/wiki/Pagination">The wiki for notes on pagination for non-GAE platforms</a>
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 @SuppressWarnings("serial")
