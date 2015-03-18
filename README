@@ -1,9 +1,9 @@
 This is the CedarCommon project, which provides common Java utilities as well
 as specialized functionality for building GWT applications on Google App Engine
-using the Mvp4g model-view-presenter framework.  The home page for this project 
+using the Mvp4g model-view-presenter framework.  The home page for this project
 is:
 
-    http://code.google.com/p/cedar-common/  
+    https://bitbucket.org/cedarsolutions/cedar-common
 
 This version of CedarCommon is compatible with GWT v2.5 and 2.6.  Later
 versions of are only compatible with GWT v2.7 and later.
@@ -11,11 +11,11 @@ versions of are only compatible with GWT v2.7 and later.
 This code was originally built along with the the SantaExchange GWT/GAE
 demonstration project:
 
-   https://code.google.com/p/santa-exchange/
+    https://bitbucket.org/cedarsolutions/santa-exchange
 
-All of this code is available in a Maven repository at:
+All of this code is available in Maven Central:
 
-    http://maven.cedar-common.googlecode.com/hg/maven/
+   http://search.maven.org/#search%7Cga%7C1%7Ccedar-common
 
 This project is managed by Gradle, and gets most of its dependencies from
 Maven.  You do not need the Google Plugin for Eclipse installed to work with
