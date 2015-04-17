@@ -1,3 +1,7 @@
+Version 5.2.2   unreleased
+
+    * Add GwtAssertions class with new method assertRpcsImplementRemoteService().
+
 Version 5.2.1   17 Mar 2015
 
     * Make adjustments for transition from Google Code to BitBucket.

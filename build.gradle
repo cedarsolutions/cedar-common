@@ -364,6 +364,7 @@ project(":gwttestutil") {
         compile "junit:junit:4.11"
         compile "org.javassist:javassist:3.18.2-GA"
         compile "org.mockito:mockito-all:1.10.8"
+        compile "org.springframework:spring-core:3.2.9.RELEASE"
         compile project(":util")
     }
 
