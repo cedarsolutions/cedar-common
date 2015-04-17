@@ -1,6 +1,7 @@
 Version 5.2.2   unreleased
 
-    * Add GwtAssertions class with new method assertRpcsImplementRemoteService().
+    * Create GwtAssertions class in gwttestutils, with method assertRpcsImplementRemoteService().
+    * Add new unit test class RpcInterfaceTest to check that RPCs implement the proper interface.
 
 Version 5.2.1   17 Mar 2015
 
