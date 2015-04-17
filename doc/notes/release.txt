@@ -9,3 +9,7 @@ Here's the release process.
 6. Run the generate.javadoc Ant task and check in changes to BitBucketSite
 7. Run the publish.maven Ant task
 8. Push each of the projects to BitBucket
+9. Log into https://oss.sonatype.org
+10. Go to Staging Repositories and look for comgooglecodecedar-common-XXXX in the list
+11. Select the repository, click the Close button, and wait for the process to complete
+12. When the process completes (refresh may be required), click the Release button
