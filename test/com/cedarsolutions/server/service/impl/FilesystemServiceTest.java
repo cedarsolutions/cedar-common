@@ -105,6 +105,35 @@ public class FilesystemServiceTest {
         assertEquals("/path/to/dir", getService().getDirname("/path/to/dir/a.txt"));
     }
 
+    /** Test the getFileSize() method. */
+    @Test public void testGetFileSize() throws Exception {
+        try {
+            File targetDir = new File("target");
+            File targetFile = new File("target/working/size.txt");
+
+            assertTrue(targetDir.exists());
+
+            FileOutputStream stream = new FileOutputStream("target/working/size.txt");
+            stream.write(StringUtils.getBytes("LINE1"));
+            stream.close();
+
+            assertTrue(targetDir.exists());
+            assertTrue(targetFile.exists());
+
+            assertEquals("LINE1".length(), getService().getFileSize("target/working/size.txt"));
+        } finally {
+            getService().removeFile("target/working/size.txt");
+        }
+    }
+
+    /** Test the isAbsolutePath() method. */
+    @Test public void testIsAbsolute() {
+        assertTrue(getService().isAbsolutePath("/path/to/whatever"));
+        assertTrue(getService().isAbsolutePath("C:\\path\\to\\whatever"));
+        assertFalse(getService().isAbsolutePath("path/to/whatever"));
+        assertFalse(getService().isAbsolutePath("path\\to\\whatever"));
+    }
+
     /** Test the directory methods. */
     @Test public void testCreateRemoveDir() throws Exception {
         File targetDir = new File("target");
