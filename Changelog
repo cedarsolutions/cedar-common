@@ -1,3 +1,9 @@
+Version 5.2.3   unreleased
+
+    * Add FilesystemUtils.getFileSize() and FilesystemUtils.isAbsolutePath().
+    * Add new methods in IFilesystemService to match up with FilesystemUtils.
+    * Add new dependency on commons-io for cedar-common-utils, for absolute path feature.
+
 Version 5.2.2   17 Apr 2015
 
     * Create GwtAssertions class in gwttestutils, with method assertRpcsImplementRemoteService().

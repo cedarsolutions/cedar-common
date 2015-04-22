@@ -26,7 +26,6 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * Service wrapper around FilesystemUtils.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
@@ -56,6 +55,20 @@ public interface IFilesystemService {
      * @return Directory name for the path, possibly null.
      */
      String getDirname(String path);
+
+     /**
+      * Get the length of a file on disk.
+      * @param filePath  Path of the file to check
+      * @return Length of the file in bytes, or zero if the file does not exist.
+      */
+     long getFileSize(String filePath);
+
+     /**
+      * Check whether a path is absolute.
+      * @param  path   Path to operate on
+      * @return True if the path is absolute, false otherwise.
+      */
+     boolean isAbsolutePath(String path);
 
     /**
      * Copy a file into a directory, overwriting the file if it exists.

@@ -72,6 +72,26 @@ public class FilesystemService extends AbstractService implements IFilesystemSer
     }
 
     /**
+     * Get the length of a file on disk.
+     * @param filePath  Path of the file to check
+     * @return Length of the file in bytes, or zero if the file does not exist.
+     */
+    @Override
+    public long getFileSize(String filePath) {
+        return FilesystemUtils.getFileSize(filePath);
+    }
+
+    /**
+     * Check whether a path is absolute.
+     * @param  path   Path to operate on
+     * @return True if the path is absolute, false otherwise.
+     */
+    @Override
+    public boolean isAbsolutePath(String path) {
+        return FilesystemUtils.isAbsolutePath(path);
+    }
+
+    /**
      * Copy a file into a directory, overwriting the file if it exists.
      * @param sourceFilePath  Source file path
      * @param targetDirPath   Target directory path

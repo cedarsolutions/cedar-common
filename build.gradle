@@ -329,6 +329,7 @@ project(":testutil") {
 
     dependencies {
         compile "javax.servlet:servlet-api:2.5"
+        compile "commons-io:commons-io:2.4"
         compile "junit:junit:4.11"
         compile "org.mockito:mockito-all:1.10.8"
         compile "org.springframework:spring-test:3.2.9.RELEASE"

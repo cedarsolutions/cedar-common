@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
@@ -113,6 +114,26 @@ public class FilesystemUtils {
             String parent = file.getParent();
             return parent == null ? null : parent.replace("\\", "/");
         }
+    }
+
+    /**
+     * Get the length of a file on disk.
+     * @param filePath  Path of the file to check
+     * @return Length of the file in bytes, or zero if the file does not exist.
+     */
+    public static long getFileSize(String filePath) {
+        File file = new File(filePath);
+        return file.exists() && file.isFile() ? file.length() : 0;
+    }
+
+    /**
+     * Check whether a path is absolute.
+     * @param  path   Path to operate on
+     * @return True if the path is absolute, false otherwise.
+     * @see <a href="http://stackoverflow.com/questions/1025285">StackOverflow</a>
+     */
+    public static boolean isAbsolutePath(String path) {
+        return FilenameUtils.getPrefixLength(path) != 0;
     }
 
     /**
