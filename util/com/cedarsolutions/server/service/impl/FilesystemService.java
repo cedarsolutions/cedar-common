@@ -35,6 +35,12 @@ import com.cedarsolutions.util.FilesystemUtils;
  */
 public class FilesystemService extends AbstractService implements IFilesystemService {
 
+    /** Get the current working directory. */
+    @Override
+    public String getCwd() {
+        return FilesystemUtils.getCwd();
+    }
+
     /** Normalize a path, so it uses all '/' characters. */
     @Override
     public String normalize(String path) {

@@ -52,6 +52,14 @@ import com.esotericsoftware.wildcard.Paths;
  */
 public class FilesystemUtils {
 
+    /**
+     * Get the current working directory, normalized to use all '/' characters.
+     * @see <a href="http://stackoverflow.com/questions/4871051">StackOverflow</a>
+     */
+    public static String getCwd() {
+        return normalize(new File("").getAbsoluteFile().getAbsolutePath());
+    }
+
     /** Normalize a path, so it uses all '/' characters. */
     public static String normalize(String path) {
         if (path == null) {

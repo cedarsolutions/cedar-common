@@ -61,6 +61,11 @@ public class FilesystemUtilsTest {
         }
     }
 
+    /** Test getCwd(). */
+    @Test public void testGetCwd() {
+        assertNotNull(FilesystemUtils.getCwd()); // not much we can check, just make sure it works
+    }
+
     /** Test the normalize() method. */
     @Test public void testNormalize() {
         assertEquals(null, FilesystemUtils.normalize(null));

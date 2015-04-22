@@ -32,6 +32,9 @@ import java.util.List;
  */
 public interface IFilesystemService {
 
+    /** Get the current working directory. */
+    String getCwd();
+
     /** Normalize a path, so it uses all '/' characters. */
      String normalize(String path);
 
