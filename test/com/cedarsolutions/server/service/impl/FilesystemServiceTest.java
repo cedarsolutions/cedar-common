@@ -63,6 +63,11 @@ public class FilesystemServiceTest {
         }
     }
 
+    /** Test getCwd(). */
+    @Test public void testGetCwd() {
+        assertNotNull(getService().getCwd()); // not much we can check, just make sure it works
+    }
+
     /** Test the normalize() method. */
     @Test public void testNormalize() {
         assertEquals(null, getService().normalize(null));
