@@ -37,8 +37,8 @@ public class FilesystemService extends AbstractService implements IFilesystemSer
 
     /** Get the current working directory. */
     @Override
-    public String getCwd() {
-        return FilesystemUtils.getCwd();
+    public String getCurrentWorkingDir() {
+        return FilesystemUtils.getCurrentWorkingDir();
     }
 
     /** Normalize a path, so it uses all '/' characters. */
