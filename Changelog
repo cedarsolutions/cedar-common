@@ -1,4 +1,4 @@
-Version 5.2.3   unreleased
+Version 5.2.3   22 Apr 2015
 
     * Add methods to FilesystemUtils: getCurrentWorkingDir(), getFileSize(), isAbsolutePath()
     * Add new methods in IFilesystemService to match up with FilesystemUtils.
