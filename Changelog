@@ -1,6 +1,6 @@
 Version 5.2.3   unreleased
 
-    * Add methods to FilesystemUtils: getCwd(), getFileSize(), isAbsolutePath()
+    * Add methods to FilesystemUtils: getCurrentWorkingDir(), getFileSize(), isAbsolutePath()
     * Add new methods in IFilesystemService to match up with FilesystemUtils.
     * Add new dependency on commons-io for cedar-common-utils, for absolute path feature.
 

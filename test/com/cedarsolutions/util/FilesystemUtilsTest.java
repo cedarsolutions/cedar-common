@@ -63,7 +63,7 @@ public class FilesystemUtilsTest {
 
     /** Test getCwd(). */
     @Test public void testGetCwd() {
-        assertNotNull(FilesystemUtils.getCwd()); // not much we can check, just make sure it works
+        assertNotNull(FilesystemUtils.getCurrentWorkingDir()); // not much we can check, just make sure it works
     }
 
     /** Test the normalize() method. */
