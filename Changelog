@@ -1,3 +1,7 @@
+Version 4.11.2   unreleased
+
+    * Bump up to CedarBuild v0.8.15, just to stay up-to-date.
+
 Version 4.11.1   17 Mar 2015
 
     * Make adjustments for transition from Google Code to BitBucket.
