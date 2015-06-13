@@ -1,6 +1,7 @@
 Version 5.2.4   unreleased
 
     * Bump up to CedarBuild v0.8.17, just to stay up-to-date.
+    * Configure Mercurial line endings in .hgeol and auto-convert files as necessary.
 
 Version 5.2.3   22 Apr 2015
 
