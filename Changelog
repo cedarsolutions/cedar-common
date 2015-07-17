@@ -1,6 +1,7 @@
 Version 5.2.6   unreleased
 
     * Fix Eclipse 4.5 resource leak warning for streams in FilesystemUtils.copyFile().
+    * Fix resource leak warning for Scanner in StringUtils.convertStreamToString().
 
 Version 5.2.5   13 Jul 2015
 

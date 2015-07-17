@@ -372,19 +372,23 @@ public final class StringUtils {
         // Scanner iterates over tokens in the stream, and in this case we separate
         // tokens using "beginning of the input boundary" (\A) thus giving us only one
         // token for the entire contents of the stream.
+        Scanner scanner = null;
         try {
             if (stream == null) {
                 return "";
             } else {
-                if (charset == null) {
-                    return new Scanner(stream).useDelimiter("\\A").next();
-                } else {
-                    return new Scanner(stream, charset).useDelimiter("\\A").next();
-                }
+                scanner = charset == null ? new Scanner(stream) : new Scanner(stream, charset);
+                return scanner.useDelimiter("\\A").next();
             }
         } catch (NoSuchElementException e) {
             // This happens if the stream is empty
             return "";
+        } finally {
+            if (scanner != null) {
+                try {
+                    scanner.close();
+                } catch (Exception e) { }
+            }
         }
     }
 
