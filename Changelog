@@ -1,3 +1,7 @@
+Version 5.2.6   unreleased
+
+    * Fix Eclipse 4.5 resource leak warning for streams in FilesystemUtils.copyFile().
+
 Version 5.2.5   13 Jul 2015
 
     * Bump up to AppEngine v1.9.23 just to stay up-to-date.
