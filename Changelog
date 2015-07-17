@@ -1,5 +1,6 @@
 Version 5.2.6   unreleased
 
+    * Bump up to CedarBuild v0.9.3, just to stay up-to-date.
     * Fix Eclipse 4.5 resource leak warning for streams in FilesystemUtils.copyFile().
     * Fix Eclipse 4.5 resource leak warning for Scanner in StringUtils.convertStreamToString().
 
