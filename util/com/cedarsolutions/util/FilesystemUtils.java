@@ -151,6 +151,8 @@ public class FilesystemUtils {
      * @throws CedarRuntimeException If there is a problem with the filesystem operation.
      */
     public static void copyFile(File sourceFile, File targetFile) {
+        FileInputStream sourceStream = null;
+        FileOutputStream targetStream = null;
         FileChannel sourceChannel = null;
         FileChannel targetChannel = null;
 
@@ -159,14 +161,19 @@ public class FilesystemUtils {
                 targetFile.createNewFile();
             }
 
-            sourceChannel = new FileInputStream(sourceFile).getChannel();
-            targetChannel = new FileOutputStream(targetFile).getChannel();
+            sourceStream = new FileInputStream(sourceFile);
+            targetStream = new FileOutputStream(targetFile);
+            sourceChannel = sourceStream.getChannel();
+            targetChannel = targetStream.getChannel();
+
             targetChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
         } catch (Exception e) {
             throw new CedarRuntimeException("Failed to copy file: " + e.getMessage(), e);
         } finally {
-            close(sourceChannel);
             close(targetChannel);
+            close(sourceChannel);
+            close(targetStream);
+            close(sourceStream);
         }
     }
 
