@@ -93,6 +93,7 @@ allprojects {
 // Common setup for subprojects
 subprojects {
 
+    apply plugin: "checkstyle"
     apply plugin: "cedarBuild"
     apply plugin: "cedarPublish"
     apply plugin: "cedarJavadoc"
@@ -127,6 +128,15 @@ subprojects {
         classpath = { project.configurations.runtime }
         srcDirs = { sourceSets.main.java.srcDirs }
         subpackages = [ "com", "biz", ]
+    }
+
+    checkstyle {
+        configFile = project.file("../doc/standards/CheckstyleRules.xml")
+        reportsDir = project.file("../build/${project.name}/reports/checkstyle")
+        ignoreFailures = true
+        showViolations = false
+        toolVersion = 5.5
+        configProperties = [ config_loc : project.file("../doc/standards").canonicalPath, ]
     }
 
     jar {
@@ -204,6 +214,9 @@ subprojects {
     project.tasks.javadoc.doFirst {
         throw new Exception("Do not use javadoc task, use generateJavadoc instead.")
     }
+
+    project.task("checkstyle", dependsOn: [ project.tasks.checkstyleMain ]) << {
+    }
 }
 
 // Subproject for cedar-common-util
@@ -215,6 +228,9 @@ project(":util") {
             resources { srcDirs = [ ".", "../externalutil", ] }
         }
     }
+
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
 
     dependencies {
         compile "com.flipthebird.gwt-hashcode-equals:gwt-hashcode-equals:0.1.0"
@@ -256,6 +272,9 @@ project(":gwt") {
         }
     }
 
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
+
     dependencies {
         compile "com.google.gwt:gwt-dev:${config_gwtVersion}"
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
@@ -290,6 +309,9 @@ project(":gae") {
             resources { srcDirs = [ ".", ] }
         }
     }
+
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
 
     dependencies {
         compile "com.google.appengine:appengine-api-1.0-sdk:${config_appEngineVersion}"
@@ -331,6 +353,9 @@ project(":testutil") {
         }
     }
 
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
+
     dependencies {
         compile "javax.servlet:servlet-api:2.5"
         compile "junit:junit:4.11"
@@ -361,6 +386,9 @@ project(":gwttestutil") {
             resources { srcDirs = [ ".", ] }
         }
     }
+
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
 
     dependencies {
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
@@ -394,6 +422,9 @@ project(":gaetestutil") {
             resources { srcDirs = [ ".", ] }
         }
     }
+
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
 
     dependencies {
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
@@ -438,6 +469,9 @@ project(":test") {
             runtimeClasspath += files(sourceSets.test.java.srcDirs)
         }
     }
+
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
 
     cedarJavadoc {
         srcDirs = []
@@ -528,7 +562,7 @@ project(":test") {
     // Define the order of tests if there are multiple called at the same time
     project.tasks.clienttest.mustRunAfter project.tasks.unittest
 
-    // Define a single task to collect code coverage
+    // Collect code coverage for unit tests
     project.task("coverage", dependsOn: [ project.tasks.test, project.tasks.jacocoTestReport, ]) << {
     }
 }
