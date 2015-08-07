@@ -424,6 +424,7 @@ project(":gaetestutil") {
 
 // Unit tests
 project(":test") {
+    apply plugin: "jacoco"
 
     uploadArchives.enabled = false
     install.enabled = false
@@ -440,6 +441,14 @@ project(":test") {
 
     cedarJavadoc {
         srcDirs = []
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.enabled false
+        }
     }
 
     dependencies {
@@ -519,6 +528,9 @@ project(":test") {
     // Define the order of tests if there are multiple called at the same time
     project.tasks.clienttest.mustRunAfter project.tasks.unittest
 
+    // Define a single task to collect code coverage
+    project.task("coverage", dependsOn: [ project.tasks.test, project.tasks.jacocoTestReport, ]) << {
+    }
 }
 
 
