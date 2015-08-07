@@ -83,6 +83,22 @@ cedarSigning {
     projects = allprojects
 }
 
+// Repositories
+repositories {
+    mavenLocal()   // Local Maven repository
+    mavenCentral() // Maven Central repository
+}
+
+// Configurations
+configurations {
+    analysis
+}
+
+// Dependencies
+dependencies {
+    analysis "org.codehaus.javancss:javancss:33.54"
+}
+
 // Configuration for all projects
 allprojects {
     apply plugin: "eclipse"
@@ -93,6 +109,7 @@ allprojects {
 // Common setup for subprojects
 subprojects {
 
+    apply plugin: "checkstyle"
     apply plugin: "cedarBuild"
     apply plugin: "cedarPublish"
     apply plugin: "cedarJavadoc"
@@ -127,6 +144,15 @@ subprojects {
         classpath = { project.configurations.runtime }
         srcDirs = { sourceSets.main.java.srcDirs }
         subpackages = [ "com", "biz", ]
+    }
+
+    checkstyle {
+        configFile = project.file("../doc/standards/CheckstyleRules.xml")
+        reportsDir = project.file("../build/${project.name}/reports/checkstyle")
+        ignoreFailures = true
+        showViolations = false
+        toolVersion = 5.5
+        configProperties = [ config_loc : project.file("../doc/standards").canonicalPath, ]
     }
 
     jar {
@@ -205,6 +231,8 @@ subprojects {
         throw new Exception("Do not use javadoc task, use generateJavadoc instead.")
     }
 
+    project.task("checkstyle", dependsOn: [ project.tasks.checkstyleMain ]) << {
+    }
 }
 
 // Subproject for cedar-common-util
@@ -216,6 +244,9 @@ project(":util") {
             resources { srcDirs = [ ".", "../externalutil", ] }
         }
     }
+
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
 
     dependencies {
         compile "com.flipthebird.gwt-hashcode-equals:gwt-hashcode-equals:0.1.0"
@@ -256,6 +287,9 @@ project(":gwt") {
         }
     }
 
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
+
     dependencies {
         compile "com.google.gwt:gwt-dev:${config_gwtVersion}"
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
@@ -286,6 +320,9 @@ project(":gae") {
             resources { srcDirs = [ ".", ] }
         }
     }
+
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
 
     dependencies {
         compile "com.google.appengine:appengine-api-1.0-sdk:${config_appEngineVersion}"
@@ -327,6 +364,9 @@ project(":testutil") {
         }
     }
 
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
+
     dependencies {
         compile "javax.servlet:servlet-api:2.5"
         compile "junit:junit:4.11"
@@ -357,6 +397,9 @@ project(":gwttestutil") {
             resources { srcDirs = [ ".", ] }
         }
     }
+
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
 
     dependencies {
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
@@ -390,6 +433,9 @@ project(":gaetestutil") {
         }
     }
 
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
+
     dependencies {
         compile "com.google.gwt:gwt-user:${config_gwtVersion}"
         compile "junit-addons:junit-addons:1.4"
@@ -419,6 +465,7 @@ project(":gaetestutil") {
 
 // Unit tests
 project(":test") {
+    apply plugin: "jacoco"
 
     uploadArchives.enabled = false
     install.enabled = false
@@ -433,8 +480,19 @@ project(":test") {
         }
     }
 
+    checkstyleMain.source = "." 
+    checkstyleMain.include "**/*.java"
+
     cedarJavadoc {
         srcDirs = []
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled false
+            html.enabled false
+        }
     }
 
     dependencies {
@@ -514,6 +572,9 @@ project(":test") {
     // Define the order of tests if there are multiple called at the same time
     project.tasks.clienttest.mustRunAfter project.tasks.unittest
 
+    // Collect code coverage for unit tests
+    project.task("coverage", dependsOn: [ project.tasks.test, project.tasks.jacocoTestReport, ]) << {
+    }
 }
 
 
@@ -533,6 +594,40 @@ task generateJavadoc(dependsOn: subprojects.jdoc) << {
     copyJavadocToMercurial(config_mercurialJavadocProject, subprojects, { name -> "cedar-common-" + name })
 }
 
+// Run all of the configured metrics.
+task("metrics") << {
+    runJavancss("Source Code", [ "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", ])
+    runJavancss("External Code", [ "externalutil", "externalgwt", "externaltest", ])
+    runJavancss("Unit Tests", [ "test" ])
+}
+
+// Run JavaNCSS for a particular set of source folders
+def runJavancss(name, folders) {
+    println ""
+    println "================================================================="
+    println "JavaNCSS Analysis for " + name
+    println "================================================================="
+    println "See: http://www.kclee.de/clemens/java/javancss/"
+    println ""
+
+    def reportDir = project.file(buildDir.canonicalPath + "/reports/ncss").canonicalPath
+    def reportFile = project.file(reportDir + "/report-" + name.replaceAll("\\s", "_") + ".xml").canonicalPath
+
+    project.file(reportDir).mkdirs()
+    project.javaexec {
+        classpath project.configurations.analysis
+        main = "javancss.Main"
+        args = [ "-recursive", "-all", "-xml", "-out", reportFile ] + folders
+    }
+
+    project.javaexec {
+        classpath project.configurations.analysis
+        main = "javancss.Main"
+        args = [ "-recursive", "-ncss", "-package", ] + folders
+    }
+
+    println ""
+}
 
 // ************************
 // * Eclipse configuration
