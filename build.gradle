@@ -83,6 +83,22 @@ cedarSigning {
     projects = allprojects
 }
 
+// Repositories
+repositories {
+    mavenLocal()   // Local Maven repository
+    mavenCentral() // Maven Central repository
+}
+
+// Configurations
+configurations {
+    analysis
+}
+
+// Dependencies
+dependencies {
+    analysis "org.codehaus.javancss:javancss:33.54"
+}
+
 // Configuration for all projects
 allprojects {
     apply plugin: "eclipse"
@@ -584,6 +600,40 @@ task generateJavadoc(dependsOn: subprojects.jdoc) << {
     copyJavadocToMercurial(config_mercurialJavadocProject, subprojects, { name -> "cedar-common-" + name })
 }
 
+// Run all of the configured metrics.
+task("metrics") << {
+    runJavancss("Source Code", [ "util", "gwt", "gae", "testutil", "gwttestutil", "gaetestutil", ])
+    runJavancss("External Code", [ "externalutil", "externalgwt", "externaltest", ])
+    runJavancss("Unit Tests", [ "test" ])
+}
+
+// Run JavaNCSS for a particular set of source folders
+def runJavancss(name, folders) {
+    println ""
+    println "================================================================="
+    println "JavaNCSS Analysis for " + name
+    println "================================================================="
+    println "See: http://www.kclee.de/clemens/java/javancss/"
+    println ""
+
+    def reportDir = project.file(buildDir.canonicalPath + "/reports/ncss").canonicalPath
+    def reportFile = project.file(reportDir + "/report-" + name.replaceAll("\\s", "_") + ".xml").canonicalPath
+
+    project.file(reportDir).mkdirs()
+    project.javaexec {
+        classpath project.configurations.analysis
+        main = "javancss.Main"
+        args = [ "-recursive", "-all", "-xml", "-out", reportFile ] + folders
+    }
+
+    project.javaexec {
+        classpath project.configurations.analysis
+        main = "javancss.Main"
+        args = [ "-recursive", "-ncss", "-package", ] + folders
+    }
+
+    println ""
+}
 
 // ************************
 // * Eclipse configuration
