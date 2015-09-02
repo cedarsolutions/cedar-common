@@ -157,6 +157,7 @@ subprojects {
 
     jar {
         from sourceSets.main.output
+        from sourceSets.main.allSource
         excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
@@ -283,10 +284,6 @@ project(":util") {
 // Subproject for cedar-common-gwt
 project(":gwt") {
 
-    jar {
-        from sourceSets.main.allSource
-    }
-
     sourceSets {
         main {
             java { srcDirs = [ ".", "../externalgwt", ] }
@@ -401,10 +398,6 @@ project(":testutil") {
 
 // Subproject for cedar-common-gwttestutil
 project(":gwttestutil") {
-
-    jar {
-        from sourceSets.main.allSource
-    }
 
     sourceSets {
         main {
