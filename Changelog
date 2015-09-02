@@ -1,4 +1,4 @@
-Version 4.11.5   unreleased
+Version 4.11.5   02 Sep 2015
 
     * Implement Jacoco coverage reports in build.gradle.
     * Implement Checkstyle reports in build.gradle.
