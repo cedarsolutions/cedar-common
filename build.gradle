@@ -159,18 +159,21 @@ subprojects {
         from sourceSets.main.output
         from sourceSets.main.allSource
         excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
     task sourcesJar(type: Jar) {
         classifier = "sources"
         from sourceSets.main.allSource
         excludes = [ ".settings", ".project", ".classpath", ".gradle", "build", ]
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
     task javadocJar(type: Jar, dependsOn: jdoc) {
         classifier = "javadoc"
         archiveName = "cedar-common-${baseName}-${version}-${classifier}.${extension}"
         from "${project.docsDir}/javadoc"
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
     artifacts {
