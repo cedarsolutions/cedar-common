@@ -5,6 +5,7 @@ Version 4.11.5   unreleased
     * Implement JavaNCSS metrics in build.gradle.
     * Exclude duplicates from generated jar files.
     * Bump up to CedarBuild v0.9.5, to get Javadoc fixes.
+    * Bump up to AppEngine v1.9.25, to stay up-to-date.
 
 Version 4.11.4   17 Jul 2015
 
