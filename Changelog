@@ -3,7 +3,7 @@ Version 5.2.7   unreleased
     * Implement Jacoco coverage reports in build.gradle.
     * Implement Checkstyle reports in build.gradle.
     * Implement JavaNCSS metrics in build.gradle.
-    * Bump up to CedarBuild v0.9.4, just to stay up-to-date.
+    * Bump up to CedarBuild v0.9.5 to get Javadoc fixes.
 
 Version 5.2.6   17 Jul 2015
 
