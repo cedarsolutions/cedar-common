@@ -1,6 +1,7 @@
 Version 5.3.0   unreleased
 
     * Deprecate NativeUtils.openUrl(), which doesn't work properly in IE 9.
+    * Reimplement AbstractWidgetUtils.openUrl() using Window.Location.assign().
 
 Version 5.2.7   02 Sep 2015
 

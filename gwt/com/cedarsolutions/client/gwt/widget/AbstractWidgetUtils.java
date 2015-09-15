@@ -30,6 +30,7 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -95,7 +96,10 @@ public abstract class AbstractWidgetUtils {
      * @see <a href="http://stackoverflow.com/questions/4703014">Stack Overflow</a>
      */
     public void openUrl(String url) {
-        NativeUtils.openUrl(url);
+        // I originally used NativeUtils.openUrl() to implement this.
+        // However, that implementation does not work properly in IE.
+        // This implementation works in IE 9, Firefox 40.0.3 and Chrome 45.
+        Window.Location.assign(url);
     }
 
     /**
