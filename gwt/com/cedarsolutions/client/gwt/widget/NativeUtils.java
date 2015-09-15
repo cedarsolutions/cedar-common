@@ -49,8 +49,10 @@ public class NativeUtils {
 
     /**
      * Open the referenced URL, as for download via a button click.
+     * @deprecated This does not work properly in IE; use <code>Window.Location.assign(url)</code> instead.
      * @see <a href="http://stackoverflow.com/questions/4703014">Stack Overflow</a>
      */
+    @Deprecated
     public static native void openUrl(String url)/*-{
         $wnd.open(url, "target=_blank")
     }-*/;
