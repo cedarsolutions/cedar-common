@@ -24,29 +24,31 @@ package com.cedarsolutions.client.gwt.module.view;
 
 import com.cedarsolutions.client.gwt.custom.tab.TabLayoutPanel;
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
-import com.cedarsolutions.client.gwt.module.view.ModuleTabPanelView.TabPanelResizeHandler;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 
 /**
- * Client-side unit tests for ModuleTabPanelView.
+ * Client-side unit tests for ModuleNestedTabPanelView.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-@SuppressWarnings("deprecation")
-public class ModuleTabPanelViewClientTest extends ClientTestCase {
+public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
 
     /** Test constructor. */
     public void testConstructor() {
-        ConcreteModuleTabPanelView view = new ConcreteModuleTabPanelView();
+        ConcreteModuleNestedTabPanelView view = new ConcreteModuleNestedTabPanelView();
         assertNotNull(view);
         assertNotNull(view.getTabPanel());
+        assertNull(view.getParentPanel());
+        assertEquals(0, view.getTabIndex());
+        assertFalse(view.isInitialized());
+        assertNull(view.getInitializationEventHandler());
+        assertNull(view.getSelectedEventHandler());
     }
 
     /** Test addTab(). */
     public void testAddTab() {
-        ConcreteModuleTabPanelView view = new ConcreteModuleTabPanelView();
-        view.setElementId("ConcreteModuleTabPanelView");
+        ConcreteModuleNestedTabPanelView view = new ConcreteModuleNestedTabPanelView();
+        view.setElementId("ConcreteModuleNestedTabPanelView");
 
         ConcreteModuleTabView tab1 = new ConcreteModuleTabView();
         ConcreteModuleTabView tab2 = new ConcreteModuleTabView();
@@ -67,14 +69,14 @@ public class ModuleTabPanelViewClientTest extends ClientTestCase {
         assertEquals("Title1", view.tabPanel.getTitle(0));
         assertEquals("Title2", view.tabPanel.getTitle(1));
         assertEquals("", view.tabPanel.getElementId(0));
-        assertEquals("ConcreteModuleTabPanelView_tab2", view.tabPanel.getElementId(1));
+        assertEquals("ConcreteModuleNestedTabPanelView_tab2", view.tabPanel.getElementId(1));
         assertEquals(view.getTabPanel(), tab1.getParentPanel());
         assertEquals(view.getTabPanel(), tab2.getParentPanel());
     }
 
     /** Test selectTabForView(). */
     public void testSelectTabForView() {
-        ConcreteModuleTabPanelView view = new ConcreteModuleTabPanelView();
+        ConcreteModuleNestedTabPanelView view = new ConcreteModuleNestedTabPanelView();
         assertEquals(-1, view.tabPanel.getSelectedIndex());
 
         ConcreteModuleTabView tab1 = new ConcreteModuleTabView();
@@ -95,8 +97,8 @@ public class ModuleTabPanelViewClientTest extends ClientTestCase {
 
     /** Test replaceFirstTabWithView(). */
     public void testReplaceFirstTabWithView() {
-        ConcreteModuleTabPanelView view = new ConcreteModuleTabPanelView();
-        view.setElementId("ConcreteModuleTabPanelView");
+        ConcreteModuleNestedTabPanelView view = new ConcreteModuleNestedTabPanelView();
+        view.setElementId("ConcreteModuleNestedTabPanelView");
 
         ConcreteModuleTabView tab1 = new ConcreteModuleTabView();
         ConcreteModuleTabView tab2 = new ConcreteModuleTabView();
@@ -121,20 +123,20 @@ public class ModuleTabPanelViewClientTest extends ClientTestCase {
         assertEquals(0, view.tabPanel.getSelectedIndex());
         assertSame(tab3, view.tabPanel.getWidget(0));
         assertEquals("Title3", view.tabPanel.getTitle(0));
-        assertEquals("ConcreteModuleTabPanelView_tab3", view.tabPanel.getElementId(0));
+        assertEquals("ConcreteModuleNestedTabPanelView_tab3", view.tabPanel.getElementId(0));
     }
 
     /** Test configureFullScreen(). */
     public void testConfigureFullScreen() {
-        ConcreteModuleTabPanelView view = new ConcreteModuleTabPanelView();
+        ConcreteModuleNestedTabPanelView view = new ConcreteModuleNestedTabPanelView();
         assertFalse(view.isFullScreen());
         view.configureFullScreen();
         assertTrue(view.isFullScreen());
         assertNotNull(view.resizeHandler);
-        assertEquals(ModuleTabPanelView.WIDTH_SCALING, view.resizeHandler.getWidthScaling());
-        assertEquals(ModuleTabPanelView.HEIGHT_SCALING, view.resizeHandler.getHeightScaling());
+        assertEquals(ModuleNestedTabPanelView.WIDTH_SCALING, view.resizeHandler.getWidthScaling());
+        assertEquals(ModuleNestedTabPanelView.HEIGHT_SCALING, view.resizeHandler.getHeightScaling());
 
-        view = new ConcreteModuleTabPanelView();
+        view = new ConcreteModuleNestedTabPanelView();
         assertFalse(view.isFullScreen());
         view.configureFullScreen(30.0, 40.0);
         assertTrue(view.isFullScreen());
@@ -143,29 +145,27 @@ public class ModuleTabPanelViewClientTest extends ClientTestCase {
         assertEquals(40.0, view.resizeHandler.getHeightScaling());
     }
 
-    /** Test the deprecated TabPanelResizeHandler class. */
-    public void testTabPanelResizeHandler() {
-        int width = Window.getClientWidth();
-        int height = Window.getClientHeight();
-        int scaledWidth = (int) (0.10 * (double) width);
-        int scaledHeight = (int) (0.20 * (double) height);
+    /** Test the getViewWidget() method (which is really on the IModulePageView interface). */
+    public void testGetViewWidget() {
+        IModulePageView view = new ConcreteModuleNestedTabPanelView();
+        assertEquals(view, view.getViewWidget());
+    }
 
-        ConcreteModuleTabPanelView view = new ConcreteModuleTabPanelView();
-        TabPanelResizeHandler handler = new TabPanelResizeHandler(view, 10.0, 20.0);
-        assertNotNull(handler);
-        assertSame(view, handler.getView());
-        assertEquals(10.0, handler.getWidthScaling());
-        assertEquals(20.0, handler.getHeightScaling());
-
-        assertTrue(view.getOffsetWidth() >= scaledWidth);   // can't get back the "real" width
-        assertTrue(view.getOffsetHeight() >= scaledHeight); // can't get back the "real" height
+    /** Test setContext(). */
+    public void testSetContext() {
+        ConcreteModuleNestedTabPanelView view = new ConcreteModuleNestedTabPanelView();
+        TabLayoutPanel parentPanel = new TabLayoutPanel(10, Unit.CM);
+        view.setContext(parentPanel, 1);
+        assertSame(parentPanel, view.getParentPanel());
+        assertEquals(1, view.getTabIndex());
+        // unfortunately, can't verify that the selection handler was set properly
     }
 
     /** Concrete class that we can test with. */
-    private static class ConcreteModuleTabPanelView extends ModuleTabPanelView {
+    private static class ConcreteModuleNestedTabPanelView extends ModuleNestedTabPanelView {
         private TabLayoutPanel tabPanel = new TabLayoutPanel(45, Unit.PX);
 
-        public ConcreteModuleTabPanelView() {
+        public ConcreteModuleNestedTabPanelView() {
             this.initWidget(this.tabPanel);
         }
 
