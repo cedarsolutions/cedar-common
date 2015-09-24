@@ -22,8 +22,6 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.module.view;
 
-import com.google.gwt.event.logical.shared.ResizeEvent;
-import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 
 /**
@@ -39,7 +37,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
     public static final double HEIGHT_SCALING = 0.85;
 
     /** The resize handler that is in use, if any. */
-    protected TabPanelResizeHandler resizeHandler = null;
+    protected com.cedarsolutions.client.gwt.module.view.TabPanelResizeHandler resizeHandler = null;
 
     /**
      * Add a new tab to the tab panel, with no view name.
@@ -87,7 +85,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
      * @param heightScaling Scaling percentage to use for the panel height
      */
     protected void configureFullScreen(double widthScaling, double heightScaling) {
-        this.resizeHandler = new TabPanelResizeHandler(this, widthScaling, heightScaling);
+        this.resizeHandler = new com.cedarsolutions.client.gwt.module.view.TabPanelResizeHandler(this, widthScaling, heightScaling);
         Window.addResizeHandler(this.resizeHandler);
     }
 
@@ -179,43 +177,14 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
         }
     }
 
-    /** Window resize handler, which resizes a tab panel to full-screen. */
-    public static class TabPanelResizeHandler implements ResizeHandler {
-
-        private IModuleTabPanelView view;
-        private double widthScaling;
-        private double heightScaling;
-
+    /**
+     * Window resize handler, which resizes a tab panel to full-screen.
+     * @deprecated Use com.cedarsolutions.client.gwt.module.view.TabPanelResizeHandler instead.
+     */
+    @Deprecated
+    public static class TabPanelResizeHandler extends com.cedarsolutions.client.gwt.module.view.TabPanelResizeHandler {
         public TabPanelResizeHandler(IModuleTabPanelView view, double widthScaling, double heightScaling) {
-            this.view = view;
-            this.widthScaling = widthScaling;
-            this.heightScaling = heightScaling;
-            this.resize(Window.getClientWidth(), Window.getClientHeight());
-        }
-
-        @Override
-        public void onResize(ResizeEvent event) {
-            // This method cannot be unit tested because it's not possible to mock ResizeEvent
-            this.resize(event.getWidth(), event.getHeight());
-        }
-
-        private void resize(int w, int h) {
-            String width = ((int) (this.widthScaling * w)) + "px";
-            String height = ((int) (this.heightScaling * h)) + "px";
-            this.view.getTabPanel().setWidth(width);
-            this.view.getTabPanel().setHeight(height);
-        }
-
-        public IModuleTabPanelView getView() {
-            return this.view;
-        }
-
-        public double getWidthScaling() {
-            return this.widthScaling;
-        }
-
-        public double getHeightScaling() {
-            return this.heightScaling;
+            super(view, widthScaling, heightScaling);
         }
     }
 

@@ -6,7 +6,7 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * Copyright (c) 2013 Kenneth J. Pronovici.
+ * Copyright (c) 2013-2014 Kenneth J. Pronovici.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -26,10 +26,10 @@ import com.cedarsolutions.client.gwt.custom.tab.TabLayoutPanel;
 import com.cedarsolutions.client.gwt.event.ViewEventHandler;
 
 /**
- * Specialized page that is intended to be a tab.
+ * A ModuleTabPanelView that is also itself a ModuleTabView..
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class ModuleTabView extends ModulePageView implements IModuleTabView {
+public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implements IModuleTabView {
 
     /** Parent tab layout panel. */
     private TabLayoutPanel parentPanel;
@@ -132,17 +132,6 @@ public abstract class ModuleTabView extends ModulePageView implements IModuleTab
     @Override
     public void selectTab() {
         ModuleTabUtils.selectTab(this);
-    }
-
-    /**
-     * Tab selection handler.
-     * @deprecated Use com.cedarsolutions.client.gwt.module.view.TabSelectionHandler instead.
-     */
-    @Deprecated
-    protected static class SelectionHandler extends com.cedarsolutions.client.gwt.module.view.TabSelectionHandler {
-        public SelectionHandler(IModuleTabView view) {
-            super(view);
-        }
     }
 
 }
