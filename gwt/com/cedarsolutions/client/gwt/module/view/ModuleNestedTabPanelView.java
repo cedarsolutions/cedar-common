@@ -23,10 +23,19 @@
 package com.cedarsolutions.client.gwt.module.view;
 
 import com.cedarsolutions.client.gwt.custom.tab.TabLayoutPanel;
+import com.cedarsolutions.client.gwt.event.UnifiedEvent;
 import com.cedarsolutions.client.gwt.event.ViewEventHandler;
+import com.cedarsolutions.client.gwt.handler.AbstractViewEventHandler;
 
 /**
- * A ModuleTabPanelView that is also itself a ModuleTabView..
+ * A ModuleTabPanelView that is also itself a ModuleTabView.
+ *
+ * <p>
+ * <b>Note:</b> Child classes must make sure to call the superclass constructor,
+ * so the proper initialization handler gets set.  Otherwise, child tabs will
+ * not be initialized properly.
+ * <p>
+ *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implements IModuleTabView {
@@ -49,6 +58,11 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
     /** Save off the "before selection" handler, so we can manipulate it. */
     private TabSelectionHandler beforeSelectionHandler;
 
+    /** Default constructor. */
+    protected ModuleNestedTabPanelView() {
+        this.setInitializationEventHandler(new ModuleNestedTabPanelInitializationHandler(this));
+    }
+
     /**
      * Set the context that this tab exists in.
      * @param parentPanel Parent tab layout panel
@@ -60,6 +74,12 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
         this.tabIndex = tabIndex;
         this.beforeSelectionHandler = new TabSelectionHandler(this);
         this.parentPanel.addBeforeSelectionHandler(this.beforeSelectionHandler);
+    }
+
+    /** Configure the tab panel so it takes up the full screen, using default scaling. */
+    @Override
+    protected void configureFullScreen() {
+        this.configureFullScreen(0.9, 0.8);  // nested tabs need to be a little smaller than normal
     }
 
     /** Disable the tab, so it no longer handles selection events. */
@@ -132,6 +152,18 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
     @Override
     public void selectTab() {
         ModuleTabUtils.selectTab(this);
+    }
+
+    /** Initialization handler for nested tab panels. */
+    public static class ModuleNestedTabPanelInitializationHandler extends AbstractViewEventHandler<ModuleNestedTabPanelView> {
+        public ModuleNestedTabPanelInitializationHandler(ModuleNestedTabPanelView parent) {
+            super(parent);
+        }
+
+        @Override
+        public void handleEvent(UnifiedEvent event) {
+            ModuleTabUtils.initializeAllTabs(this.getParent());
+        }
     }
 
 }
