@@ -1,4 +1,4 @@
-Version 5.4.0   unreleased
+Version 5.4.0   25 Sep 2015
 
     * Add ModuleNestedTabPanelView, which is both a tab and a tab panel
     * Tweak tab initialization so tabs are only marked as initialized if a handler is invoked.
