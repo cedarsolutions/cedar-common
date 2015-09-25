@@ -24,6 +24,7 @@ package com.cedarsolutions.client.gwt.module.view;
 
 import com.cedarsolutions.client.gwt.custom.tab.TabLayoutPanel;
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
+import com.cedarsolutions.client.gwt.module.view.ModuleNestedTabPanelView.ModuleNestedTabPanelInitializationHandler;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Label;
 
@@ -41,7 +42,7 @@ public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
         assertNull(view.getParentPanel());
         assertEquals(0, view.getTabIndex());
         assertFalse(view.isInitialized());
-        assertNull(view.getInitializationEventHandler());
+        assertTrue(view.getInitializationEventHandler() instanceof ModuleNestedTabPanelInitializationHandler);
         assertNull(view.getSelectedEventHandler());
     }
 
@@ -133,8 +134,8 @@ public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
         view.configureFullScreen();
         assertTrue(view.isFullScreen());
         assertNotNull(view.resizeHandler);
-        assertEquals(ModuleNestedTabPanelView.WIDTH_SCALING, view.resizeHandler.getWidthScaling());
-        assertEquals(ModuleNestedTabPanelView.HEIGHT_SCALING, view.resizeHandler.getHeightScaling());
+        assertEquals(0.9, view.resizeHandler.getWidthScaling());   // specialized for this class
+        assertEquals(0.8, view.resizeHandler.getHeightScaling());  // specialized for this class
 
         view = new ConcreteModuleNestedTabPanelView();
         assertFalse(view.isFullScreen());
