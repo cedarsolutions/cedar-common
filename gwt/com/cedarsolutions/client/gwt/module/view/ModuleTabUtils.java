@@ -36,16 +36,35 @@ public class ModuleTabUtils {
     private ModuleTabUtils() {
     }
 
-    /** Select a tab view, as if the normal BeforeSelectionHandler was invoked. */
-    public static void selectTab(IModuleTabView view) {
+    /** Initialize a tab view, if necessary. */
+    public static void initializeTab(IModuleTabView view) {
+        // We only want to mark the view as initialized if we actually ran an
+        // initialization handler, otherwise attempts to work around ordering
+        // issues (i.e. initialize something later when we know it got missed)
+        // will fail because the view was "initialized" even before a handler
+        // was set.  This is especially important on nested tabs, which seem to
+        // get initialized before they're bound.
+
         if (!view.isInitialized()) {
             if (view.getInitializationEventHandler() != null) {
                 UnifiedEvent init = new UnifiedEvent(UnifiedEventType.INIT_EVENT);
                 view.getInitializationEventHandler().handleEvent(init);
+                view.markInitialized();
             }
-
-            view.markInitialized();
         }
+    }
+
+    /** Initialize all tabs associated with a module tab view, if necessary. */
+    public static void initializeAllTabs(IModuleTabPanelView view) {
+        for (int i = 0; i < view.getTabPanel().getWidgetCount(); i++) {
+            IModuleTabView tab = (IModuleTabView) view.getTabPanel().getWidget(i);
+            initializeTab(tab);
+        }
+    }
+
+    /** Select a tab view, as if the normal BeforeSelectionHandler was invoked. */
+    public static void selectTab(IModuleTabView view) {
+        initializeTab(view);
 
         // The selected event handler is always called, even when initialize is also called.
         // That way, the client doesn't need any special logic for the "selected first time" case.
