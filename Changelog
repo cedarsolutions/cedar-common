@@ -1,6 +1,7 @@
 Version 5.4.0   unreleased
 
     * Add ModuleNestedTabPanelView, which is both a tab and a tab panel
+    * Tweak tab initialization so tabs are only marked as initialized if a handler is invoked.
     * Various refactorings in com.cedarsolutions.client.gwt.module.view:
       - Refactor out ModuleTabUtils, TabPanelResizeHandler, and TabSelectionHandler
       - Deprecate ModuleTabPanelView.TabPanelResizeHandler
