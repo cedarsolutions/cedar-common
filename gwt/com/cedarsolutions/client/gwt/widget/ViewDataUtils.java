@@ -153,7 +153,6 @@ public class ViewDataUtils {
      * Fill an input field based on a criteria list, filling the field with comma-separated values.
      * @param input     Input to fill in
      * @param values    List of values (the first one will be used)
-     * @param separator String separator to use between values
      */
     public static void fillInputMultiple(TextBox input, List<String> values) {
         fillInputMultiple(input, values, ", ");
