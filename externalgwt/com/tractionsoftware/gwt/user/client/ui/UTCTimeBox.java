@@ -53,7 +53,10 @@ import com.tractionsoftware.gwt.user.client.util.DomUtils;
  *          </tr>
  *          <tr>
  *             <td><i>Reason:</i></td>
- *             <td>The official Traction-supplied jar in Maven only supports Java 1.7+, but CedarCommon supports Java 1.6+.</td>
+ *             <td>
+ *                  The official Traction-supplied jar in Maven only supports Java 1.7+, but CedarCommon supports Java 1.6+.
+ *                  I also made some minor bug fixes based on my own experience with the code.
+ *             </td>
  *          </tr>
  *       </tbody>
  *    </table>
@@ -64,6 +67,7 @@ import com.tractionsoftware.gwt.user.client.util.DomUtils;
 public class UTCTimeBox extends Composite implements HasValue<Long>, HasValueChangeHandlers<Long>, HasText, HasEnabled {
 
     public UTCTimeBoxImpl impl;
+    private boolean enabled = true;
 
     /**
      * By default the predefined SHORT time format will be used.
@@ -114,12 +118,14 @@ public class UTCTimeBox extends Composite implements HasValue<Long>, HasValueCha
 
     @Override
     public boolean isEnabled() {
-        return DomUtils.isEnabled(getElement());
+        // return DomUtils.isEnabled(getElement());
+        return this.enabled;     // changed for CedarCommon, original did not work (not sure why)
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         DomUtils.setEnabled(getElement(), enabled);
+        this.enabled = enabled;  // added for CedarCommon, original did not work (not sure why)
     }
 
     /**

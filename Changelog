@@ -1,3 +1,7 @@
+Version 5.5.0   unreleased
+
+    * Fix isEnabled() and setEnabled() on the UTCTimeBox and UTCDateBox widgets.
+
 Version 5.4.0   25 Sep 2015
 
     * Add ModuleNestedTabPanelView, which is both a tab and a tab panel

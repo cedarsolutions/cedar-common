@@ -68,7 +68,10 @@ import com.tractionsoftware.gwt.user.client.ui.impl.UTCDateBoxImpl;
  *          </tr>
  *          <tr>
  *             <td><i>Reason:</i></td>
- *             <td>The official Traction-supplied jar in Maven only supports Java 1.7+, but CedarCommon supports Java 1.6+.</td>
+ *             <td>
+ *                  The official Traction-supplied jar in Maven only supports Java 1.7+, but CedarCommon supports Java 1.6+.
+ *                  I also made some minor bug fixes based on my own experience with the code.
+ *             </td>
  *          </tr>
  *       </tbody>
  *    </table>
@@ -79,6 +82,7 @@ import com.tractionsoftware.gwt.user.client.ui.impl.UTCDateBoxImpl;
 public class UTCDateBox extends Composite implements HasValue<Long>, HasValueChangeHandlers<Long>, HasText, HasEnabled {
 
     private UTCDateBoxImpl impl;
+    private boolean enabled = true;
 
     /**
      * Creates a new UTCDateBox with the medium date format for the
@@ -181,12 +185,14 @@ public class UTCDateBox extends Composite implements HasValue<Long>, HasValueCha
 
     @Override
     public boolean isEnabled() {
-        return impl.isEnabled();
+//        return impl.isEnabled();
+        return this.enabled;    // modified for CedarCommon, to be consistent with UTCTimeBox
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         impl.setEnabled(enabled);
+        this.enabled = enabled; // modified for CedarCommon, to be consistent with UTCTimeBox
     }
 
     // ----------------------------------------------------------------------
