@@ -24,6 +24,10 @@ package com.cedarsolutions.client.gwt.widget;
 
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * Unit tests for AbstractWidgetUtils.
@@ -50,6 +54,27 @@ public class AbstractWidgetUtilsClientTest extends ClientTestCase {
         String result = ConcreteUtils.getInstance().getDestinationUrl("token");
         assertTrue(result.endsWith("#token"));
         assertEquals("token", ConcreteUtils.getInstance().getDestinationToken(result));
+    }
+
+    /** Test getWidget(). */
+    public void testGetWidget() {
+        Label label = new Label("A");
+
+        TextBox textBox = new TextBox();
+        textBox.setValue("B");
+
+        Grid grid1 = new Grid(1, 1);
+        grid1.setWidget(0, 0, label);
+
+        Grid grid2 = new Grid(1, 1);
+        grid2.setWidget(0, 0, textBox);
+
+        VerticalPanel panel = new VerticalPanel();
+        panel.add(grid1);
+        panel.add(grid2);
+
+        assertEquals(grid1, (Grid) ConcreteUtils.getInstance().getWidget(panel, 0));
+        assertEquals(grid2, (Grid) ConcreteUtils.getInstance().getWidget(panel, 1));
     }
 
     /** Concrete test class, following the intended pattern where the application creates a singleton. */

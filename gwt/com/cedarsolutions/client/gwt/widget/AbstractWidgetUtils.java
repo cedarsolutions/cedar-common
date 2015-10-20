@@ -22,6 +22,8 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.widget;
 
+import java.util.Iterator;
+
 import com.cedarsolutions.web.metadata.NativeEventType;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -34,7 +36,9 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.Focusable;
+import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Widget-related utilities, which applications should extend and make a singleton.
@@ -264,6 +268,31 @@ public abstract class AbstractWidgetUtils {
      */
     public void setFocus(final Focusable focusable) {
         this.setFocusAfterDisplay(focusable);
+    }
+
+    /**
+     * Get the child widget at a specified index.
+     * @param parent  Parent widget to retrieve child from, like panel
+     * @param index   Zero based index of child to retrieve
+     * @return Retrieved child, or null if child is not found.
+     * @see <a href="http://stackoverflow.com/questions/8448529">Stack Overflow</a>
+     */
+    public Widget getWidget(Widget parent, int index) {
+        if (parent instanceof HasWidgets) {
+            Iterator<Widget> iterator = ((HasWidgets) parent).iterator();
+
+            for (int i = 0; i < index; i++) {
+                if (iterator.hasNext()) {
+                    iterator.next();
+                }
+            }
+
+            if (iterator.hasNext()) {
+                return iterator.next();
+            }
+        }
+
+        return null;
     }
 
 }
