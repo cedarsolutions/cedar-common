@@ -23,6 +23,8 @@
 package com.cedarsolutions.client.gwt.widget;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import com.cedarsolutions.web.metadata.NativeEventType;
 import com.google.gwt.core.client.GWT;
@@ -290,6 +292,16 @@ public abstract class AbstractWidgetUtils {
             if (iterator.hasNext()) {
                 return iterator.next();
             }
+        }
+
+        return null;
+    }
+
+    /** Get the GWT codeserver query parameter, or null if no codeserver is set. */
+    public String getCodeserver() {
+        Map<String, List<String>> map = Window.Location.getParameterMap();
+        if (map.containsKey("gwt.codesvr") && !map.get("gwt.codesvr").isEmpty()) {
+            return map.get("gwt.codesvr").get(0);
         }
 
         return null;
