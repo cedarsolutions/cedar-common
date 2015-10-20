@@ -1,6 +1,8 @@
 Version 5.5.0   unreleased
 
     * Fix isEnabled() and setEnabled() on the UTCTimeBox and UTCDateBox widgets.
+    * Add new method AbstractWidgetUtils.setFocusAfterDisplay(Focusable)
+    * Add setFocus() methods on AbstractWidgetUtils as aliases for setFocusOnDiplay().
 
 Version 5.4.0   25 Sep 2015
 

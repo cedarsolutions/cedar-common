@@ -33,6 +33,7 @@ import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FocusWidget;
+import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 /**
@@ -210,26 +211,59 @@ public abstract class AbstractWidgetUtils {
     }
 
     /**
-     * Set focus on a widget after the display has been rendered, especially useful for pop-ups.
-     * @param widget  Widget to set focus on
-     * @see <a href="http://stackoverflow.com/questions/5944612/not-able-to-set-focus-on-textbox-in-a-gwt-app">StackOverflow</a>
+     * Reliably focus on a widget via a scheduled command.'
+     * To set focus on a panel, pick a widget (i.e. a text area) within the panel, and focus that.
+     * This is also useful for setting focus on a field within a pop-up.
+     * @param focusable  Widget that supports being focused
+     * @see <a href="http://stackoverflow.com/questions/5944612">StackOverflow</a>
+     * @see <a href="http://stackoverflow.com/questions/6665927">StackOverflow</a>
      */
     public void setFocusAfterDisplay(final FocusWidget widget) {
-        Scheduler.get().scheduleDeferred(new FocusScheduledCommand(widget));
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                widget.setFocus(true);
+            }
+        });
     }
 
-    /** Scheduled command that sets focus on a widget. */
-    protected static class FocusScheduledCommand implements Scheduler.ScheduledCommand {
-        private FocusWidget widget;
+    /**
+     * Reliably focus on a widget via a scheduled command.
+     * To set focus on a panel, pick a widget (i.e. a text area) within the panel, and focus that.
+     * @param focusable  Widget that supports being focused
+     * @see <a href="http://stackoverflow.com/questions/5944612">StackOverflow</a>
+     * @see <a href="http://stackoverflow.com/questions/6665927">StackOverflow</a>
+     */
+    public void setFocusAfterDisplay(final Focusable focusable) {
+        Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+            @Override
+            public void execute() {
+                focusable.setFocus(true);
+            }
+        });
+    }
 
-        public FocusScheduledCommand(FocusWidget widget) {
-            this.widget = widget;
-        }
+    /**
+     * Reliably focus on a widget via a scheduled command, an alias for setFocusAfterDisplay().
+     * To set focus on a panel, pick a widget (i.e. a text area) within the panel, and focus that.
+     * This is also useful for setting focus on a field within a pop-up.
+     * @param focusable  Widget that supports being focused
+     * @see <a href="http://stackoverflow.com/questions/5944612">StackOverflow</a>
+     * @see <a href="http://stackoverflow.com/questions/6665927">StackOverflow</a>
+     */
+    public void setFocus(final FocusWidget widget) {
+        this.setFocusAfterDisplay(widget);
+    }
 
-        @Override
-        public void execute() {
-            this.widget.setFocus(true);
-        }
+    /**
+     * Reliably focus on a widget via a scheduled command, an alias for setFocusAfterDisplay().
+     * To set focus on a panel, pick a widget (i.e. a text area) within the panel, and focus that.
+     * @param focusable  Widget that supports being focused
+     * @see <a href="http://stackoverflow.com/questions/5944612">StackOverflow</a>
+     * @see <a href="http://stackoverflow.com/questions/6665927">StackOverflow</a>
+     */
+    public void setFocus(final Focusable focusable) {
+        this.setFocusAfterDisplay(focusable);
     }
 
 }
