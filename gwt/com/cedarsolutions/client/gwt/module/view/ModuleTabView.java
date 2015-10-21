@@ -31,6 +31,9 @@ import com.cedarsolutions.client.gwt.event.ViewEventHandler;
  */
 public abstract class ModuleTabView extends ModulePageView implements IModuleTabView {
 
+    /** Parent tab panel view. */
+    private IModuleTabPanelView parentView;
+
     /** Parent tab layout panel. */
     private TabLayoutPanel parentPanel;
 
@@ -51,10 +54,23 @@ public abstract class ModuleTabView extends ModulePageView implements IModuleTab
 
     /**
      * Set the context that this tab exists in.
-     * @param parentPanel Parent tab layout panel
+     * @param parentPanel Parent tab panel view
      * @param tabIndex    Index of this tab on the layout panel
      */
     @Override
+    public void setContext(IModuleTabPanelView parentView, int tabIndex) {
+        this.parentView = parentView;
+        this.setContext(parentView.getTabPanel(), tabIndex);
+    }
+
+    /**
+     * Set the context that this tab exists in.
+     * @param parentPanel Parent tab layout panel
+     * @param tabIndex    Index of this tab on the layout panel
+     * @deprecated Use setContext(IModuleTabPanelView parentView, tabIndex) instead.
+     */
+    @Override
+    @Deprecated
     public void setContext(TabLayoutPanel parentPanel, int tabIndex) {
         this.parentPanel = parentPanel;
         this.tabIndex = tabIndex;
@@ -72,6 +88,12 @@ public abstract class ModuleTabView extends ModulePageView implements IModuleTab
     @Override
     public void enableTab() {
         this.beforeSelectionHandler.enable();
+    }
+
+    /** Get the parent tab panel view. */
+    @Override
+    public IModuleTabPanelView getParentView() {
+        return this.parentView;
     }
 
     /** Get the parent TabLayoutPanel. */

@@ -31,14 +31,30 @@ import com.cedarsolutions.client.gwt.handler.AbstractViewEventHandler;
  * A ModuleTabPanelView that is also itself a ModuleTabView.
  *
  * <p>
- * <b>Note:</b> Child classes must make sure to call the superclass constructor,
- * so the proper initialization handler gets set.  Otherwise, child tabs will
- * not be initialized properly.
+ * This implementation allows one level of nesting, where a top-level tab
+ * contains a set of other tabs.  It's not entirely obvious how to generalize
+ * it further than that.  However, even if I could, I'm skeptical that 3
+ * levels of tabs will really work that well anyway.  You'd start to lose
+ * a lot of screen real estate.
+ * </p>
+ *
+ * <p>
+ * The associated presenter must be a ModuleNestedTabPresenter, otherwise
+ * rendering will not always work properly.
+ * </p>
+ *
+ * <p>
+ * Child classes must make sure to call the superclass constructor, so the
+ * proper initialization handler gets set, otherwise child tabs will not
+ * be initialized properly.
  * <p>
  *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
 public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implements IModuleTabView {
+
+    /** Parent tab panel view. */
+    private IModuleTabPanelView parentView;
 
     /** Parent tab layout panel. */
     private TabLayoutPanel parentPanel;
@@ -65,10 +81,23 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
 
     /**
      * Set the context that this tab exists in.
-     * @param parentPanel Parent tab layout panel
+     * @param parentPanel Parent tab panel view
      * @param tabIndex    Index of this tab on the layout panel
      */
     @Override
+    public void setContext(IModuleTabPanelView parentView, int tabIndex) {
+        this.parentView = parentView;
+        this.setContext(parentView.getTabPanel(), tabIndex);
+    }
+
+    /**
+     * Set the context that this tab exists in.
+     * @param parentPanel Parent tab layout panel
+     * @param tabIndex    Index of this tab on the layout panel
+     * @deprecated Use setContext(IModuleTabPanelView parentView, tabIndex) instead.
+     */
+    @Override
+    @Deprecated
     public void setContext(TabLayoutPanel parentPanel, int tabIndex) {
         this.parentPanel = parentPanel;
         this.tabIndex = tabIndex;
@@ -92,6 +121,12 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
     @Override
     public void enableTab() {
         this.beforeSelectionHandler.enable();
+    }
+
+    /** Get the parent tab panel view. */
+    @Override
+    public IModuleTabPanelView getParentView() {
+        return this.parentView;
     }
 
     /** Get the parent TabLayoutPanel. */

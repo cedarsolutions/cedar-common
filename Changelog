@@ -5,6 +5,11 @@ Version 5.5.0   unreleased
     * Add new method AbstractWidgetUtils.getCodeserver().
     * Add new method AbstractWidgetUtils.setFocusAfterDisplay(Focusable)
     * Add setFocus() methods on AbstractWidgetUtils as aliases for setFocusOnDiplay().
+    * Fix the nested tab implementation so it's possible replace nested tabs just like other tabs.
+      - Add new class ModuleNestedTabPanelPresenter with different replaceModuleBody()
+      - Add new method IModuleTabView.setContext() and deprecate the old version
+      - Add new method IModuleTabView.getParentView(), tied to new setContext method()
+      - Update ModuleTabView, ModuleTabPanelView, and ModuleNestedTabPanelView for new getContext()
 
 Version 5.4.0   25 Sep 2015
 
