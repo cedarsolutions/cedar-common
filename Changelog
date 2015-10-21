@@ -1,4 +1,4 @@
-Version 5.5.0   unreleased
+Version 5.5.0   20 Oct 2015
 
     * Fix isEnabled() and setEnabled() on the UTCTimeBox and UTCDateBox widgets.
     * Add new method AbstractWidgetUtils.getWidget().
