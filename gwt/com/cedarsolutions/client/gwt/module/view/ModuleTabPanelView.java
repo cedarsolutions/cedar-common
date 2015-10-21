@@ -57,7 +57,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
     protected void addTab(IModuleTabView view, String viewName, String title) {
         this.getTabPanel().add(view.getViewWidget(), viewName, title);
         int tabIndex = this.getTabPanel().getWidgetCount() - 1;  // tab index for events is zero-based
-        view.setContext(this.getTabPanel(), tabIndex);
+        view.setContext(this, tabIndex);
     }
 
     /**
@@ -70,7 +70,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
      */
     protected void addTab(IModuleTabView view, String viewName, String title, int tabIndex) {
         int actual = this.getTabPanel().add(view.getViewWidget(), viewName, title, tabIndex);
-        view.setContext(this.getTabPanel(), actual);
+        view.setContext(this, actual);
         view.enableTab();
     }
 
