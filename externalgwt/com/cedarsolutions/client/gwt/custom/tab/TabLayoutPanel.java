@@ -796,6 +796,7 @@ public boolean remove(Widget w) {
   public void selectTab(int index, boolean fireEvents) {
     checkIndex(index);
     if (index == selectedIndex) {
+      tabs.get(selectedIndex).setSelected(true);  // sometimes, it seems to get visually de-selected
       return;
     }
 

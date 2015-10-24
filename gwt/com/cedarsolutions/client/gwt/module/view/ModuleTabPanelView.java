@@ -98,10 +98,21 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
      * Select the tab that displays the passed-in view.
      * @param view  View whose tab to select
      */
-    protected void selectTabForView(IModuleTabView view) {
+    @Override
+    public void selectTabForView(IModuleTabView view) {
+        this.selectTabForView(view, true);
+    }
+
+    /**
+     * Select the tab that displays the passed-in view.
+     * @param view       View whose tab to select
+     * @param fireEvents Whether to fire events, such as result in history tokens
+     */
+    @Override
+    public void selectTabForView(IModuleTabView view, boolean fireEvents) {
         int index = this.getTabPanel().getWidgetIndex(view.getViewWidget());
         if (index >= 0) {
-            this.getTabPanel().selectTab(index);
+            this.getTabPanel().selectTab(index, fireEvents);
         }
     }
 

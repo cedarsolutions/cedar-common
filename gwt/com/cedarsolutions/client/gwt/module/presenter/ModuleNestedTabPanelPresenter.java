@@ -53,4 +53,12 @@ public abstract class ModuleNestedTabPanelPresenter<V extends IModuleTabView, E 
         }
     }
 
+    /** Select this tab via its parent view, without adding history. */
+    protected void selectThisTab() {
+        // We can't select a sub-tab unless it's already visible.  So, in order
+        // to go to a bookmark of a sub-tab, the parent tab must be selected first.
+        // We also need to avoid firing events, otherwise extra steps end up in history.
+        this.getView().getParentView().selectTabForView(this.getView(), false);
+    }
+
 }
