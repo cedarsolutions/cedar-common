@@ -1,4 +1,4 @@
-Version 5.6.0   unreleased
+Version 5.6.0   23 Oct 2015
 
     * Fix several problems with nested tab history and bookmarks.
       - Expose selectTabForView() in the IModuleTabPanelView interface
