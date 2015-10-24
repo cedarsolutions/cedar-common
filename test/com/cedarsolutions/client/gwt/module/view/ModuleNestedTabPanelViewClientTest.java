@@ -156,7 +156,9 @@ public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
     public void testSetContext() {
         ConcreteModuleNestedTabPanelView view = new ConcreteModuleNestedTabPanelView();
         TabLayoutPanel parentPanel = new TabLayoutPanel(10, Unit.CM);
-        view.setContext(parentPanel, 1);
+        ConcreteModuleTabPanelView parentView = new ConcreteModuleTabPanelView(parentPanel);
+        view.setContext(parentView, 1);
+        assertSame(parentView, view.getParentView());
         assertSame(parentPanel, view.getParentPanel());
         assertEquals(1, view.getTabIndex());
         // unfortunately, can't verify that the selection handler was set properly
@@ -177,6 +179,20 @@ public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
 
         public void setElementId(String elementId) {
             this.tabPanel.setElementId(elementId);
+        }
+    }
+
+    /** Concrete class that we can test with. */
+    private static class ConcreteModuleTabPanelView extends ModuleTabPanelView {
+        private TabLayoutPanel tabPanel;
+
+        public ConcreteModuleTabPanelView(TabLayoutPanel tabPanel) {
+            this.tabPanel = tabPanel;
+        }
+
+        @Override
+        public TabLayoutPanel getTabPanel() {
+            return this.tabPanel;
         }
     }
 
