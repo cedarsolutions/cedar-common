@@ -42,7 +42,8 @@ public class TabSelectionHandlerClientTest extends ClientTestCase {
 
         ConcreteModuleTabView view = new ConcreteModuleTabView();
         TabLayoutPanel parentPanel = new TabLayoutPanel(10, Unit.CM);
-        view.setContext(parentPanel, 1);
+        ConcreteModuleTabPanelView parentView = new ConcreteModuleTabPanelView(parentPanel);
+        view.setContext(parentView, 1);
         view.setInitializationEventHandler(initHandler);
         view.setSelectedEventHandler(selectedHandler);
 
@@ -86,6 +87,21 @@ public class TabSelectionHandlerClientTest extends ClientTestCase {
 
     /** Concrete class that we can test with. */
     private static class ConcreteModuleTabView extends ModuleTabView {
+    }
+
+
+    /** Concrete class that we can test with. */
+    private static class ConcreteModuleTabPanelView extends ModuleTabPanelView {
+        private TabLayoutPanel tabPanel;
+
+        public ConcreteModuleTabPanelView(TabLayoutPanel tabPanel) {
+            this.tabPanel = tabPanel;
+        }
+
+        @Override
+        public TabLayoutPanel getTabPanel() {
+            return this.tabPanel;
+        }
     }
 
     /** Handler that we can use for testing. */
