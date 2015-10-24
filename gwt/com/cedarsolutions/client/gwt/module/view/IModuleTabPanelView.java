@@ -33,4 +33,17 @@ public interface IModuleTabPanelView extends IModulePageView {
     /** Get the underlying tab panel. */
     TabLayoutPanel getTabPanel();
 
+    /**
+     * Select the tab that displays the passed-in view.
+     * @param view  View whose tab to select
+     */
+    void selectTabForView(IModuleTabView view);
+
+    /**
+     * Select the tab that displays the passed-in view.
+     * @param view       View whose tab to select
+     * @param fireEvents Whether to fire events, like those that result in history tokens
+     */
+    void selectTabForView(IModuleTabView view, boolean fireEvents);
+
 }
