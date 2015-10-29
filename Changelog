@@ -1,3 +1,7 @@
+Version 5.6.1   unreleased
+
+    * Improve the toString() output for ValidationErrors and InvalidDataException.
+
 Version 5.6.0   23 Oct 2015
 
     * Fix several problems with nested tab history and bookmarks.

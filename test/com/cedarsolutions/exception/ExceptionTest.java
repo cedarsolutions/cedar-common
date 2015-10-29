@@ -509,106 +509,129 @@ public class ExceptionTest {
     /** Test InvalidDataException. */
     @Test public void testInvalidDataException() {
         Throwable cause = new Exception("cause");
+
         ValidationErrors details = new ValidationErrors();
+        details.setSummary(new LocalizableMessage("key", "context", "text"));
+        details.addMessage("key1", "text1");
+        details.addMessage("key2", "context", "text2");
+
         LocalizableMessage message = new LocalizableMessage("whatever");
 
         try {
             throw new InvalidDataException();
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException";
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals(null, e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), (String) null);
             assertNull(e.getCause());
             assertFalse(e.hasDetails());
             assertNull(e.getDetails());
+            assertEquals(expected, e.toString());
         }
 
         try {
             throw new InvalidDataException("error");
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException: error";
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertNull(e.getCause());
             assertFalse(e.hasDetails());
             assertNull(e.getDetails());
+            assertEquals(expected, e.toString());
         }
 
         try {
             throw new InvalidDataException(message);
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException: whatever";
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertNull(e.getCause());
             assertFalse(e.hasDetails());
             assertNull(e.getDetails());
+            assertEquals(expected, e.toString());
         }
 
         try {
             throw new InvalidDataException("error", cause);
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException: error";
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertSame(cause, e.getCause());
             assertFalse(e.hasDetails());
             assertNull(e.getDetails());
+            assertEquals(expected, e.toString());
         }
 
         try {
             throw new InvalidDataException(message, cause);
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException: whatever";
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertSame(cause, e.getCause());
             assertFalse(e.hasDetails());
             assertNull(e.getDetails());
+            assertEquals(expected, e.toString());
         }
 
         try {
             throw new InvalidDataException("error", details);
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException: error" + "\n" + details.toString();
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertNull(e.getCause());
             assertTrue(e.hasDetails());
             assertSame(details, e.getDetails());
+            assertEquals(expected, e.toString());
         }
 
         try {
             throw new InvalidDataException("error", details, cause);
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException: error" + "\n" + details.toString();
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals("error", e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), "error");
             assertSame(cause, e.getCause());
             assertTrue(e.hasDetails());
             assertSame(details, e.getDetails());
+            assertEquals(expected, e.toString());
         }
 
         try {
             throw new InvalidDataException(message, details);
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException: whatever" + "\n" + details.toString();
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertNull(e.getCause());
             assertTrue(e.hasDetails());
             assertSame(details, e.getDetails());
+            assertEquals(expected, e.toString());
         }
 
         try {
             throw new InvalidDataException(message, details, cause);
         } catch (InvalidDataException e) {
+            String expected = "com.cedarsolutions.exception.InvalidDataException: whatever" + "\n" + details.toString();
             assertTrue(e instanceof CedarRuntimeException);
             assertEquals(message.getText(), e.getMessage());
             assertMessageValues(e.getLocalizableMessage(), message);
             assertSame(cause, e.getCause());
             assertTrue(e.hasDetails());
             assertSame(details, e.getDetails());
+            assertEquals(expected, e.toString());
         }
     }
 

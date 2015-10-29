@@ -133,4 +133,34 @@ public class ValidationErrors extends TranslatableDomainObject {
                     .append(this.messages)
                     .toHashCode();
     }
+
+    /** Get a string representation of the validation errors. */
+    @Override
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+
+        if (this.summary != null && !isEmpty(this.summary.getText())) {
+            string.append(this.summary.getText());
+            string.append("\n");
+        }
+
+        if (this.messages != null && !this.messages.isEmpty()) {
+            for (LocalizableMessage message : this.messages) {
+                if (message != null && !isEmpty(message.getText())) {
+                    string.append(" - ");
+                    string.append(message.getText());
+                    string.append("\n");
+                }
+            }
+        }
+
+        return string.toString();
+    }
+
+    /** Check whether a string is empty. */
+    // This is reimplemented because we want the code to be translatable, and StringUtils is not.
+    private static boolean isEmpty(String value) {
+        return value == null || value.trim().length() == 0;
+    }
+
 }

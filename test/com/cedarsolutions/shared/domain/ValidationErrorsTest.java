@@ -145,6 +145,18 @@ public class ValidationErrorsTest {
         assertEquals("text2", errors.getMessages().get(2).getText());
     }
 
+    /** Test the toString() method. */
+    @Test public void testToString() {
+        ValidationErrors errors = new ValidationErrors();
+        errors.setSummary(new LocalizableMessage("key", "context", "text"));
+        errors.addMessage("key1", "text1");
+        errors.addMessage("key2", "context", "text2");
+
+        String expected = "text" + "\n" + " - text1" + "\n" + " - text2" + "\n";
+        String actual = errors.toString();
+        assertEquals(expected, actual);
+    }
+
     /** Test equals(). */
     @Test public void testEquals() {
         ValidationErrors errors1;
