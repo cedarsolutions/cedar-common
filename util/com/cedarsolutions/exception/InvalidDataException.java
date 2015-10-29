@@ -72,6 +72,19 @@ public class InvalidDataException extends CedarRuntimeException {
         this.details = details;
     }
 
+    @Override
+    public String toString() {
+        if (this.hasDetails()) {
+            StringBuilder string = new StringBuilder();
+            string.append(super.toString());
+            string.append("\n");
+            string.append(this.getDetails().toString());
+            return string.toString();
+        } else {
+            return super.toString();
+        }
+    }
+
     public boolean hasDetails() {
         return this.details != null;
     }
