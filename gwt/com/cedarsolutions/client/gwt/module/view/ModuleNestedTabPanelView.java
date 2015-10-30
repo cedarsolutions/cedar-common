@@ -51,7 +51,7 @@ import com.cedarsolutions.client.gwt.handler.AbstractViewEventHandler;
  *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implements IModuleTabView {
+public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implements IModuleNestedTabPanelView {
 
     /** Parent tab panel view. */
     private IModuleTabPanelView parentView;
@@ -72,11 +72,26 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
     private ViewEventHandler selectedEventHandler;
 
     /** Save off the "before selection" handler, so we can manipulate it. */
-    private TabSelectionHandler beforeSelectionHandler;
+    private NestedTabSelectionHandler beforeSelectionHandler;
+
+    /** The select default nested tab event handler. */
+    private ViewEventHandler selectDefaultNestedTabHandler;
 
     /** Default constructor. */
     protected ModuleNestedTabPanelView() {
         this.setInitializationEventHandler(new ModuleNestedTabPanelInitializationHandler(this));
+    }
+
+    /** Get the select default nested tab handler. */
+    @Override
+    public ViewEventHandler getSelectDefaultNestedTabHandler() {
+        return this.selectDefaultNestedTabHandler;
+    }
+
+    /** Set the selected event handler. */
+    @Override
+    public void setSelectDefaultNestedTabHandler(ViewEventHandler selectDefaultNestedTabHandler) {
+        this.selectDefaultNestedTabHandler = selectDefaultNestedTabHandler;
     }
 
     /**
@@ -101,7 +116,7 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
     public void setContext(TabLayoutPanel parentPanel, int tabIndex) {
         this.parentPanel = parentPanel;
         this.tabIndex = tabIndex;
-        this.beforeSelectionHandler = new TabSelectionHandler(this);
+        this.beforeSelectionHandler = new NestedTabSelectionHandler(this);
         this.parentPanel.addBeforeSelectionHandler(this.beforeSelectionHandler);
     }
 
