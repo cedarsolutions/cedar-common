@@ -39,6 +39,15 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
     /** The resize handler that is in use, if any. */
     protected com.cedarsolutions.client.gwt.module.view.TabPanelResizeHandler resizeHandler = null;
 
+    /** The tab that is currently selected on the panel. */
+    protected IModuleTabView selectedTabView;
+
+    /** Get the tab that is currently selected on the panel. */
+    @Override
+    public IModuleTabView getSelectedTabView() {
+        return this.selectedTabView;
+    }
+
     /**
      * Add a new tab to the tab panel, with no view name.
      * @param view     View to use as tab contents
@@ -113,6 +122,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
         int index = this.getTabPanel().getWidgetIndex(view.getViewWidget());
         if (index >= 0) {
             this.getTabPanel().selectTab(index, fireEvents);
+            this.selectedTabView = view;
         }
     }
 
@@ -146,6 +156,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
 
         this.addTab(view, viewName, title);
         view.selectTab();  // simulates the act of the user clicking on the tab
+        this.selectedTabView = view;
     }
 
     /**
@@ -186,6 +197,8 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
                 this.getTabPanel().selectTab(tabIndex);
             }
         }
+
+        this.selectedTabView = view;
     }
 
     /**

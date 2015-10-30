@@ -6,7 +6,7 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  *
- * Copyright (c) 2013,2015 Kenneth J. Pronovici.
+ * Copyright (c) 2015 Kenneth J. Pronovici.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or
@@ -22,31 +22,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 package com.cedarsolutions.client.gwt.module.view;
 
-import com.cedarsolutions.client.gwt.custom.tab.TabLayoutPanel;
+import com.cedarsolutions.client.gwt.event.ViewEventHandler;
 
 /**
- * Specialized page that holds a set of tabs on a tab layout panel.
+ * An interface that all nested tab panel views implement.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public interface IModuleTabPanelView extends IModulePageView {
+public interface IModuleNestedTabPanelView extends IModuleTabView, IModuleTabPanelView {
 
-    /** Get the tab that is currently selected on the panel. */
-    IModuleTabView getSelectedTabView();
+    /** Get the select default nested tab handler. */
+    ViewEventHandler getSelectDefaultNestedTabHandler();
 
-    /** Get the underlying tab panel. */
-    TabLayoutPanel getTabPanel();
-
-    /**
-     * Select the tab that displays the passed-in view.
-     * @param view  View whose tab to select
-     */
-    void selectTabForView(IModuleTabView view);
-
-    /**
-     * Select the tab that displays the passed-in view.
-     * @param view       View whose tab to select
-     * @param fireEvents Whether to fire events, like those that result in history tokens
-     */
-    void selectTabForView(IModuleTabView view, boolean fireEvents);
+    /** Set the selected event handler. */
+    void setSelectDefaultNestedTabHandler(ViewEventHandler selectDefaultNestedTabHandler);
 
 }

@@ -30,8 +30,8 @@ import static org.mockito.Mockito.when;
 import org.junit.Test;
 
 import com.cedarsolutions.client.gwt.module.ModuleEventBus;
+import com.cedarsolutions.client.gwt.module.view.IModuleNestedTabPanelView;
 import com.cedarsolutions.client.gwt.module.view.IModuleTabPanelView;
-import com.cedarsolutions.client.gwt.module.view.IModuleTabView;
 import com.cedarsolutions.junit.gwt.StubbedClientTestCase;
 import com.google.gwt.user.client.ui.IsWidget;
 
@@ -70,7 +70,7 @@ public class ModuleNestedTabPanelPresenterTest extends StubbedClientTestCase {
     }
 
     /** Concrete class that we can use for testing. */
-    private static class ConcreteModuleNestedTabPanelPresenter extends ModuleNestedTabPanelPresenter<IModuleTabView, TestEventBus> {
+    private static class ConcreteModuleNestedTabPanelPresenter extends ModuleNestedTabPanelPresenter<IModuleNestedTabPanelView, TestEventBus> {
     }
 
     /** Event bus that we can test with. */
@@ -78,7 +78,7 @@ public class ModuleNestedTabPanelPresenterTest extends StubbedClientTestCase {
     }
 
     /** View interface that we can test with. */
-    private interface ITestView extends IModuleTabView {
+    private interface ITestView extends IModuleNestedTabPanelView {
     }
 
 }

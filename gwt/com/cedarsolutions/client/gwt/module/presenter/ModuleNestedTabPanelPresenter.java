@@ -23,7 +23,7 @@
 package com.cedarsolutions.client.gwt.module.presenter;
 
 import com.cedarsolutions.client.gwt.module.ModuleEventBus;
-import com.cedarsolutions.client.gwt.module.view.IModuleTabView;
+import com.cedarsolutions.client.gwt.module.view.IModuleNestedTabPanelView;
 
 /**
  * Abstract presenter that understands how to render a nested tab panel view.
@@ -41,7 +41,7 @@ import com.cedarsolutions.client.gwt.module.view.IModuleTabView;
  *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
-public abstract class ModuleNestedTabPanelPresenter<V extends IModuleTabView, E extends ModuleEventBus> extends ModulePagePresenter<V, E> {
+public abstract class ModuleNestedTabPanelPresenter<V extends IModuleNestedTabPanelView, E extends ModuleEventBus> extends ModulePagePresenter<V, E> {
 
     /** Render the configured view via the replaceModuleBody event. */
     @Override
