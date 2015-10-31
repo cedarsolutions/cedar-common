@@ -56,6 +56,9 @@ public class TabSelectionHandler implements BeforeSelectionHandler<Integer> {
         if (this.enabled) {
             if (tabIndex == this.view.getTabIndex()) {
                 this.view.selectTab();
+                if (this.view.getParentView() != null) {
+                    this.view.getParentView().setSelectedTabView(view);
+                }
             }
         }
     }

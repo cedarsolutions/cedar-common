@@ -23,9 +23,7 @@
 package com.cedarsolutions.client.gwt.module.view;
 
 import com.cedarsolutions.client.gwt.custom.tab.TabLayoutPanel;
-import com.cedarsolutions.client.gwt.event.UnifiedEvent;
 import com.cedarsolutions.client.gwt.event.ViewEventHandler;
-import com.cedarsolutions.client.gwt.handler.AbstractViewEventHandler;
 
 /**
  * A ModuleTabPanelView that is also itself a ModuleTabView.
@@ -79,7 +77,6 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
 
     /** Default constructor. */
     protected ModuleNestedTabPanelView() {
-        this.setInitializationEventHandler(new ModuleNestedTabPanelInitializationHandler(this));
     }
 
     /** Get the select default nested tab handler. */
@@ -202,18 +199,6 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
     @Override
     public void selectTab() {
         ModuleTabUtils.selectTab(this);
-    }
-
-    /** Initialization handler for nested tab panels. */
-    public static class ModuleNestedTabPanelInitializationHandler extends AbstractViewEventHandler<ModuleNestedTabPanelView> {
-        public ModuleNestedTabPanelInitializationHandler(ModuleNestedTabPanelView parent) {
-            super(parent);
-        }
-
-        @Override
-        public void handleEvent(UnifiedEvent event) {
-            ModuleTabUtils.initializeAllTabs(this.getParent());
-        }
     }
 
 }

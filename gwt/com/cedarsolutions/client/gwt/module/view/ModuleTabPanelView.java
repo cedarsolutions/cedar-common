@@ -48,6 +48,12 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
         return this.selectedTabView;
     }
 
+    /** Set the tab that is currently selected on the panel. */
+    @Override
+    public void setSelectedTabView(IModuleTabView selectedTabView) {
+        this.selectedTabView = selectedTabView;
+    }
+
     /** Get the history token for the nested view that is currently selected. */
     @Override
     public String getSelectedHistoryToken() {
@@ -127,8 +133,9 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
     public void selectTabForView(IModuleTabView view, boolean fireEvents) {
         int index = this.getTabPanel().getWidgetIndex(view.getViewWidget());
         if (index >= 0) {
+            ModuleTabUtils.initializeTab(view);
             this.getTabPanel().selectTab(index, fireEvents);
-            this.selectedTabView = view;
+            this.setSelectedTabView(view);
         }
     }
 
@@ -162,7 +169,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
 
         this.addTab(view, viewName, title);
         view.selectTab();  // simulates the act of the user clicking on the tab
-        this.selectedTabView = view;
+        this.setSelectedTabView(view);
     }
 
     /**
@@ -173,6 +180,9 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
      * @param tabIndex Index of the tab to replace.
      */
     protected void replaceTabWithView(IModuleTabView view, String viewName, String title, int tabIndex) {
+        // Initialize the tab view, in case it hasn't been done already
+        ModuleTabUtils.initializeTab(view);
+
         // Deselect all existing tabs.  If we don't do this, going to a
         // bookmark at initial login leaves the very first tab highlighted
         // along with the one that was selected by the bookmark.  The oldTab
@@ -204,7 +214,7 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
             }
         }
 
-        this.selectedTabView = view;
+        this.setSelectedTabView(view);
     }
 
     /**

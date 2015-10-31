@@ -30,6 +30,9 @@ import com.cedarsolutions.client.gwt.custom.tab.TabLayoutPanel;
  */
 public interface IModuleTabPanelView extends IModulePageView {
 
+    /** Set the tab that is currently selected on the panel. */
+    void setSelectedTabView(IModuleTabView selectedTabView);
+
     /** Get the tab that is currently selected on the panel. */
     IModuleTabView getSelectedTabView();
 
