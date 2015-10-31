@@ -30,10 +30,10 @@ import com.cedarsolutions.client.gwt.event.ViewEventHandler;
  */
 public interface IModuleNestedTabPanelView extends IModuleTabView, IModuleTabPanelView {
 
-    /** Get the select default nested tab handler. */
+    /** Get the handler that selects the default nested tab. */
     ViewEventHandler getSelectDefaultNestedTabHandler();
 
-    /** Set the selected event handler. */
+    /** Set the handler that selects the default nested tab. */
     void setSelectDefaultNestedTabHandler(ViewEventHandler selectDefaultNestedTabHandler);
 
 }

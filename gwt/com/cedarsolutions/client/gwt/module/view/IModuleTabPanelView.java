@@ -33,6 +33,9 @@ public interface IModuleTabPanelView extends IModulePageView {
     /** Get the tab that is currently selected on the panel. */
     IModuleTabView getSelectedTabView();
 
+    /** Get the history token for the nested view that is currently selected. */
+    String getSelectedHistoryToken();
+
     /** Get the underlying tab panel. */
     TabLayoutPanel getTabPanel();
 

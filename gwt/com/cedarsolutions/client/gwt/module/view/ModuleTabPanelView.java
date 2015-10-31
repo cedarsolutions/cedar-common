@@ -48,6 +48,12 @@ public abstract class ModuleTabPanelView extends ModulePageView implements IModu
         return this.selectedTabView;
     }
 
+    /** Get the history token for the nested view that is currently selected. */
+    @Override
+    public String getSelectedHistoryToken() {
+        return this.selectedTabView == null ? null : this.selectedTabView.getHistoryToken();
+    }
+
     /**
      * Add a new tab to the tab panel, with no view name.
      * @param view     View to use as tab contents
