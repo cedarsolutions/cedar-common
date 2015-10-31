@@ -1,12 +1,12 @@
-Version 5.7.0   unreleased
+Version 5.7.0   30 Oct 2015
 
     * Improve the toString() output for ValidationErrors and InvalidDataException.
     * Make more improvements to nested tab history and bookmarks.
       - Get rid of initialization handler in ModuleNestedTabPanelView
       - Move tab initialization into ModuleTabPanelView, closer to when it's needed.
       - Nested tab panels must now implement IModuleNestedTabPanelView
+      - Implement mechanism on IModuleTabPanelView to better manage selected tab state
       - Add new NestedTabSelectionHandler specific to ModuleNestedTabPanelView
-      - Implement mechanism on IModuleTabPanelView to better track selected tab state
 
 Version 5.6.0   23 Oct 2015
 
