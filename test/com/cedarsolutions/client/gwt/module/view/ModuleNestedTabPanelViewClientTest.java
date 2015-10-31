@@ -24,7 +24,6 @@ package com.cedarsolutions.client.gwt.module.view;
 
 import com.cedarsolutions.client.gwt.custom.tab.TabLayoutPanel;
 import com.cedarsolutions.client.gwt.junit.ClientTestCase;
-import com.cedarsolutions.client.gwt.module.view.ModuleNestedTabPanelView.ModuleNestedTabPanelInitializationHandler;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.Label;
 
@@ -42,7 +41,7 @@ public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
         assertNull(view.getParentPanel());
         assertEquals(0, view.getTabIndex());
         assertFalse(view.isInitialized());
-        assertTrue(view.getInitializationEventHandler() instanceof ModuleNestedTabPanelInitializationHandler);
+        assertNull(view.getInitializationEventHandler());
         assertNull(view.getSelectedEventHandler());
     }
 

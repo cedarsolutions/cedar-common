@@ -54,14 +54,6 @@ public class ModuleTabUtils {
         }
     }
 
-    /** Initialize all tabs associated with a module tab view, if necessary. */
-    public static void initializeAllTabs(IModuleTabPanelView view) {
-        for (int i = 0; i < view.getTabPanel().getWidgetCount(); i++) {
-            IModuleTabView tab = (IModuleTabView) view.getTabPanel().getWidget(i);
-            initializeTab(tab);
-        }
-    }
-
     /** Select a tab view, as if the normal BeforeSelectionHandler was invoked. */
     public static void selectTab(IModuleTabView view) {
         initializeTab(view);
@@ -75,6 +67,10 @@ public class ModuleTabUtils {
 
         if (view.getHistoryToken() != null) {
             History.newItem(view.getHistoryToken(), false);
+        }
+
+        if (view.getParentView() != null) {
+            view.getParentView().setSelectedTabView(view);
         }
     }
 
