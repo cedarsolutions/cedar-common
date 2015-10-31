@@ -74,7 +74,7 @@ public abstract class ModuleNestedTabPanelView extends ModuleTabPanelView implem
     /** Save off the "before selection" handler, so we can manipulate it. */
     private NestedTabSelectionHandler beforeSelectionHandler;
 
-    /** The select default nested tab event handler. */
+    /** The handler that selects the default nested tab. */
     private ViewEventHandler selectDefaultNestedTabHandler;
 
     /** Default constructor. */
