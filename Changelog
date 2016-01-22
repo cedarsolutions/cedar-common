@@ -1,4 +1,4 @@
-Version 5.8.1   unreleased
+Version 5.8.1   22 Jan 2016
 
     * Bump up to CedarBuild v0.9.6, just to stay up-to-date.
     * Implement FilesystemUtils.moveFile() and equivalent method on IFilesystemService.
