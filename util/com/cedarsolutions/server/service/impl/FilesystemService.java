@@ -131,6 +131,28 @@ public class FilesystemService extends AbstractService implements IFilesystemSer
     }
 
     /**
+     * Move a file, overwriting the target if it exists.
+     * @param sourceFilePath  Source file path
+     * @param targetFilePath  Target file path
+     * @throws CedarRuntimeException If there is a problem with the filesystem operation.
+     */
+    @Override
+    public void moveFile(String sourceFilePath, String targetFilePath) {
+        FilesystemUtils.moveFile(sourceFilePath, targetFilePath);
+    }
+
+    /**
+     * Move a file, overwriting the target if it exists.
+     * @param sourceFile  Source file
+     * @param targetFile  Target file
+     * @throws CedarRuntimeException If there is a problem with the filesystem operation.
+     */
+    @Override
+    public void moveFile(File sourceFile, File targetFile) {
+        FilesystemUtils.moveFile(sourceFile, sourceFile);
+    }
+
+    /**
      * Create a file in an existing directory.
      * @param filePath  Path of the file to create
      * @throws CedarRuntimeException If there is a problem with the filesystem operation.

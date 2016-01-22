@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -200,6 +201,32 @@ public class FilesystemUtils {
             close(sourceChannel);
             close(targetStream);
             close(sourceStream);
+        }
+    }
+
+    /**
+     * Move a file, overwriting the target if it exists.
+     * @param sourceFilePath  Source file path
+     * @param targetFilePath  Target file path
+     * @throws CedarRuntimeException If there is a problem with the filesystem operation.
+     */
+    public static void moveFile(String sourceFilePath, String targetFilePath) {
+        File sourceFile = new File(sourceFilePath);
+        File targetFile = new File(targetFilePath);
+        moveFile(sourceFile, targetFile);
+    }
+
+    /**
+     * Move a file, overwriting the target if it exists.
+     * @param sourceFile  Source file
+     * @param targetFile  Target file
+     * @throws CedarRuntimeException If there is a problem with the filesystem operation.
+     */
+    public static void moveFile(File sourceFile, File targetFile) {
+        try {
+            FileUtils.moveFile(sourceFile, targetFile);
+        } catch (IOException e) {
+            throw new CedarRuntimeException("Failed to move file: " + e.getMessage(), e);
         }
     }
 
