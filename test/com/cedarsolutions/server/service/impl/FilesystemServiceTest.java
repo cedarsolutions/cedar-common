@@ -397,6 +397,7 @@ public class FilesystemServiceTest {
         getService().writeFileContents("target/working/file.txt", sourceLines);
         getService().copyFile("target/working/file.txt", "target/working/copy.txt");
 
+        assertTrue(getService().fileExists("target/working/file.txt"));
         assertTrue(getService().fileExists("target/working/copy.txt"));
 
         List<String> resultLines = getService().getFileContents("target/working/copy.txt");
@@ -409,6 +410,35 @@ public class FilesystemServiceTest {
 
         getService().removeFile("target/working/file.txt");
         getService().removeFile("target/working/copy.txt");
+    }
+
+    /** Test the moveFile() method. */
+    @Test public void testMoveFile() throws Exception {
+        assertFalse(getService().fileExists("target/working/file.txt"));
+        assertFalse(getService().fileExists("target/working/replacement.txt"));
+
+        List<String> sourceLines = new ArrayList<String>();
+        sourceLines.add("LINE1");
+        sourceLines.add("LINE2");
+        sourceLines.add("LINE3");
+        sourceLines.add("LINE4");
+
+        getService().writeFileContents("target/working/file.txt", sourceLines);
+        getService().moveFile("target/working/file.txt", "target/working/replacement.txt");
+
+        assertFalse(getService().fileExists("target/working/file.txt"));
+        assertTrue(getService().fileExists("target/working/replacement.txt"));
+
+        List<String> resultLines = getService().getFileContents("target/working/replacement.txt");
+        assertNotNull(resultLines);
+        assertEquals(4, resultLines.size());
+        assertEquals("LINE1", resultLines.get(0));
+        assertEquals("LINE2", resultLines.get(1));
+        assertEquals("LINE3", resultLines.get(2));
+        assertEquals("LINE4", resultLines.get(3));
+
+        getService().removeFile("target/working/file.txt");
+        getService().removeFile("target/working/replacement.txt");
     }
 
     /** Test the copyFileToDir() method. */

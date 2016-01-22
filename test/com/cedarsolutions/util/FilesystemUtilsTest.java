@@ -395,6 +395,7 @@ public class FilesystemUtilsTest {
         FilesystemUtils.writeFileContents("target/working/file.txt", sourceLines);
         FilesystemUtils.copyFile("target/working/file.txt", "target/working/copy.txt");
 
+        assertTrue(FilesystemUtils.fileExists("target/working/file.txt"));
         assertTrue(FilesystemUtils.fileExists("target/working/copy.txt"));
 
         List<String> resultLines = FilesystemUtils.getFileContents("target/working/copy.txt");
@@ -407,6 +408,35 @@ public class FilesystemUtilsTest {
 
         FilesystemUtils.removeFile("target/working/file.txt");
         FilesystemUtils.removeFile("target/working/copy.txt");
+    }
+
+    /** Test the moveFile() method. */
+    @Test public void testMoveFile() throws Exception {
+        assertFalse(FilesystemUtils.fileExists("target/working/file.txt"));
+        assertFalse(FilesystemUtils.fileExists("target/working/replacement.txt"));
+
+        List<String> sourceLines = new ArrayList<String>();
+        sourceLines.add("LINE1");
+        sourceLines.add("LINE2");
+        sourceLines.add("LINE3");
+        sourceLines.add("LINE4");
+
+        FilesystemUtils.writeFileContents("target/working/file.txt", sourceLines);
+        FilesystemUtils.moveFile("target/working/file.txt", "target/working/replacement.txt");
+
+        assertFalse(FilesystemUtils.fileExists("target/working/file.txt"));
+        assertTrue(FilesystemUtils.fileExists("target/working/replacement.txt"));
+
+        List<String> resultLines = FilesystemUtils.getFileContents("target/working/replacement.txt");
+        assertNotNull(resultLines);
+        assertEquals(4, resultLines.size());
+        assertEquals("LINE1", resultLines.get(0));
+        assertEquals("LINE2", resultLines.get(1));
+        assertEquals("LINE3", resultLines.get(2));
+        assertEquals("LINE4", resultLines.get(3));
+
+        FilesystemUtils.removeFile("target/working/file.txt");
+        FilesystemUtils.removeFile("target/working/replacement.txt");
     }
 
     /** Test the copyFileToDir() method. */

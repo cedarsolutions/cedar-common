@@ -97,6 +97,22 @@ public interface IFilesystemService {
      */
      void copyFile(File sourceFile, File targetFile);
 
+     /**
+      * Move a file, overwriting the target if it exists.
+      * @param sourceFilePath  Source file path
+      * @param targetFilePath  Target file path
+      * @throws CedarRuntimeException If there is a problem with the filesystem operation.
+      */
+     void moveFile(String sourceFilePath, String targetFilePath);
+
+     /**
+      * Move a file, overwriting the target if it exists.
+      * @param sourceFile  Source file
+      * @param targetFile  Target file
+      * @throws CedarRuntimeException If there is a problem with the filesystem operation.
+      */
+     void moveFile(File sourceFile, File targetFile);
+
     /**
      * Create a file in an existing directory.
      * @param filePath  Path of the file to create
