@@ -1,5 +1,6 @@
 Version 5.8.2   unreleased
 
+    * Bump up to CedarBuild v0.9.7, just to stay up-to-date.
     * Adjust build.gradle so the Java source/target compatibility actually works.
 
 Version 5.8.1   22 Jan 2016
