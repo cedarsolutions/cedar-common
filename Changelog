@@ -1,4 +1,4 @@
-Version 4.12.1   unreleased
+Version 4.12.1   21 Apr 2016
 
     * Bump up to CedarBuild v0.9.7, just to stay up-to-date.
     * Adjust build.gradle so the Java source/target compatibility actually works.
