@@ -45,7 +45,7 @@ buildscript {
 // See: http://stackoverflow.com/questions/21028438
 allprojects {
     apply plugin: 'java'
-    sourceCompatibility = JavaVersion.VERSION_1_6    // because GWT 2.5.1 does not support Java 7
+    sourceCompatibility = JavaVersion.VERSION_1_6    // because GWT 2.7.x does not support Java 7
     targetCompatibility = JavaVersion.VERSION_1_6    // to be as easy-to-use as possible for other projects
 }
 
