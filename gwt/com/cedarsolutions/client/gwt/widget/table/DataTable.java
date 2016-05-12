@@ -395,6 +395,7 @@ public class DataTable<T> extends CellTable<T> {
         }
 
         public void setSelectionType(SelectionType selectionType) {
+            this.selected = false;
             this.selectionModel.setSelectionType(selectionType);
             this.refreshCheckboxState();
         }
