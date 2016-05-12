@@ -1,3 +1,7 @@
+Version 5.8.3   unreleased
+
+    * Fix bug in DataTable.SelectionHeader so checkbox is always reset to unchecked.
+
 Version 5.8.2   20 Apr 2016
 
     * Bump up to CedarBuild v0.9.7, just to stay up-to-date.
