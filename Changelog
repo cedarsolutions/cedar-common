@@ -1,3 +1,7 @@
+Version 5.8.4   unreleased
+
+    * Add AbstractDropdownList.isDropdownKeyKnown() and isDropdownItemKnown().
+
 Version 5.8.3   12 May 2016
 
     * Fix bug in DataTable.SelectionHeader so checkbox is always reset to unchecked.

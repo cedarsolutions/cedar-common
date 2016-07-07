@@ -35,10 +35,19 @@ public class AbstractDropdownListClientTest extends ClientTestCase {
         IntegerList list = new IntegerList();
         assertNotNull(list);
         assertEquals(2, list.getItemCount());
+
         assertEquals("1", list.getValue(0));
         assertEquals("1", list.getItemText(0));
         assertEquals("2", list.getValue(1));
         assertEquals("2", list.getItemText(1));
+
+        assertFalse(list.isDropdownKeyKnown(null));
+        assertFalse(list.isDropdownKeyKnown(""));
+        assertFalse(list.isDropdownItemKnown(null));
+        assertTrue(list.isDropdownKeyKnown("1"));
+        assertTrue(list.isDropdownItemKnown(1));
+        assertTrue(list.isDropdownKeyKnown("2"));
+        assertTrue(list.isDropdownItemKnown(2));
     }
 
     /** Test the constructor for StringList. */
@@ -46,10 +55,19 @@ public class AbstractDropdownListClientTest extends ClientTestCase {
         StringList list = new StringList();
         assertNotNull(list);
         assertEquals(2, list.getItemCount());
+
         assertEquals("1", list.getValue(0));
         assertEquals("1", list.getItemText(0));
         assertEquals("2", list.getValue(1));
         assertEquals("2", list.getItemText(1));
+
+        assertFalse(list.isDropdownKeyKnown(null));
+        assertFalse(list.isDropdownKeyKnown(""));
+        assertFalse(list.isDropdownItemKnown(null));
+        assertTrue(list.isDropdownKeyKnown("1"));
+        assertTrue(list.isDropdownItemKnown("1"));
+        assertTrue(list.isDropdownKeyKnown("2"));
+        assertTrue(list.isDropdownItemKnown("2"));
     }
 
     /** Test the constructor for ComplicatedList. */
@@ -57,12 +75,21 @@ public class AbstractDropdownListClientTest extends ClientTestCase {
         ComplicatedList list = new ComplicatedList();
         assertNotNull(list);
         assertEquals(3, list.getItemCount());
+
         assertEquals("one", list.getValue(0));
         assertEquals("ONE", list.getItemText(0));
         assertEquals("two", list.getValue(1));
         assertEquals("TWO", list.getItemText(1));
         assertEquals("", list.getValue(2));
         assertEquals("any", list.getItemText(2));
+
+        assertFalse(list.isDropdownKeyKnown(null));
+        assertTrue(list.isDropdownKeyKnown(""));
+        assertTrue(list.isDropdownItemKnown(null));
+        assertTrue(list.isDropdownKeyKnown("one"));
+        assertTrue(list.isDropdownItemKnown(1));
+        assertTrue(list.isDropdownKeyKnown("two"));
+        assertTrue(list.isDropdownItemKnown(2));
     }
 
     /** Check that every value can be selected, for SimpleList. */

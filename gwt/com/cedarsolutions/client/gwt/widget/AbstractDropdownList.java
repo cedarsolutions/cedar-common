@@ -105,6 +105,16 @@ public abstract class AbstractDropdownList<T> extends ListBox {
         this.addItem(display, key);
     }
 
+    /** Whether a specific key is known in the list. */
+    public boolean isDropdownKeyKnown(String key) {
+        return this.keyToObjectValueMap.containsKey(key);
+    }
+
+    /** Whether a specific item is known in the list. */
+    public boolean isDropdownItemKnown(T item) {
+        return this.objectValueToKeyMap.containsKey(item);
+    }
+
     /**
      * Remove an item from the list, looking up the key.
      * @param item    Item to remove from the list
