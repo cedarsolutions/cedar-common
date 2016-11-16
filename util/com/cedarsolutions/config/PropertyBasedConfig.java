@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -53,7 +54,7 @@ public abstract class PropertyBasedConfig implements InitializingBean {
     @Override
     public String toString() {
         Class<? extends PropertyBasedConfig> clazz = this.getClass();
-        Map<String, Object> fields = this.getFields();
+        Map<String, Object> fields = new TreeMap<String, Object>(this.getFields()); // TreeMap so sort order is predictable
         int maxKeyLength = getMaxKeyLength(fields);
 
         StringBuffer buffer = new StringBuffer();
