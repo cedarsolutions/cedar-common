@@ -123,7 +123,7 @@ public class FilteredResultIteratorTest {
     private static class SafeIterator extends FilteredResultIterator<String> {
         private int calls;
 
-        public SafeIterator(Query<String> query, IFilterPredicate<String> predicate) {
+        SafeIterator(Query<String> query, IFilterPredicate<String> predicate) {
             super(query, predicate);
         }
 
@@ -140,7 +140,7 @@ public class FilteredResultIteratorTest {
     private static class IteratorNextAnswer implements Answer<String> {
         private Iterator<String> iterator;
 
-        public IteratorNextAnswer(Iterator<String> iterator) {
+        IteratorNextAnswer(Iterator<String> iterator) {
             this.iterator = iterator;
         }
 
@@ -154,7 +154,7 @@ public class FilteredResultIteratorTest {
     private static class IteratorHasNextAnswer implements Answer<Boolean> {
         private Iterator<String> iterator;
 
-        public IteratorHasNextAnswer(Iterator<String> iterator) {
+        IteratorHasNextAnswer(Iterator<String> iterator) {
             this.iterator = iterator;
         }
 

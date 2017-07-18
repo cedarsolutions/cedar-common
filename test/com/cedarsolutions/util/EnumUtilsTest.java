@@ -309,7 +309,7 @@ public class EnumUtilsTest {
 
         private final String value;
 
-        private StringOneNotNullEnum(String value) {
+        StringOneNotNullEnum(String value) {
             this.value = value;
         }
 
@@ -329,7 +329,7 @@ public class EnumUtilsTest {
 
         private final String value;
 
-        private StringOneNullEnum() {
+        StringOneNullEnum() {
             this.value = null;
         }
 
@@ -352,7 +352,7 @@ public class EnumUtilsTest {
 
         private final String value;
 
-        private StringMultipleNoneNullEnum(String value) {
+        StringMultipleNoneNullEnum(String value) {
             this.value = value;
         }
 
@@ -376,11 +376,11 @@ public class EnumUtilsTest {
 
         private final String value;
 
-        private StringMultipleOneNullEnum(String value) {
+        StringMultipleOneNullEnum(String value) {
             this.value = value;
         }
 
-        private StringMultipleOneNullEnum() {
+        StringMultipleOneNullEnum() {
             this.value = null;
         }
 
@@ -400,7 +400,7 @@ public class EnumUtilsTest {
 
         private final Integer value;
 
-        private IntegerOneNotNullEnum(Integer value) {
+        IntegerOneNotNullEnum(Integer value) {
             this.value = value;
         }
 
@@ -425,7 +425,7 @@ public class EnumUtilsTest {
 
         private final Integer value;
 
-        private IntegerOneNullEnum() {
+        IntegerOneNullEnum() {
             this.value = null;
         }
 
@@ -453,7 +453,7 @@ public class EnumUtilsTest {
 
         private final Integer value;
 
-        private IntegerMultipleNoneNullEnum(Integer value) {
+        IntegerMultipleNoneNullEnum(Integer value) {
             this.value = value;
         }
 
@@ -482,11 +482,11 @@ public class EnumUtilsTest {
 
         private final Integer value;
 
-        private IntegerMultipleOneNullEnum(Integer value) {
+        IntegerMultipleOneNullEnum(Integer value) {
             this.value = value;
         }
 
-        private IntegerMultipleOneNullEnum() {
+        IntegerMultipleOneNullEnum() {
             this.value = null;
         }
 

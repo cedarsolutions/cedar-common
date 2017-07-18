@@ -692,7 +692,7 @@ public class AbstractGaeDaoTest extends DaoTestCase {
     }
 
     /** Assert that the passed-in events, and no others, are found in results. */
-    private static void assertFound(PaginatedResults<StringIdEntity> results, String ... ids) {
+    private static void assertFound(PaginatedResults<StringIdEntity> results, String... ids) {
         assertEquals(ids.length, results.size());
         for (int i = 0; i < ids.length; i++) {
             assertEquals(ids[i], results.get(i).getId());
@@ -700,7 +700,7 @@ public class AbstractGaeDaoTest extends DaoTestCase {
     }
 
     /** Assert that the passed-in events, and no others, are found in results. */
-    private static void assertFound(PaginatedResults<IntegerIdEntity> results, int ... ids) {
+    private static void assertFound(PaginatedResults<IntegerIdEntity> results, int... ids) {
         assertEquals(ids.length, results.size());
         for (int i = 0; i < ids.length; i++) {
             assertEquals(ids[i], results.get(i).getId());

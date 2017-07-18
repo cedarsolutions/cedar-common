@@ -75,7 +75,7 @@ public class FilesystemUtils {
      * @param elements  List of elements to be joined.
      * @return Complete path, with elements separated by '/' characters.
      */
-    public static String join(String ... elements) {
+    public static String join(String... elements) {
         StringBuffer buffer = new StringBuffer();
 
         if (elements.length > 0) {

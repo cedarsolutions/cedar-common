@@ -49,7 +49,7 @@ public class CommandLine {
      * @param command  String command, the program to be executed
      * @param args     String arguments to the command
      */
-    public CommandLine(String command, String ... args) {
+    public CommandLine(String command, String... args) {
         list.add(command);
         if (args != null && args.length > 0) {
             for (int i = 0; i < args.length; i++) {

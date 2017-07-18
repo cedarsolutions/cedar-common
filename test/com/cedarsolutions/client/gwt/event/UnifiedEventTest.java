@@ -42,6 +42,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
  * Unit tests for UnifiedEvent.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class UnifiedEventTest {
 
     /** Test the ClickEvent constructor. */

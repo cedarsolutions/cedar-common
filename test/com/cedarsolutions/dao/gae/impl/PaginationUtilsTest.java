@@ -143,7 +143,7 @@ public class PaginationUtilsTest {
     private static class IteratorNextAnswer implements Answer<String> {
         private Iterator<String> iterator;
 
-        public IteratorNextAnswer(Iterator<String> iterator) {
+        IteratorNextAnswer(Iterator<String> iterator) {
             this.iterator = iterator;
         }
 
@@ -157,7 +157,7 @@ public class PaginationUtilsTest {
     private static class IteratorHasNextAnswer implements Answer<Boolean> {
         private Iterator<String> iterator;
 
-        public IteratorHasNextAnswer(Iterator<String> iterator) {
+        IteratorHasNextAnswer(Iterator<String> iterator) {
             this.iterator = iterator;
         }
 

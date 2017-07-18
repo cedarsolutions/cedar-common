@@ -71,12 +71,12 @@ public enum NativeEventType implements StringEnum {
     private String value;
 
     /** Create an enumeration with a null value. */
-    private NativeEventType() {
+    NativeEventType() {
         this.value = null;
     }
 
     /** Create an enumeration with the passed-in value. */
-    private NativeEventType(String value) {
+    NativeEventType(String value) {
         this.value = value;
     }
 

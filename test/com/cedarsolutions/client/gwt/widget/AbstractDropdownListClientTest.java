@@ -139,7 +139,7 @@ public class AbstractDropdownListClientTest extends ClientTestCase {
 
     /** Integer-based list for testing. */
     private static class IntegerList extends AbstractDropdownList<Integer> {
-        public IntegerList() {
+        IntegerList() {
             this.addDropdownItem(1);
             this.addDropdownItem(2);
         }
@@ -152,7 +152,7 @@ public class AbstractDropdownListClientTest extends ClientTestCase {
 
     /** String-based list for testing. */
     private static class StringList extends AbstractDropdownList<String> {
-        public StringList() {
+        StringList() {
             this.addDropdownItem("1");
             this.addDropdownItem("2");
         }
@@ -166,7 +166,7 @@ public class AbstractDropdownListClientTest extends ClientTestCase {
     /** List for testing. */
     private static class ComplicatedList extends IntegerList {
 
-        public ComplicatedList() {
+        ComplicatedList() {
             super();
             this.addDropdownItemAny();
         }

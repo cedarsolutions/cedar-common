@@ -270,7 +270,7 @@ public class DataTableClientTest extends ClientTestCase {
 
     /** Column. */
     private static class SomethingColumn extends Column<Whatever, String> {
-        public SomethingColumn() {
+        SomethingColumn() {
             super(new TextCell());
         }
 

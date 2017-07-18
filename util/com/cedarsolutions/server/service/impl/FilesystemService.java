@@ -53,7 +53,7 @@ public class FilesystemService extends AbstractService implements IFilesystemSer
      * @return Complete path, with elements separated by '/' characters.
      */
     @Override
-    public String join(String ... elements) {
+    public String join(String... elements) {
         return FilesystemUtils.join(elements);
     }
 

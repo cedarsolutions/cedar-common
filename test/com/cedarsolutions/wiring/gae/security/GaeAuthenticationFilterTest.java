@@ -271,7 +271,7 @@ public class GaeAuthenticationFilterTest {
     }
 
     /** Call doFilter(), returning the user that was authenticated. */
-    private static GaeUser callDoFilter(StubbedGaeAuthenticationFilter filter, String ... clientRoles) throws Exception {
+    private static GaeUser callDoFilter(StubbedGaeAuthenticationFilter filter, String... clientRoles) throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         FilterChain chain = mock(FilterChain.class);
@@ -312,7 +312,7 @@ public class GaeAuthenticationFilterTest {
     private static class StubbedGaeAuthenticationFilter extends GaeAuthenticationFilter {
         private MockSecurityContext mockSecurityContext;
 
-        public StubbedGaeAuthenticationFilter() {
+        StubbedGaeAuthenticationFilter() {
             this.mockSecurityContext = new MockSecurityContext();
         }
 
@@ -349,7 +349,7 @@ public class GaeAuthenticationFilterTest {
 
         private GaeUserAuthenticationToken token;
 
-        public StubbedAuthentication(GaeUserAuthenticationToken token) {
+        StubbedAuthentication(GaeUserAuthenticationToken token) {
             this.token = token;
         }
 

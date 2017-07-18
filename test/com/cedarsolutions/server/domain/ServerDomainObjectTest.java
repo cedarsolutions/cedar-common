@@ -32,6 +32,7 @@ import org.junit.Test;
  * Unit tests for ServerDomainObject.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class ServerDomainObjectTest {
 
     /** Spot-check toString(). */

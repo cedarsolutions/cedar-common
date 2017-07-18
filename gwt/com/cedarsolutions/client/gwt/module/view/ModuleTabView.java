@@ -54,7 +54,7 @@ public abstract class ModuleTabView extends ModulePageView implements IModuleTab
 
     /**
      * Set the context that this tab exists in.
-     * @param parentPanel Parent tab panel view
+     * @param parentView  Parent tab panel view
      * @param tabIndex    Index of this tab on the layout panel
      */
     @Override

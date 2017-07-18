@@ -38,6 +38,7 @@ import org.junit.Test;
  * Unit tests for RootCause.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class RootCauseTest {
 
     /** Test the constructors. */

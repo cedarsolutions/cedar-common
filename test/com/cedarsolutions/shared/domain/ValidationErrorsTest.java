@@ -42,6 +42,7 @@ import org.junit.Test;
  * Unit tests for ValidationErrors.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class ValidationErrorsTest {
 
     /** Check GWT behavior. */

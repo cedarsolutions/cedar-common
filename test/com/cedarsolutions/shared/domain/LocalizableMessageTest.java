@@ -39,6 +39,7 @@ import org.junit.Test;
  * Unit tests for LocalizableMessage.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class LocalizableMessageTest {
 
     /** Check GWT behavior. */

@@ -81,12 +81,12 @@ public enum HttpStatusCode implements IntegerEnum {
     private Integer value;
 
     /** Create an enumeration with a null value. */
-    private HttpStatusCode() {
+    HttpStatusCode() {
         this.value = null;
     }
 
     /** Create an enumeration with the passed-in value. */
-    private HttpStatusCode(int value) {
+    HttpStatusCode(int value) {
         this.value = value;
     }
 

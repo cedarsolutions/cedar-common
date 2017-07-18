@@ -40,6 +40,7 @@ import org.junit.Test;
  * Unit tests for FederatedUser.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class FederatedUserTest {
 
     /** Check GWT behavior. */

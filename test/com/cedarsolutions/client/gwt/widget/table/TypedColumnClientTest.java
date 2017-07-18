@@ -134,23 +134,23 @@ public class TypedColumnClientTest extends ClientTestCase {
 
     /** Test column to work with. */
     private static class TestColumn extends TypedColumn<Row, String> {
-        public TestColumn() {
+        TestColumn() {
             super();
         }
 
-        public TestColumn(String name) {
+        TestColumn(String name) {
             super(name);
         }
 
-        public TestColumn(TestEnum name) {
+        TestColumn(TestEnum name) {
             super(name);
         }
 
-        public TestColumn(String name, Sortable sortable) {
+        TestColumn(String name, Sortable sortable) {
             super(name, sortable);
         }
 
-        public TestColumn(TestEnum name, Sortable sortable) {
+        TestColumn(TestEnum name, Sortable sortable) {
             super(name, sortable);
         }
 
@@ -172,7 +172,7 @@ public class TypedColumnClientTest extends ClientTestCase {
 
     /** Test column to work with. */
     private static class TestColumnWithTooltip extends TestColumn {
-        public TestColumnWithTooltip() {
+        TestColumnWithTooltip() {
             super();
         }
 

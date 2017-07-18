@@ -69,7 +69,7 @@ public class AbstractColumnSortEventHandlerTest extends StubbedClientTestCase {
 
     /** Sort handler for testing. */
     private static class SortHandler extends AbstractColumnSortEventHandler<View> {
-        public SortHandler(View parent) {
+        SortHandler(View parent) {
             super(parent);
         }
 

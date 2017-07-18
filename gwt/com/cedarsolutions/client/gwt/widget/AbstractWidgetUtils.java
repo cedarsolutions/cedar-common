@@ -220,7 +220,7 @@ public abstract class AbstractWidgetUtils {
      * Reliably focus on a widget via a scheduled command.'
      * To set focus on a panel, pick a widget (i.e. a text area) within the panel, and focus that.
      * This is also useful for setting focus on a field within a pop-up.
-     * @param focusable  Widget that supports being focused
+     * @param widget  Widget that supports being focused
      * @see <a href="http://stackoverflow.com/questions/5944612">StackOverflow</a>
      * @see <a href="http://stackoverflow.com/questions/6665927">StackOverflow</a>
      */
@@ -253,7 +253,7 @@ public abstract class AbstractWidgetUtils {
      * Reliably focus on a widget via a scheduled command, an alias for setFocusAfterDisplay().
      * To set focus on a panel, pick a widget (i.e. a text area) within the panel, and focus that.
      * This is also useful for setting focus on a field within a pop-up.
-     * @param focusable  Widget that supports being focused
+     * @param widget  Widget that supports being focused
      * @see <a href="http://stackoverflow.com/questions/5944612">StackOverflow</a>
      * @see <a href="http://stackoverflow.com/questions/6665927">StackOverflow</a>
      */

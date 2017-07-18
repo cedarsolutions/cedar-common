@@ -167,7 +167,7 @@ public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
     private static class ConcreteModuleNestedTabPanelView extends ModuleNestedTabPanelView {
         private TabLayoutPanel tabPanel = new TabLayoutPanel(45, Unit.PX);
 
-        public ConcreteModuleNestedTabPanelView() {
+        ConcreteModuleNestedTabPanelView() {
             this.initWidget(this.tabPanel);
         }
 
@@ -185,7 +185,7 @@ public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
     private static class ConcreteModuleTabPanelView extends ModuleTabPanelView {
         private TabLayoutPanel tabPanel;
 
-        public ConcreteModuleTabPanelView(TabLayoutPanel tabPanel) {
+        ConcreteModuleTabPanelView(TabLayoutPanel tabPanel) {
             this.tabPanel = tabPanel;
         }
 
@@ -199,11 +199,11 @@ public class ModuleNestedTabPanelViewClientTest extends ClientTestCase {
     private static class ConcreteModuleTabView extends ModuleTabView {
         private String historyToken;
 
-        public ConcreteModuleTabView() {
+        ConcreteModuleTabView() {
             this(null);
         }
 
-        public ConcreteModuleTabView(String historyToken) {
+        ConcreteModuleTabView(String historyToken) {
             this.initWidget(new Label());  // just put anything in here, so the view renders
             this.historyToken = historyToken;
         }

@@ -33,7 +33,7 @@ public interface IModuleTabView extends IModulePageView {
 
     /**
      * Set the context that this tab exists in.
-     * @param parentPanel Parent tab panel view
+     * @param parentView  Parent tab panel view
      * @param tabIndex    Index of this tab on the layout panel
      */
     void setContext(IModuleTabPanelView parentView, int tabIndex);
