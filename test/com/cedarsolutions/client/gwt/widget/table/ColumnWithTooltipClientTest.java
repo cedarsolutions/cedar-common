@@ -124,23 +124,23 @@ public class ColumnWithTooltipClientTest extends ClientTestCase {
     private static class TestColumn extends ColumnWithTooltip<String> {
         protected boolean returnTooltip = true;
 
-        public TestColumn() {
+        TestColumn() {
             super();
         }
 
-        public TestColumn(String name) {
+        TestColumn(String name) {
             super(name);
         }
 
-        public TestColumn(TestEnum name) {
+        TestColumn(TestEnum name) {
             super(name);
         }
 
-        public TestColumn(String name, Sortable sortable) {
+        TestColumn(String name, Sortable sortable) {
             super(name, sortable);
         }
 
-        public TestColumn(TestEnum name, Sortable sortable) {
+        TestColumn(TestEnum name, Sortable sortable) {
             super(name, sortable);
         }
 

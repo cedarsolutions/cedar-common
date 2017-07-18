@@ -42,6 +42,7 @@ import org.junit.Test;
  * Unit tests for EmailMessage.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class EmailMessageTest {
 
     /** Test the constructor. */

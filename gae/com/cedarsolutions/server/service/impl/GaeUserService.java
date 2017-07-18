@@ -180,7 +180,7 @@ public class GaeUserService extends AbstractService implements IGaeUserService {
 
     /** Add extra roles for the current user, for use by the security framework. */
     @Override
-    public void addClientRoles(String ... roles) {
+    public void addClientRoles(String... roles) {
         this.springContextService.setSessionAttribute(CLIENT_ROLES_ATTRIBUTE, roles);
     }
 

@@ -124,7 +124,7 @@ public class FilteredContainerIteratorTest {
     private static class SafeIterator extends FilteredContainerIterator<String> {
         private int calls;
 
-        public SafeIterator(Query<Container> query, IFilterPredicate<String> predicate) {
+        SafeIterator(Query<Container> query, IFilterPredicate<String> predicate) {
             super(query, predicate);
         }
 
@@ -142,7 +142,7 @@ public class FilteredContainerIteratorTest {
     private class Container implements IContainer<String> {
         private String value;
 
-        public Container(String value) {
+        Container(String value) {
             this.value = value;
         }
 

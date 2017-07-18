@@ -49,6 +49,7 @@ import com.cedarsolutions.shared.domain.TranslatableDomainObject;
  *
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class PaginationTest {
 
     /** Check GWT behavior. */

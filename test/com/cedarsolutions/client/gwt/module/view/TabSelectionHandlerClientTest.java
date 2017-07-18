@@ -94,7 +94,7 @@ public class TabSelectionHandlerClientTest extends ClientTestCase {
     private static class ConcreteModuleTabPanelView extends ModuleTabPanelView {
         private TabLayoutPanel tabPanel;
 
-        public ConcreteModuleTabPanelView(TabLayoutPanel tabPanel) {
+        ConcreteModuleTabPanelView(TabLayoutPanel tabPanel) {
             this.tabPanel = tabPanel;
         }
 

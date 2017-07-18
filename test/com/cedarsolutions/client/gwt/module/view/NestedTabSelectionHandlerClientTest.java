@@ -130,7 +130,7 @@ public class NestedTabSelectionHandlerClientTest extends ClientTestCase {
 
     /** Concrete class that we can test with. */
     private static class ConcreteNestedModulePanelTabView extends ModuleNestedTabPanelView {
-        public ConcreteNestedModulePanelTabView() {
+        ConcreteNestedModulePanelTabView() {
         }
 
         @Override
@@ -143,7 +143,7 @@ public class NestedTabSelectionHandlerClientTest extends ClientTestCase {
     private static class ConcreteModuleTabPanelView extends ModuleTabPanelView {
         private TabLayoutPanel tabPanel;
 
-        public ConcreteModuleTabPanelView(TabLayoutPanel tabPanel) {
+        ConcreteModuleTabPanelView(TabLayoutPanel tabPanel) {
             this.tabPanel = tabPanel;
         }
 

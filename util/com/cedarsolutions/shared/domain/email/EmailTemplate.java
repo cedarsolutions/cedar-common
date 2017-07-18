@@ -125,7 +125,7 @@ public class EmailTemplate extends TranslatableDomainObject {
         this.recipients = recipients;
     }
 
-    public void setRecipients(EmailAddress ... recipients) {
+    public void setRecipients(EmailAddress... recipients) {
         if (recipients == null) {
             this.recipients = null;
         } else {

@@ -231,7 +231,7 @@ public class CommandLineArgumentsTest {
     private static class Args extends CommandLineArguments {
         protected String[] executed;
 
-        public Args(String[] args) {
+        Args(String[] args) {
             super(args);
         }
 

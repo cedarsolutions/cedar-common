@@ -170,7 +170,7 @@ public class HierarchicalPropertiesTest {
 
         private Properties properties;
 
-        public PropertiesResource(Properties properties) {
+        PropertiesResource(Properties properties) {
             this.properties = properties;
         }
 

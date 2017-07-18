@@ -219,7 +219,7 @@ public class SortableTableClientTest extends ClientTestCase {
 
     /** Column that exists in the enumeration as ONE. */
     private static class OneColumn extends ColumnWithName<Whatever, String> {
-        public OneColumn() {
+        OneColumn() {
             super(WhateverColumn.ONE.toString(), new TextCell());
         }
 
@@ -231,7 +231,7 @@ public class SortableTableClientTest extends ClientTestCase {
 
     /** Column that exists in the enumeration as TWO. */
     private static class TwoColumn extends ColumnWithName<Whatever, String> {
-        public TwoColumn() {
+        TwoColumn() {
             super(WhateverColumn.TWO.toString(), new TextCell());
         }
 
@@ -243,7 +243,7 @@ public class SortableTableClientTest extends ClientTestCase {
 
     /** Column that does not exist in the enumeration, non-null column name. */
     private static class ThreeColumn extends ColumnWithName<Whatever, String> {
-        public ThreeColumn() {
+        ThreeColumn() {
             super("Three", new TextCell());
         }
 
@@ -255,7 +255,7 @@ public class SortableTableClientTest extends ClientTestCase {
 
     /** Column that does not exist in the enumeration, null column name. */
     private static class FourColumn extends ColumnWithName<Whatever, String> {
-        public FourColumn() {
+        FourColumn() {
             super((String) null, new TextCell());
         }
 
@@ -284,7 +284,7 @@ public class SortableTableClientTest extends ClientTestCase {
     }
 
     /** Sort column. */
-    private static enum WhateverColumn {
+    private enum WhateverColumn {
         ONE,
         TWO;
     }

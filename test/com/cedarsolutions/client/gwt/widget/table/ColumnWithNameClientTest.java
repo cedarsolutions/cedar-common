@@ -84,23 +84,23 @@ public class ColumnWithNameClientTest extends ClientTestCase {
     /** Test column to work with. */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private static class TestColumn extends ColumnWithName<String, String> {
-        public TestColumn(Cell cell) {
+        TestColumn(Cell cell) {
             super(cell);
         }
 
-        public TestColumn(Enum name, Cell cell) {
+        TestColumn(Enum name, Cell cell) {
             super(name, cell);
         }
 
-        public TestColumn(String name, Cell cell) {
+        TestColumn(String name, Cell cell) {
             super(name, cell);
         }
 
-        public TestColumn(Enum name, Cell cell, Sortable sortable) {
+        TestColumn(Enum name, Cell cell, Sortable sortable) {
             super(name, cell, sortable);
         }
 
-        public TestColumn(String name, Cell cell, Sortable sortable) {
+        TestColumn(String name, Cell cell, Sortable sortable) {
             super(name, cell, sortable);
         }
 

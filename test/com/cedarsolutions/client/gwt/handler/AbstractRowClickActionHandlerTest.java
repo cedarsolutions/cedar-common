@@ -155,7 +155,7 @@ public class AbstractRowClickActionHandlerTest extends StubbedClientTestCase {
 
     /** A click handler with a selection column (zero, like most of our tables). */
     private static class WithSelectionColumn extends AbstractRowClickActionHandler<IParent, String> {
-        public WithSelectionColumn(IParent parent) {
+        WithSelectionColumn(IParent parent) {
             super(parent);
         }
 
@@ -172,7 +172,7 @@ public class AbstractRowClickActionHandlerTest extends StubbedClientTestCase {
 
     /** A click handler with no selection column. */
     private static class WithoutSelectionColumn extends AbstractRowClickActionHandler<IParent, String> {
-        public WithoutSelectionColumn(IParent parent) {
+        WithoutSelectionColumn(IParent parent) {
             super(parent);
         }
 

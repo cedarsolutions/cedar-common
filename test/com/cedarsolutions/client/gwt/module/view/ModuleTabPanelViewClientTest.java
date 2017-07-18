@@ -165,7 +165,7 @@ public class ModuleTabPanelViewClientTest extends ClientTestCase {
     private static class ConcreteModuleTabPanelView extends ModuleTabPanelView {
         private TabLayoutPanel tabPanel = new TabLayoutPanel(45, Unit.PX);
 
-        public ConcreteModuleTabPanelView() {
+        ConcreteModuleTabPanelView() {
             this.initWidget(this.tabPanel);
         }
 
@@ -183,11 +183,11 @@ public class ModuleTabPanelViewClientTest extends ClientTestCase {
     private static class ConcreteModuleTabView extends ModuleTabView {
         private String historyToken;
 
-        public ConcreteModuleTabView() {
+        ConcreteModuleTabView() {
             this(null);
         }
 
-        public ConcreteModuleTabView(String historyToken) {
+        ConcreteModuleTabView(String historyToken) {
             this.initWidget(new Label());  // just put anything in here, so the view renders
             this.historyToken = historyToken;
         }

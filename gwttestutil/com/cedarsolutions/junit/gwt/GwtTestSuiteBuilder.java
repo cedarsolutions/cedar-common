@@ -56,7 +56,7 @@ public class GwtTestSuiteBuilder extends DirectorySuiteBuilder {
      * @return JUnit test suite generated from the indicated directories
      * @throws Exception If there is a problem generating the suite.
      */
-    public static Test generateSuite(String suiteName, String ... directories) throws Exception {
+    public static Test generateSuite(String suiteName, String... directories) throws Exception {
         TestSuite suite = new TestSuite(suiteName);
 
         GwtTestSuiteBuilder builder = new GwtTestSuiteBuilder();

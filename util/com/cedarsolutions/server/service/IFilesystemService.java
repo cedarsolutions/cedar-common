@@ -43,7 +43,7 @@ public interface IFilesystemService {
      * @param elements  List of elements to be joined.
      * @return Complete path, with elements separated by '/' characters.
      */
-     String join(String ... elements);
+     String join(String... elements);
 
     /**
      * Get the base name for a path, like Python's os.path.basename().

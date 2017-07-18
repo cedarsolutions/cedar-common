@@ -55,7 +55,7 @@ public class TabPanelResizeHandlerClientTest extends ClientTestCase {
     private static class ConcreteModuleTabPanelView extends ModuleTabPanelView {
         private TabLayoutPanel tabPanel = new TabLayoutPanel(45, Unit.PX);
 
-        public ConcreteModuleTabPanelView() {
+        ConcreteModuleTabPanelView() {
             this.initWidget(this.tabPanel);
         }
 

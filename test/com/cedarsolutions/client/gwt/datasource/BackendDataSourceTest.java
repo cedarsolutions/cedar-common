@@ -244,7 +244,7 @@ public class BackendDataSourceTest {
         protected int retrieveStart;
         protected Pagination retrievePagination;
 
-        public DataSource(IBackendDataRenderer<String, String> renderer) {
+        DataSource(IBackendDataRenderer<String, String> renderer) {
             super(renderer);
         }
 

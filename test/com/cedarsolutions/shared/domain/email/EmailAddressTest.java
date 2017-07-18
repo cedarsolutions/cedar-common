@@ -38,6 +38,7 @@ import org.junit.Test;
  * Unit tests for EmailAddress.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class EmailAddressTest {
 
     /** Test the constructor. */

@@ -155,12 +155,12 @@ public class GwtResourceCreatorTest {
     }
 
     /** Assert that substituteReplaceVariables() succeeds for particular input. */
-    private static void assertSubsituteReplaceWorks(String expected, String message, Object ... arguments) {
+    private static void assertSubsituteReplaceWorks(String expected, String message, Object... arguments) {
         assertEquals(expected, substituteReplaceVariables(message, arguments));
     }
 
     /** Assert that substituteReplaceVariables() fails for particular input. */
-    private static void assertSubsituteReplaceFails(String message, Object ... arguments) {
+    private static void assertSubsituteReplaceFails(String message, Object... arguments) {
         try {
             substituteReplaceVariables(message, arguments);
             fail("Expected IllegalArgumentException");

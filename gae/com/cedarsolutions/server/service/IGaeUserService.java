@@ -76,6 +76,6 @@ public interface IGaeUserService {
     FederatedUser getCurrentUser() throws ServiceException;
 
     /** Add extra roles for the current user, for use by the security framework. */
-    void addClientRoles(String ... roles);
+    void addClientRoles(String... roles);
 
 }

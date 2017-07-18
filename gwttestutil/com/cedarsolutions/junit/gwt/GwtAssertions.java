@@ -79,7 +79,7 @@ public class GwtAssertions {
      * @see <a href="http://stackoverflow.com/questions/1456930">StackOverflow</a>
      */
     @SuppressWarnings("rawtypes")
-    public static List<Class> findRpcInterfaces(String ... rpcPackages) throws IOException, ClassNotFoundException {
+    public static List<Class> findRpcInterfaces(String... rpcPackages) throws IOException, ClassNotFoundException {
         List<Class> rpcInterfaces = new ArrayList<Class>();
 
         for (String rpcPackage : rpcPackages) {

@@ -40,6 +40,7 @@ import org.junit.Test;
  * Unit tests for ErrorDescription.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class ErrorDescriptionTest {
 
     /** Test the constructors. */

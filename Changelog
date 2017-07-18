@@ -1,6 +1,7 @@
 Version 5.8.5   unreleased
 
     * Tweak PropertyBasedConfig.toString() so sort order of keys is always predictable.
+    * Fix new warnings exposed by moving to Eclipse 4.7 (Oyxgen) and Checkstyle 8.
 
 Version 5.8.4   07 Jul 2016
 

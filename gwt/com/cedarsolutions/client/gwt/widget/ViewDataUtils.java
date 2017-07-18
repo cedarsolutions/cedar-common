@@ -268,7 +268,6 @@ public class ViewDataUtils {
     /**
      * Build a list of criteria based on an input field.
      * @param input  Input field to get data from
-     * @param time   Time to reset the returned data to
      * @return Date from the input field, with time reset.
      */
     public static List<Date> getCriteriaList(DateBox input) {

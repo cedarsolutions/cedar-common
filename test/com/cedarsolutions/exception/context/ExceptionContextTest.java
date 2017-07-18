@@ -37,6 +37,7 @@ import org.junit.Test;
  * Unit tests for ExceptionContext.
  * @author Kenneth J. Pronovici <pronovic@ieee.org>
  */
+@SuppressWarnings("unlikely-arg-type")
 public class ExceptionContextTest {
 
     /** Test the constructors. */

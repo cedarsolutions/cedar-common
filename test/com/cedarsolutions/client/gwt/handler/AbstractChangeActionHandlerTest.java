@@ -66,7 +66,7 @@ public class AbstractChangeActionHandlerTest extends StubbedClientTestCase {
 
     /** A click handler with a selection column (zero, like most of our tables). */
     private static class TestHandler extends AbstractChangeActionHandler<IParent> {
-        public TestHandler(IParent parent) {
+        TestHandler(IParent parent) {
             super(parent);
         }
 

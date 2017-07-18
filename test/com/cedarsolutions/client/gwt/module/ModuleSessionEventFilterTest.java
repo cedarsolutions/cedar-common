@@ -93,7 +93,7 @@ public class ModuleSessionEventFilterTest extends StubbedClientTestCase {
         protected Set<String> excludedEventTypes;
         protected boolean filterResult;
 
-        public ConcreteModuleSessionEventFilter() {
+        ConcreteModuleSessionEventFilter() {
             this.clientSession = mock(IClientSession.class);
 
             this.excludedEventTypes = new HashSet<String>();

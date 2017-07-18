@@ -62,7 +62,7 @@ public class SpringAssertions {
      * @param contextPath  Context path directory, like "war/WEB-INF"
      * @param locations    List of Spring context files within contextPath, like "rpc-servlet.xml"
      */
-    public static void assertSpringContextValid(String contextPath, String ... locations) throws Exception {
+    public static void assertSpringContextValid(String contextPath, String... locations) throws Exception {
         // Load the context, which confirms that the files have a valid format
         MockWebContextLoader loader = new MockWebContextLoader(contextPath);
         ApplicationContext context = loader.loadContext(locations);
