@@ -1,9 +1,21 @@
+_Note: As of June 2018, this code is basically unmaintained.  It was originally
+written starting in 2011, which is an eternity ago in user-interface terms.
+Today, GWT is basically dead as a user interface development framework, making
+this code mostly irrelevant.  Besides that, the Santa Exchange backend no
+longer works with the most recent Java 8 API for Google AppEngine, so as of
+January 2019, there won't even be any infrastructure on which it will run.  I
+don't have the time or the motivation to fix it, so the GWT- and
+AppEngine-focused portions of this code don't really have a purpose any more.
+See the wiki for all of the historical documentation._
+
+-------------
+
 This is the CedarCommon project, which provides common Java utilities as well
 as specialized functionality for building GWT applications on Google App Engine
 using the Mvp4g model-view-presenter framework.  The home page for this project
 is:
 
-    https://bitbucket.org/cedarsolutions/cedar-common
+    https://github.com/cedarsolutions/cedar-common
 
 This version of CedarCommon is designed for use with GWT v2.7 and later.  If
 you need support for GWT v2.5 or v2.6, use the latest version of CedarCommon
@@ -13,7 +25,7 @@ CedarCommon v4.x and v5.x, other than support for GWT v2.7.
 This code was originally built along with the the SantaExchange GWT/GAE
 demonstration project:
 
-   https://bitbucket.org/cedarsolutions/santa-exchange
+   https://github.com/cedarsolutions/santa-exchange
 
 All of this code is available in Maven Central:
 
