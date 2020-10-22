@@ -25,7 +25,7 @@ CedarCommon v4.x and v5.x, other than support for GWT v2.7.
 This code was originally built along with the the SantaExchange GWT/GAE
 demonstration project:
 
-   https://github.com/cedarsolutions/santa-exchange
+   https://github.com/pronovic/santa-exchange
 
 All of this code is available in Maven Central:
 
